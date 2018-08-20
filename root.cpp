@@ -27,7 +27,8 @@
 //10 relacje obiektów: kompozycja, agregacja, asocjacja, zależności,
             //klasy kontenerowe, initializer_list
 //11 podstawy dziedziczenia, kolejność dziedziczenia, konstruktory i inicjalizacja
-            //
+            //specyfikatory dostępu, nowe moetody w klasie dziedziczącej,
+            //ukrywanie odziedziczonych funkcjonalności, wielodziedziczenie
 // #include "chapter12.hpp"
 // #include "chapter13.hpp"
 // #include "chapter14.hpp"
@@ -40,12 +41,10 @@
 // #include "appendixC.hpp"
 #include "boost/filesystem/path.hpp"
 #include <limits>
-
 void myStrCpy(const char* src, char* dst)
 {
     while((*dst++ = *src++));
 }
-
 int main(int argc, char* argv[])
 {
     chapter1run();
@@ -59,9 +58,10 @@ int main(int argc, char* argv[])
     chapter9run();
     chapter10run();
     chapter11run();
-
     printf("\n");
 }
+
+
 //fabryka, dekorator, łańcuch zdarzeń, maszyna stanów, singleton, fasada, kompozyt
 //obserwator https://pl.wikipedia.org/wiki/Wzorzec_projektowy_(informatyka)
 //tworzenie własnej biblioteki

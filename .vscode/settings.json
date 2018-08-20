@@ -48,5 +48,6 @@
         "cinttypes": "cpp",
         "typeindex": "cpp"
     },
-    "python.linting.pylintEnabled": false
+    "python.linting.pylintEnabled": false,
+    "editor.renderWhitespace": "all"
 }

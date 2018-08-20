@@ -254,6 +254,7 @@ void stackAndHeap()
                                             //zainicjalizowanych zerami
     //DATA SEGMENT (INITIALIZED) -> dla zainicjalizowanych zmiennych 
                                             //globalnych i statycznych
+    //np 3, "Hello workd" is stored in text and copied to Data on startup
     //HEAP -> dla zmiennych alokowanych dynamicznie
         //wolna alokacja
         //konieczna dealokacja
