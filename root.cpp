@@ -29,7 +29,17 @@
 //11 podstawy dziedziczenia, kolejność dziedziczenia, konstruktory i inicjalizacja
             //specyfikatory dostępu, nowe moetody w klasie dziedziczącej,
             //ukrywanie odziedziczonych funkcjonalności, wielodziedziczenie
-// #include "chapter12.hpp"
+//12 pointery i referencje do klasy bazowej
+            //funkcje virtual i polimorfizm
+            //overrride, final, covriant return type
+            //virtual destruktory assigmenty i virtualization overriding
+            //early binding and late binding
+            //virtual table
+            //pure virtual functions, abstract clases, interfaces
+            //virtual base classes
+            //object slicing
+            //dynamic casting
+            //operator << and printing inherited classes
 // #include "chapter13.hpp"
 // #include "chapter14.hpp"
 // #include "chapter15.hpp"
@@ -58,6 +68,7 @@ int main(int argc, char* argv[])
     chapter9run();
     chapter10run();
     chapter11run();
+    chapter12run();
     printf("\n");
 }
 

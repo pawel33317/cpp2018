@@ -533,7 +533,6 @@ void obiektyAnonimowe()
     printf("Function end\n");
 
     //są traktowane jako R-VALUES
-    
 }
 
 void obiektyAnonimowe2()
