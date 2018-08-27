@@ -125,3 +125,5 @@ int main(int argc, char* argv[])
 //unicode characters
 //opengl
 //variadic templates
+//stl
+//std::forward
