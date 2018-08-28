@@ -3,12 +3,15 @@
 
 void pointersAndReferencesToBaseClass();
 void funkcjeVirtualIPolimorfizm();
+void overrideFinalAndCOVARIANT();
+
 
 void chapter12run()
 {
     printf("\n\n-----chapter 12 started-----\n");
     pointersAndReferencesToBaseClass();
     funkcjeVirtualIPolimorfizm();
+    overrideFinalAndCOVARIANT();
 }
 
 class Base1
@@ -114,8 +117,134 @@ void funkcjeVirtualIPolimorfizm()
         a2.pokaz();
     }
 
-    //!!!Domyślnie funkcje nei są wirtualne z powodu optymalizacji
+    //!!!Domyślnie funkcje nie są wirtualne z powodu optymalizacji
     //rozwinięcie funkcji virtualnej trwa dłużej niż funkcji niewirtualnej
     //!!!dodatkowo kompilator musi zaalokować dodatkowy pointer dla każdego obiektu
     //klasy dla funkcji wirtualnych
+}
+
+
+
+using namespace std;
+class A3
+{
+public:
+    virtual void showName() const=0;
+    virtual ~A3(){}
+};
+class B3 : public A3
+{
+public:
+    virtual void showName() const override{}
+    virtual ~B3(){}
+    //virtual void showName() override {} !!!nie zadziala bo to inna funkcja
+    //!!!override zapobiega problemom z overridowaniem finkcji 
+    //np poprzez podanie złego typu czy też brak const
+};
+
+class A4
+{
+public:
+    virtual void showName() {};
+    virtual ~A4(){}
+};
+class B4 : public A4
+{
+public:
+    virtual void showName() override final {} //!!!uniemożliwia overridowanie
+    //void showName2() final {}; nie może być final a nie virtual
+    virtual ~B4(){}
+};
+class C4 : public B4
+{
+public:
+    //virtual void showName() override {}//ERROR
+    virtual ~C4(){}
+};
+
+class A5 final
+{
+public:
+    virtual void showName() {};
+    virtual ~A5(){}
+};
+//class B5 : public A5 {}; //ERROR bo A5 jest finalna
+
+class A6
+{
+public:
+    void showNameNonVirtual() { std::cout << "A6\n";}
+    virtual void showName() { std::cout << "A6\n";}
+    virtual ~A6(){}
+};
+class B6 : public A6
+{
+public:
+    virtual void showName() override { std::cout << "B6\n";};
+    virtual ~B6(){}
+};
+class C6 : public B6
+{
+public:
+    void showNameNonVirtual() { std::cout << "C6\n";};
+    virtual void showName() override { std::cout << "C6" << "\n";};
+    virtual ~C6(){}
+};
+
+//COVARIANT
+class CoVariantBase
+{
+public:
+    A6 a6;
+    virtual A6  returnsA6(){ return a6;}
+    virtual A6* returnsA6ptr(){ return &a6;}
+    virtual A6& returnsA6ref(){ return a6;}
+};
+class CoVariantDerived : public CoVariantBase
+{
+public:
+    C6 c6;
+
+    //!!!covariant return type działaja tylko dla referencji i pointerów
+    //!!!nie działa dla całych obiektów
+    //virtual C6  returnsA6() override {return c6;}//ERROR
+
+    virtual C6* returnsA6ptr() override {
+        std::cout << "method from CoVariantDerived used\n";
+        return &c6;
+    }
+    virtual C6& returnsA6ref() override {
+        std::cout << "method from CoVariantDerived used\n";
+        return c6;
+    }
+};
+void overrideFinalAndCOVARIANT()
+{
+    //override i final nie są keyword a jedynie identyfikatorami o
+    //specjalnym znaczeniu w zależności od kontekstu
+    //!!!override nie powoduje spadku wydajności
+    //!!!dodawać override specifier do każdej overridowanej funkcji
+    C6* a6 = new C6;
+    a6->showName();
+    a6->C6::showName();
+    a6->B6::showName();
+    a6->A6::showName();
+
+    //!!!covariant returns derived types
+    //different than the base class
+    CoVariantDerived cvd;
+    cvd.returnsA6ptr()->showNameNonVirtual();//OK zwróci C6
+                                             //(wykona C6::returnsA6ptr)
+    cvd.returnsA6ref().showNameNonVirtual();//OK zwróci C6
+    CoVariantBase& cvb = cvd;
+    cvb.returnsA6ptr()->showNameNonVirtual();//!!! zwróci A6
+                                             //(wykona C6::returnsA6ptr
+                                             //(polimorficzną metodę zwracającą C6))
+                                             //Ale ponieważ Base zwraca A6 obiekt
+                                             //będzie downcasted to A6
+    cvb.returnsA6ref().showNameNonVirtual();//!!! zwróci A6
+
+    //!!!C++ nie umie dopasować typu więc zwracany typ dla metody returnsA6ptr/ref
+    //będzie taki jaki jest w metodzie dla obiektu na którym wykonujemy tą metodę
+    //mimo że zwróci go metoda polimorficznie overridowana
 }
