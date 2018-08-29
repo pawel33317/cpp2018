@@ -4,7 +4,10 @@
 void pointersAndReferencesToBaseClass();
 void funkcjeVirtualIPolimorfizm();
 void overrideFinalAndCOVARIANT();
-
+void wirtualneDestruktoryIVirtualizationOverloading();
+void virtualAssigment();
+void earlyAndLateBinding();
+void virtualTable();
 
 void chapter12run()
 {
@@ -12,6 +15,10 @@ void chapter12run()
     pointersAndReferencesToBaseClass();
     funkcjeVirtualIPolimorfizm();
     overrideFinalAndCOVARIANT();
+    wirtualneDestruktoryIVirtualizationOverloading();
+    virtualAssigment();
+    earlyAndLateBinding();
+    virtualTable();
 }
 
 class Base1
@@ -247,4 +254,276 @@ void overrideFinalAndCOVARIANT()
     //!!!C++ nie umie dopasować typu więc zwracany typ dla metody returnsA6ptr/ref
     //będzie taki jaki jest w metodzie dla obiektu na którym wykonujemy tą metodę
     //mimo że zwróci go metoda polimorficznie overridowana
+}
+
+
+class A7 { public: ~A7(){cout<<"A7 Destructor\n";}};
+class B7: public A7 { public: ~B7(){cout<<"B7 Destructor\n";}};
+class A7V { public: virtual ~A7V(){cout<<"A7 Destructor\n";}};
+class B7V: public A7V { public: virtual ~B7V(){cout<<"B7V Destructor\n";}};
+class A8 { public: virtual void show(){cout<<"A8 method\n";}};
+class B8: public A8 { public: virtual void show(){cout<<"B8 method\n";}};
+void wirtualneDestruktoryIVirtualizationOverloading()
+{
+    cout << "\n-------------------------------\n";
+    //Destruktor musi być publiczny
+    {B7 b7;}//wykonają się oba mimo że nie są wirtualne
+    B7* b72 = new B7{};
+    delete b72;//Też wykonają się oba
+
+    //!!!Bez wirtualnych destruktorów nie wykonają się oba przy kasowaniu
+    //z użyciem pointera na base klasę
+    A7* a7 = new B7{};
+    delete a7;//!!!wykonał się tylko z klasy A7
+    //!!!program zakłada, że jeżeli destruktor nie jest virtualny to musi wywołać
+    //jedynie destruktor z klasy Base
+    cout << "------------------\n";
+
+    //!!!Zawsze tworzyć virtualny destruktor jeżeli używa się dziedziczenia
+    A7V* a7v = new B7V{};
+    delete a7v; //wykonają się oba
+
+    //!!!aby wykonać funkcję, która zostałła overridowana należy użyć
+    //SCOPE operatora
+    B8 b8;
+    A8& a8 = b8;
+    b8.show();
+    a8.show();
+    b8.A8::show();//Wykona metody z klasy Base mimo virtuala
+    a8.A8::show();
+}
+
+
+class B9;
+class A9
+{
+public:
+    int a9val;
+    A9& operator=(const A9& other){
+        cout << "A9::operatpr=A9\n";
+        a9val = other.a9val;
+        return *this;
+    }
+    A9& operator=(const B9& other){
+        //a9val = other.a9val; //OK tylko nie ma forward deklaracji
+        a9val = 666;
+        //operator=(static_cast<const A9&>(other)); //jak wyżej
+
+        //other.b9val zostaje pominięte
+        cout << "A9::operatpr=B9\n";
+        return *this;
+    }
+    virtual ~A9(){}
+};
+class B9: public A9
+{
+public:
+    int b9val;
+    B9& operator=(const B9& other){
+        A9::operator=(other);//żeby skopiowało a9val
+        b9val = other.b9val;
+        cout << "B9::operatpr=B9\n";
+        return *this;
+    }
+    /*
+    B9& operator=(const A9& other){
+        A9::operator=(other);
+        b9val = 1111;//Brak wartości trzeba podać domyslną
+        cout << "B9::operatpr=A9\n";
+        return *this;
+    }
+    */
+    B9& operator=(const A9& other){
+        const B9* b9ptr = dynamic_cast<const B9*>(&other);
+        if(b9ptr)
+        {
+            a9val = b9ptr->a9val;
+            b9val = b9ptr->b9val;
+        }
+        else
+        {
+            //to można wywołać też operator= klasy Bazowej A9
+            a9val = other.a9val;
+            constexpr int defaultVal = 555;
+            b9val = defaultVal;
+        }
+        cout << "B9::operatpr=A9\n";
+        return *this;
+    }
+};
+void virtualAssigment()
+{
+    cout << "------------------\n";
+    A9 a91{};
+    A9 a92{};
+    B9 b91{};
+    B9 b92{};
+    a91 = a92;//A9::operatpr=A9
+    cout << "------\n";
+    b91 = b92;//B9::operatpr=B9
+    cout << "------\n";
+    a91 = b91;//A9::operatpr=B9
+    cout << "------\n";
+    b91 = a91;//B9::operatpr=A9
+    //!!!możliwe jest zrobienie virtualnego operatora przypisania
+    //!!!Lepiej nie używać virtualnego operator=
+
+    //Operatory przypisania ciężko zrobić virtual bo typ w klasach 
+    //pochodnych jest inny -> więc są to różne funkcje
+    //B::operator=(const B& right) != D::operator=(const D& right)
+    //!!!NIE UZYWAC VIRTUALNEGO ASSIGMENTU
+
+    //Inną opcją jest użycie RTTI -> run time type information
+    //czyli użyć dynamic_casta sprawdzić typ obiektu i przypisać dane
+    /*
+    B9& operator=(const A9& other){
+        const B9* b9ptr = dynamic_cast<const B9*>(&other);
+        if(b9ptr)
+        {
+            a9val = b9ptr->a9val;
+            b9val = b9ptr->b9val;
+        }
+        else
+        {
+            //to można wywołać też operator= klasy Bazowej A9
+            a9val = other.a9val;
+            constexpr int defaultVal = 555;
+            b9val = defaultVal;
+        }
+        cout << "B9::operatpr=A9\n";
+        return *this;
+    }
+    */
+
+   //!!!żeby zrobić dynamic Coś musi być virtualne
+}
+
+
+int notDirectFunction(double d)
+{
+    cout << "notDirectFunction(double)" << endl;
+    return 0;
+}
+void directFunction()
+{
+    cout << "directFunction()" << endl;
+}
+void earlyAndLateBinding()
+{
+    //!!!Jak virtual funkcje są zaimplementowane
+
+    //program jest wykonywany sekwencyjnie
+    //program zaczyna wykonywać się od main(), gdy napotka wywołanie jakiejś
+    //funkcji punkt wykonania skacze do jej początku -> skąd wie ???
+
+    //podczas kompilacji kompilator konwertuje każdą linię kodu 
+    //do jednej lub więcej linii kodu maszynowego
+    //każda linia kodu maszynowego ma swój unikalny sekwencyjny adres
+    //dak samo działa to dla funkcji -> kiedy kompilator napotyka funkcję
+    //konwertuje ją do kodu maszynowego i nadaje kolejny wolny adres
+    //każda funkcja kończy się więc unikalnym adresem
+
+    //BINDING -> proces konwertowania identyfikatorów (np. zmienne, nazwy funkcji)
+    //do adresów
+    //tu będziemy tylko omawiać bindowanie funkcji
+
+    //EARLY BINDING -> większość funkcji, które napotka kompilator będą
+    //bezpośrednimi wywołaniami czyli instrukcjami, które bezpośrednio wywołują
+    //funkcję np.
+    directFunction();
+    //takie proste wywołania mogą zostać rozwiązane przy pomocy early bindingu
+    //EARLY BINDING nazywany też static binding -> oznacza że kompilator umie
+    //powiązać bezpośrednio nazwę identyfikatora np. nazwę funkcji
+    //z adresem maszynowym. Tak więc kiedy kompilator lub linker napotka wywołanie
+    //funkcji zastąpi je instrukcją maszynową*(adresem), która mówi pod jaki adres
+    //musi skoczyć CPU do funkcji
+
+    //LATE BINDING (dynamic binding)
+    //w niektórych programach nie jest możliwe określenie na etapie kompilacji jaka
+    //funkcja będzie wywołana aż do runetime
+    //Jednym ze sposobów żeby zrobić LATE BINDING są pointery do funkcji
+    //Pointery do funkcji wskazują na funkcję a nie na zmienną można wywołać ()
+    int (*funcPtr)(double) = notDirectFunction;
+    funcPtr(5.5);
+    //wywoływanie funkcji przez pointer znane jest jako niebezpośrednie wywołanie
+    //funkcji
+    //Kompilator nie jest w stanie użeć EARLU BINDING żeby rozwiązać wykonanie
+    //funkcji będącej pod wskaźnikiem bo nie wie jaka funkcja zostanie przypisana
+    //do pointera przed runetime (mogą być różne funkcje w zależności od ifów)
+
+    //LATE BINDING jest troszeczkę mniej wydajne bo wymaga pośredniogo dodatkowego
+    //poziomu. W early bindingu CPU mógł skoczyć bezpośrednio do wykonania funkcji.
+    //Z Late bindingiem program musi odczytać adres funkcji trzymane we wskaźniku
+    //i dopiero potem skoczyć do tego adresu czyli do funkcji
+
+    //LATE BINDING -> mniej wydajny bo jest dodatkowy pozziom, w którym musi
+    //CPU przeczytać adres funkcji z pointera ale bardziej elastyczny
+    //bo umożliwia decydowanie w runtime jaka funkcja będzie wywołana
+
+}
+
+class A10              { public: virtual void show(){cout << "A10\n";}
+                                 virtual void show2(){cout << "A10\n";};};
+class B10 : public A10 { public: virtual void show(){cout << "B10\n";};};
+class C10 : public A10 { public: virtual void show2(){cout << "C10\n";};};
+
+class A11 { public: virtual void show(){cout << "A10\n";}};
+class B11 { public: virtual void show2(){cout << "B10\n";};};
+class C11 : public A11, public B11 {};
+void virtualTable()
+{
+    //vTable tablica wirtualnych funkcji
+
+    //!!!każda klasa, która używa funkcji wirtualnych ma własne vtable
+    //jest to statyczna tablica, którą tworzy kompilator w czasie kompilacji
+    //posiada jedną pozycję dla każdej funkcji wirtualnej
+    //pozycją jest zwykłym wskaźnikiem, który wskazuje na najbardziej dziedziczącą
+    //funkcję
+
+    //!!!kompilator dodaje dodatkowo do obiektu klasy ukryty wskaźnik na 
+    //klasę bazową *__vptr.
+    //*__vptr jest ustawiany automatycznie podczas tworzenia instancji klasy
+    //i *__vptr wskazuje na vtable dla danej klasy
+
+    //w przeciwieństwie do *this pointer, który jest przekazywany jako parametr
+    //funkcji aby rozwiązać self-references *__vptr jest prawdziwym pointerem
+    //więc każda klasa posiadająca wirtualną metodę, będzie większa rozmiarem
+    //o ten pointer *__vptr
+    //!!!tak więc *__vptr jest dziedziczony!!!!
+
+
+    //!!!dla klas A10, B10, C10 kompilator stworzy 3 wirtualne tablice
+    //po jednej dla każdej klasy, i dodatkowo doda ukryty *__vptr wskaźnik tylko dla
+    //klasy bazowej
+
+    //Podczas tworzenia obiektu klasy *__vptr jest ustawiony aby wskazywać na
+    //wirtualną tablicę tej klasy. Np jak tworzymy obiekt A10 vptr wskazuje na
+    //vtable dla 10. Jak robimy obiekt C10 vptr wskazuje na vtable od C10
+
+    //jak vtable są wypełnione
+    //ponieważ są tylko 2 virtual funkcje, każda wirtualna tablica
+    //będzie miała 2 entry - j dla funkcji show() a drugi dla funkcji show2()
+    //!każde entry jest wypełniane najbardziej dziedziczącą funkcją danego typu klasy
+    //Obiekt Base (A10) ma dostęp tylko do siebie więc vtable wskazuje na:
+    //A10::show() i A10::show2();
+    //Obiekt B10 ma dostęp do metod B10 i A10 ale B10 ma overridowaną funkcję
+    //show() więc vTable dla B10 wskazuje na B10::show() i A10::show2()
+    //C10 analogicznie do B10
+
+    B10 b10; //vptr wskazuje na B10 vtable
+    A10& a10 = b10; //a10 jest base klasą i wskazuje tylko na część A10 jednak
+                    //*__vptr jest w części base więc obiekt a10 ma dostęp do niego
+                    //więc a10.__vptr wskazuje na B10 vtable
+    a10.show(); //program rozpoznaje że show() jest wirtialna i następnie używa
+                //vptr do wywołania metody
+
+    //!!!wywołanie wirtualnych funkcji jest wolniejsze ponieważ:
+    //musimy użyć __vptr aby uzyskać właściwe vtable
+    //musimy indeksować vtable aby znaleźć właściwą funkcję 
+    //!!!więc musimy zrobić 3 operacje (w indirect function cal były 2 operacje
+    //a w direct tylko jedna operacja)
+
+    C11 c11;
+    cout << sizeof(c11) << endl;
+    //c11 zajmuje 16 16 bajtów bo ma w sobie 2 vtable jedno z A11 drugie z B11
 }
