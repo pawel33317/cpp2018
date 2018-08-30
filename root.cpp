@@ -69,6 +69,16 @@ int main(int argc, char* argv[])
     chapter10run();
     chapter11run();
     chapter12run();
+
+    //15
+    //AppendixB
+    //AppendixA
+    //16
+    //14
+    //13
+    //18
+    //17
+    //AppendixC
     printf("\n");
 }
 
@@ -76,6 +86,8 @@ int main(int argc, char* argv[])
 //fabryka, dekorator, łańcuch zdarzeń, maszyna stanów, singleton, fasada, kompozyt
 //obserwator https://pl.wikipedia.org/wiki/Wzorzec_projektowy_(informatyka)
 //tworzenie własnej biblioteki
+
+//serialization !!!!
 
 // alignas **
 // alignof **
@@ -104,8 +116,10 @@ int main(int argc, char* argv[])
 // transaction_safe (PT TS)
 // transaction_safe_dynamic (PT TS)
 //_pragma
-
+// auto_ptr
 //std::cref
+//std::reference_wrapper
+//std::ref
 //https://gcc.gnu.org/projects/cxx-status.html#cxx11
 //gdb lub inny
 //std move forward function 

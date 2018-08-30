@@ -46,7 +46,8 @@
         "*.ipp": "cpp",
         "strstream": "cpp",
         "cinttypes": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "vector": "cpp"
     },
     "python.linting.pylintEnabled": false,
     "editor.renderWhitespace": "all"

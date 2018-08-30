@@ -8,6 +8,9 @@ void wirtualneDestruktoryIVirtualizationOverloading();
 void virtualAssigment();
 void earlyAndLateBinding();
 void virtualTable();
+void pureVirtualFunctionsAbstractBaseClasesAndInterfaces();
+void virtualBaskClass();
+void objectSlicing();
 
 void chapter12run()
 {
@@ -19,6 +22,9 @@ void chapter12run()
     virtualAssigment();
     earlyAndLateBinding();
     virtualTable();
+    pureVirtualFunctionsAbstractBaseClasesAndInterfaces();
+    virtualBaskClass();
+    objectSlicing();
 }
 
 class Base1
@@ -526,4 +532,297 @@ void virtualTable()
     C11 c11;
     cout << sizeof(c11) << endl;
     //c11 zajmuje 16 16 bajtów bo ma w sobie 2 vtable jedno z A11 drugie z B11
+}
+
+
+class A12 {public: virtual void show()=0;};
+class B12 : public A12 {public: void show() override {cout <<"I am B12\n";}};
+
+class A13 {public: virtual void show()=0;};
+void A13::show(){cout << "I am default\n"; }
+class B13 : public A13 {public: void show() override {return A13::show();}};
+
+class IClass
+{
+public:
+    virtual int func1(int)=0;
+    virtual void func2()=0;
+    virtual ~IClass();
+};
+void pureVirtualFunctionsAbstractBaseClasesAndInterfaces()
+{
+    //pure virtual funcitons -> abstract functions nie mają ciała
+    //!!!są placeholderem, który ma być redefiniowany przez klasy dziedziczace
+    //teraz zależy od klasy jak będzie zaimplementowana funkcja
+
+    //klasa z funkcją wirtualną zerową jest klasą abstrakcyjną
+    //czyli nie można utworzyć jej obiektu
+
+    //żeby uniemożliwić utworzenia obiektu już nie trzeba robić
+    //konstruktora protected
+    B12 b12;
+    b12.show();
+    //funkcje czysto wirtualne są użyteczne kiedy chcemy mieć implementację funkcji
+    //w klasie bazowej ale jedynie klasa dziedzicząca wie jak ją zaimplementować
+
+    //!!!funkcje czystor wirtualne zerowe mogą mieć ciało
+    //ciało musi zostać zdefiniowane oddzielnie nie inline
+    //metoda jest wciąż roazwżana jako czysto wirtualna zerowa
+    //a klasa jako abstrakcyjna i nie może być utworzony jej obiekt
+    //A13 a13; ERROR wciąż abstrakcyjna
+    //Klasa dziedzicząca wciąż musi overridować tą metodę aby umożliwić
+    //utworzenie obiektu B13 b13 -> ERROR
+    //Dobre kiedy chcemy dostarczyć domyślną implementację ale wciąż zmusić
+    //klasę dziedziczącą do przeciążenia
+    //lecz klasa dziedziczą może wywołać domyślną implementację
+    B13 b13;
+    b13.show();
+    //nie jest to często stosowane
+
+    //Interface classes
+    //!!!nie ma member zmiennych a wszystkie funkcje są wirtualne czysto zerowe
+    //nie ma więc żadnej implementacji
+    //użyteczne kiedy chcemy zaimplementować całą funkcjonalność w klasach
+    //dziedziczących
+    //!!!często nazwy plików z interfejsami zaczynają się od I
+
+    //!!!używając Interfejsy można zmieniać jedną implementację na inną
+    //bez zmiany kldu, który jej używa
+    //!!!Przekazywać do metod obiekty interfejsów a nie klas
+    //dzięki temu można przekazać dowolną klasę implementującą interfejs
+    //!!!nie zapominać o wirtualnych destruktorach
+    //Interface classes są bardzo popularne łatwe w rozszerzaniu i proste w utrzymaniu
+    //w Javie i C# doczekały się słówka Interface i chociaż w tych językach
+    //nie ma wielodziedziczenia z klas jest z interfejsów
+    //gdyż nie mają danych i ciałą funkcji unika się przez to wielu problemów
+
+    //Klasy abstrakcyjne również mają vTable a te wskaźniki na nullptr lub
+    //na generyczną funkcję, która wyświetla error __purecall()
+}
+
+
+
+
+class A14 {public: void show(){} A14(){cout<<"A14 constructor\n";}};
+class B14 : public A14 {public: B14(){cout<<"B14 constructor\n";}};
+class C14 : public A14 {public: C14(){cout<<"C14 constructor\n";}};
+class D14 : public B14, public C14 {public: D14(){cout<<"D14 constructor\n";}};
+
+
+class A15 {public: void show(){} A15(){cout<<"A15 constructor\n";}};
+class B15 : virtual public A15 {public: B15(){cout<<"B15 constructor\n";}};
+class C15 : virtual public A15 {public: C15(){cout<<"C15 constructor\n";}};
+class D15 : public B15, public C15 {public: D15(){cout<<"D15 constructor\n";}};
+//!!!klasa D wywołuje wszystkie konstruktory klas bazowych
+//!!!najpierw A później B lub C zależy od kolejności
+//!!!jawne i niejawne Wywołania konstruktora A w klasach B i C zostałyby pominięte !!!
+//!!!takie wywołanie powinno być w klasie C !!!!!!!
+//!!!!nawet jeżeli klasa D dziedziczyłaby tylko z B to i tak ona tworzy
+//obiekt klasy bazowej A bo B dziedziczy wirtualnie
+
+//!!!!!!wirtualna klasa bazowa (A) jest uważana za BEZPOŚREDNIĄ podstawę dla
+//najbardziej dziedziczącej klasy (D) dlatego też jest odpowiedzialna
+//za jej tworzenie
+//Jednak klasy dziedziczące z wirtualnej klasy bazowej wciąż jej potrzebują
+//więc kompilator tworzy virtual table dla każdej klasy bezpośredni dziedziczącej
+//z klasy wirtualnej czyli tworzy vtable dla (B i C)
+//te vTable wskazują na funkcje z najbardziej dziedziczącej klasy
+//są więc większe o te wirtualne pointery
+
+class A17
+{
+    int mVal;
+public:
+    A17(int val) : mVal(val){}
+    void showVal(){cout << "A17 val: " << mVal << endl;}
+};
+class B17 : virtual public A17
+{
+public:
+    B17() : A17(4444) { std::cout << "Konstruktor klasy B17\n"; }
+        //przy tworzeniu obiektu klasy C17 wywołanie konstruktora klasy A17 z tej
+        //klasy zostanie pominięte bo A17 jest klasą wirtualną bazową
+        //i za utworzenie obiektu klasy !7 odpowiada klasa C17
+};
+class C17 : public B17
+{
+public:
+    //C17() : B17(){}//nie skompiluje się ponieważ nie ma wywołania konstruktora A17
+                   //a wzwiązku z tym że A17 jest wirtualną klasą bazową
+                   //najbardziej dziedzicząca klasa odpowiada za jej utworzenie
+    //C17() : B17(), A17(3333){} //B17 byłoby zainicjalizowane i tak po A17
+                    //zmieniam kolejność bo kompilator daje ostrzeżenia
+    C17() : A17(3333), B17() {}
+};
+
+void virtualBaskClass()
+{
+    cout << "X1---------------------------\n";
+    //Dla klas ABCD14 diagram dziedziczenia NIE wygląda tak
+    /*
+         A
+       /   \
+      B     C
+       \   /
+         D
+    */
+    //a tak jak poniżej
+    /*
+        A     A
+        |     |
+        B     C
+         \   /
+           D
+    */
+    //więc mamy 2 kopie klasy A14
+    //nie można więc wykonać żadnej metody z klasy A i użyć zmiennej z klasy A bo
+    //wywołanie będzie dwuznaczne
+    //!!!!można wywołać jeżeli jedna z klas ją przeciąża ale tylko jedna
+    D14 d14;
+    cout << "Rozmiar klasy bez wirtualnego dziedziczenia: " << sizeof(D14) << endl;
+    //2B czyli pusta
+    //d14.show(); AMBIGOUS
+    cout << "X2---------------------------\n";
+    //Zwykle chcemy mieć jednak jedną kopię klasy bazowej współdzielonej przez B i C
+    //używamy do tego słówka virtual na liście dziedziczenia
+    //Tworzy to virtualną klasę bazową
+    D15 d15;
+    d15.show();
+    cout << "Rozmiar klasy z wirtualnym dziedziczeniem: " << sizeof(D15) << endl;
+    //16B -> 2 pointery na vtable
+
+    //kolejne problemy
+    //kto jest odpowiedzialny za stworzenie klasy bazowej ?
+    //okazuje się, że klasa D (wow)
+    //!!!jest to jedyny moment w którym klasa D może wywołać
+    //konstruktor niebezpośredniego rodzica
+
+    //wirtualne klasy bazowe są zawsze tworzone przed niewirtualnymi
+    //klasami bazowymi co zapewnia że będą utworzone przed klasami derived
+
+    //Jeżeli klasa dziedziczy z jednej lub więcej klas, które mają wirtualnych
+    //rodziców, najbardziej dziedziczaca klasa jest odpowiedzialna za utworzenie
+    //klasy bazowej
+
+    //!!!pusta klasa ma rozmiar 1 bo standard C++ nie pozwala aby miała 0
+    //umożliwiłoby to aby 2 różne obiekty miały ten sam adres
+    //Empty a, b;
+    //if(&a == &b) -> po stworzeniu obiektu a stos by się nie przesunął
+    //i b mogłoby mieć ten sam adres podobnie z użyciem operatora new dla sterty
+
+    //!!!!ciekawostka
+    int& ir = *new int {5};
+    cout << ir << endl;
+    delete &ir;
+    //dla zmiennych które są niszczone w swoim scope lepiej zrobić to na stosie
+    //bnie można rzucać wyjątkami w destruktorze
+
+
+    cout << "X3---------------------------\n";
+    C17 c17;
+    c17.showVal();
+    //initjalizacja konstruktora klasy A17 została wykonana poprzez klasę C17
+    //mimo że jest też na liście inicjalizacyjnej klasy B17
+    cout << "X4---------------------------\n";
+}
+
+#include <vector>
+#include <functional>
+class A16
+{
+public:
+    virtual void show() {cout << "I am a A16\n";}
+    A16(){cout<<"A14 constructor\n";}
+};
+class B16 : public A16
+{
+public:
+    B16(){cout<<"B14 constructor\n";}
+    void show() {cout << "I am a B16\n";}
+};
+void objectSlicing()
+{
+    cout << "object slicing ==================\n";
+    //wskaźnik klasy bazowej, który wskazuje na obiekt klasy dziedziczącej widzi
+    //tylko część klasy bazowej, część klasy dziedziczącej ciągle istnieje
+    //ale nie jest widziana przez obiekt klasy bazowej
+    //jednak dzięki funkcją wirtualnym mamy dostęp do metod klasy dziedzuczącej
+
+    //!!!inicjalizacja obiektu obiektem klasy pochodnej
+    B16 b16;
+    b16.show();
+    A16 a16 = b16;//konstruktor kopiujący
+    //Tylko część Base jest kopiowana !!!!!
+    //!!!część klasy B została odcięta
+
+    //!!!przypisanie do obiektu klasy bazowej obiektu klasy pochodnej jest
+    //nazywane "object slicing"
+    a16.show();//ponieważ A16 nie ma części derived show() wskazuje na
+    //A16::show()
+
+    //object slicing zgarza się sporadycznie głównie gdy przekazujemy do jakiejś
+    //metody obiekt Deiedziczący a metoda odbiera go przez wartość jako obiekt
+    //bazowy
+    //i tu się można przejechać bo wykona się netoda z klasy bazowej
+    //jak byłby pointer lub referencja wykonałaby się metoda z klasy dziedziczącej
+
+
+    cout << "reference_wrapper ==================\n";
+    //Często też występuje w wektorze jak dodajemy element a wektor trzyma
+    //wartości a nie pointery, wtedy też wykona się metoda z base
+
+    //w wektorze nie można trzymać referencji bo referencje nie są assignable
+    //czyli są inicjalizowane i nie można zmienić tego na co wskazują
+    //czyli nie da sie pobrać ich adresu jedynie adres tego na co wskazują
+    //musi być możliwość jej przypisania przez funkcję (inicjalizacja nie wystarczy)
+    vector<int> vi;
+    //vector<const int> vic; ERROR
+    //vector<int&> vir; ERROR
+    //podsumowująć alementy wektora muszą mieć możliwość przypisania a
+    //consty i referencje mogą być jedynie inicjalizowane
+
+
+    //Trzymanie referencji w wektorze <functional> header
+    //std::reference_wrapper - klasa ta działa jak referencja ale pozwala na
+    //assigmenty i kopiowanie więc nadaje się dla wektora
+    //nie może być obiektem anonimowym bo będzie reference dangling
+
+    vector<reference_wrapper<A16>> vrwi;
+    B16 b162;
+    A16 a162;
+    vrwi.push_back(b162);
+    vrwi.push_back(a162);
+
+    reference_wrapper<A16> rw {b162};
+    vrwi.push_back(rw);
+    rw.get().show();
+    cout << "Sizeof reference_wraper object: " << sizeof(rw) << endl;
+
+
+    //FrnkenObject XD
+    B16 b163;
+    B16 b164;
+    A16& a163 = b163;
+    a163 = b164;//wartość a nie adres referencji bo ten jest niezmienny
+
+    //w ostatniej linii b164 nie zostanie skopiowane w miejsce b163 ponieważ
+    //referencja a163 jest typu A16 a nie B16, jeżeli referencja bałaby typu B16
+    //takby to zadziałało
+    //ale a163 jest typu A16(czyli klasa bazowa) więc tylko część Base zostanie
+    //skopiowana
+    //operator= nie jest tomyślnie wirtualny więc tak to działa jak wyżej napisane
+
+    //tak więc b163 ma teraz część A16 z obiektu b164 a część B16 z obiektu b163
+    //jeżeli część B16 miałaby jekieś member zmienne
+
+    //ogólnie obiekt jest teraz zepsuty składa się z dwóch i nie jest łatwo temu
+    //zapobiec
+
+    //C++ pozwala na przypisanie obiektu klasy pochodnej do obiektu klasy bazowej
+    //poprzez object slicing -> i często powoduje to błędy
+    //!!!!!!!unikać
+    //!!!!unikać przekazywania przez wartość
+
+
+
 }
