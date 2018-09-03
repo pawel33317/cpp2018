@@ -11,6 +11,8 @@ void virtualTable();
 void pureVirtualFunctionsAbstractBaseClasesAndInterfaces();
 void virtualBaskClass();
 void objectSlicing();
+void dynamicCast();
+void printDerivedClassUsingOperator();
 
 void chapter12run()
 {
@@ -25,6 +27,8 @@ void chapter12run()
     pureVirtualFunctionsAbstractBaseClasesAndInterfaces();
     virtualBaskClass();
     objectSlicing();
+    dynamicCast();
+    printDerivedClassUsingOperator();
 }
 
 class Base1
@@ -822,7 +826,136 @@ void objectSlicing()
     //poprzez object slicing -> i często powoduje to błędy
     //!!!!!!!unikać
     //!!!!unikać przekazywania przez wartość
+}
 
 
 
+class A19
+{
+public:
+    int mAVal = 11;
+    virtual void show(){}
+    virtual ~A19(){}
+};
+class B19 : public A19
+{
+public:
+    int mBVal = 22;
+    virtual ~B19(){}
+};
+class C19 : public A19
+{
+public:
+    double mCVal = 55.55;
+    virtual ~C19(){}
+};
+A19* getA19Ptr()
+{
+    return new B19{};
+}
+void dynamicCast()
+{
+    //Dynamic_cast stosowany w polimorfiźmie, gdy potrzebny jest dostep do części klasy pochodnej a mamy obiekt klasy bazowej
+    //a nie chcemy robić domyślnej implementacji w klasie bazowej i wirtualnych metod
+
+    //konwersja Derived do Base to upcasting
+
+    //dynamic_cast to casting operator -> ma kilka funkcjonalności ale najważniejsza to konwertowanie obiektór Base do Derived
+    //!!!aby dynamic_cast zadziałał klasa musi być polimorficzna czyli mieć jakąś wirtualną metodę
+    A19* a = getA19Ptr();
+    B19* b = dynamic_cast<B19*>(a);
+    C19* c = dynamic_cast<C19*>(a);
+
+    if(b)
+    cout << "Obiekt a jest obiektem klasy B\n";
+    if(c)
+    cout << "Obiekt a jest obiektem klasy C\n";
+
+    delete a;
+
+    //!!!jeżeli dynamic cast z pointera na pointer się nie uda pointer ten jest ustawiany na nullptr
+
+    //!!!sprawdzać czy dynamic cast się udał
+    //!!!dynamic casting nie działa z prywatnym i protected dziedziczeniem, z klasami, które nie mają vtable z wirtualnymi klasami bazowymi
+
+    //!!!downcasting może być też robiony przez static_cast który nie sprawdza w runtime zgodności typu, wiec zawsze się "uda"
+    //użycie takiego pointera powoduje undefined behaviour
+    //użycie static_cast jest dopuszczalne jeżeli jesteśmy pewni, można też zrobić własnoręcznie sprawdzanie typu np tworząc wirtualną metodę
+    //np getClassID(), która zwraca enumerator BASE/DERIVED/DERIVED2...
+
+    //!!!w przypadku referencji dynamic_cast rzuca wyjątkiem std::bad_cast
+    A19* a2 = getA19Ptr();
+    try
+    {
+    B19& b2 = dynamic_cast<B19&>(*a2);
+    b2.show();
+    cout << "";
+    cout << "Obiekt a2 jest obiektem klasy B\n";
+    }
+    catch(std::bad_cast&)
+    {
+    cout << "Obiekt a2 NIE jest obiektem klasy B\n";
+    }
+    try
+    {
+    C19& c2 = dynamic_cast<C19&>(*a2);
+    c2.show();
+    cout << "";
+    cout << "Obiekt a2 jest obiektem klasy C\n";
+    }
+    catch(std::bad_cast&)
+    {
+    cout << "Obiekt a2 NIE jest obiektem klasy C\n";
+    }
+    delete a2;
+
+    //!!!rozważyć użycie downcastingu a użycie wirtualnych funkcji, żeby nie był w ogóle potrzebny, !!!preferować wirtualne funkcje żeby ominąć całkowicie downcasting
+    //downcasting robić głównie dynamic_castem i wgedy gdy: nie można zmodyfikować base klasy aby dodać wirtualne metody,
+    //kiedy potrzeba dostępu do czegoś specyficznego tylko dla klasy dziedziczącej, kiedy nie ma sensu dodania wirtualnej funkcji do base klasy
+}
+
+
+class A20
+{
+public:
+    friend std::ostream& operator<<(std::ostream& o, const A20& a)
+    {
+    return a.print(o, a);
+    }
+    virtual std::ostream& print(std::ostream& o, const A20& a) const
+    {
+    cout << "class A20\n";
+    return o;
+    }
+    virtual ~A20(){}
+};
+class B20 : public A20
+{
+public:
+    virtual std::ostream& print(std::ostream& o, const A20& a) const
+    {
+    cout << "class B20\n";
+    return o;
+    }
+    virtual ~B20(){}
+};
+void printDerivedClassUsingOperator()
+{
+    A20 a20;
+    cout << a20;//OK nawet bez funkcji virtualnej czyli w operatorze operator<< bezpośrednie wywołanie cout
+    B20 b20;
+    cout << b20;//OK nawet bez funkcji virtualnej
+
+    A20& a20ref = b20;//NOK bez funkcji wirtualnej wypisze A a nie B
+    cout << a20ref;
+    //!!!źle działa bo operator<< nie jest wirtualny
+    //ale nie może być wirtualny bo ten operator nie jest memberem
+    //można go overloadować ale nie owerridować
+    //friend operator nie jest uznawany jako member klasy
+
+    //!!!nawet jakby się dało overridować operator<< to i tak nie zadziała bo
+    //B i A to są różne typy, więc wersja operatora<< nie byłaby
+    //rozważana jako overridowana
+    
+    //!!!najlepiej zrobić operator wypisania tylko w klasie bazowej, który wywołuje wirtualną metodę, którą overridują klasy
 }
