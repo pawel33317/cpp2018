@@ -71,7 +71,8 @@ public:
 void smartPointersAndMoveSemanticsIntro()
 {
     //często zdarza się zapomnieć wolnić pamięć
-    //nawet jak zwalaniamy w na końcu funkcji może gdzieś nastąpić wcześniej return lub throw
+    //nawet jak zwalaniamy w na końcu funkcji może gdzieś nastąpić wcześniej
+    //return lub throw
     //!!!dobrym rozwiązaniem jest użycie destruktorów, które wykonają się po wyjściu ze scope
     //!!!jest to sercem RAII
     {
