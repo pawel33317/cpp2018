@@ -88,7 +88,8 @@ void smartPointersAndMoveSemanticsIntro()
     //composition class zarządzająca dynamicznie zaalokowanymie zmiennymi
     //gwarantuje że zmienne zalokowane dynamiczne zostaną zdealokowane po wyjściu ze scope
 
-    //!!!destruktor obiektów lokalnych zostanie wykonany nawet jeśli nezstąpi wcześniejsze niespodziewane wyjście z funkcji
+    //!!!destruktor obiektów lokalnych zostanie wykonany nawet jeśli nezstąpi wcześniejsze
+    //niespodziewane wyjście z funkcji
 
     //!!!poniższa linia bez semantyki przenoszenia lub licznika referencji spowoduje critical flow
     //bo zdealokuje pamięć, która już została zdealokowana
