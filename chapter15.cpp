@@ -98,8 +98,8 @@ void smartPointersAndMoveSemanticsIntro()
     //i jest robiona płytka kopia
     //Podobnie będzie jezeli przekażemy nasz obiekt mptr1 do funkcji przez wartość
     //Opcja 1: żeby rozwiązać ten problem można np usunąć operator przypisania i konstruktor kopiujący
-    //ale wtedy nie będziemy mogli zwrócić MyPtr przez wartość
-    //przez referencję czy pointer też bo będzie w jakiejś funkcji alokowana lokalnie i po wyjściu czyszczona więc trzeba zwrócić przez wartość
+    //ale wtedy nie będziemy mogli zwrócić MyPtr przez wartość przez referencję czy pointer też bo będzie w
+    //jakiejś funkcji alokowana lokalnie i po wyjściu czyszczona więc trzeba zwrócić przez wartość
     //co spowoduje shallow copies zduplikowane pointery i crashe
     //Opcja2: zoverridować konstruktor kopiujący i operator przypisania aby robił głębokie kopie, ale kopie są drogie i czasami mogą być niemożliwe
     //ale po co robić głęboką kopię tylko żeby móc zwracać przez wartość
