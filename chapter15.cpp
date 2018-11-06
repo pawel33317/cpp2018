@@ -111,6 +111,7 @@ void smartPointersAndMoveSemanticsIntro()
     //główną różnicą nad "copy semantics" jest to, że nie kopiujemy resourców a przenosimy ich prawo własności
     MyPtr2<Resource2> mptr2{new Resource2};
     MyPtr2<Resource2> mptr22;
+    MyPtr2<Resource> mptr33;
     cout << "Is mptr2 null: " << mptr2.isNull() << endl;
     cout << "Is mptr22 null: " << mptr22.isNull() << endl;
     mptr22 = mptr2;
@@ -259,10 +260,120 @@ void rvalueReferences()
 }
 
 
+
+
+class ResourceMCAA
+{
+public:
+    ResourceMCAA(){ cout << "ResourceMCAA countructor\n"; }
+    void show(){cout << "show\n";}
+    ~ResourceMCAA(){ cout << "ResourceMCAA destructor\n"; }
+};
+template<class T>
+class MyAutoPtrMCAA
+{
+    T* mPtr;
+public:
+    MyAutoPtrMCAA(T* initVal=nullptr):mPtr(initVal){}
+
+    MyAutoPtrMCAA(const MyAutoPtrMCAA&) = delete;//zapobiega robieniu kopii np bo zbyt droga
+    /*MyAutoPtrMCAA(const MyAutoPtrMCAA& other)
+    {
+        mPtr = new T;
+        *mPtr = *(other.mPtr);
+    }*/
+    MyAutoPtrMCAA(MyAutoPtrMCAA&& other)
+    {
+        mPtr = other.mPtr;
+        other.mPtr = nullptr;
+    }
+
+    MyAutoPtrMCAA& operator=(const MyAutoPtrMCAA&) = delete;//zapobiega robieniu kopii np bo zbyt droga
+    /*MyAutoPtrMCAA& operator=(const MyAutoPtrMCAA& other)
+    {
+        if(this==&other) return *this;
+
+        delete mPtr;
+        mPtr = new T;
+        *mPtr = *(other.mPtr);
+
+        return *this;
+    }*/
+    MyAutoPtrMCAA& operator=(MyAutoPtrMCAA&& other)
+    {
+        if(this==&other) return *this;
+        delete mPtr;
+        mPtr = other.mPtr;
+
+        //bez poniższej linii byłoby źle bo wykonałby się destruktor po np std::move
+        other.mPtr = nullptr;
+        return *this;
+    }
+    MyAutoPtrMCAA& operator*() const { return *mPtr;}
+    MyAutoPtrMCAA* operator->() const { return mPtr;}
+    void show(){mPtr->show();}
+    ~MyAutoPtrMCAA(){ delete mPtr;}
+};
+MyAutoPtrMCAA<ResourceMCAA> generateMCAAResource()
+{
+    MyAutoPtrMCAA<ResourceMCAA> gmr{new ResourceMCAA};
+    return gmr;
+}
 void moveConstructorAndAssigment()
 {
-    //!!!konstruktor kopiujący jest używany aby zainicjalizować klasę robiąc kopię obiektu tej samej klasy
+    //!!!konstruktor kopiujący jest używany aby zainicjalizować klasę robiąc kopię obiektu tej samej 
+    //klasy
     //Copy assigment jest używany aby skopiować klasę do innej istniejącej klasy
-    //C++ dostarcza domyślnie copy constructor i copy assigment jezeli nie podamy wlasnego (shallow copy i problemy)
+    //C++ dostarcza domyślnie copy constructor i copy assigment jezeli nie podamy wlasnego
+    //które robią shallow copy
+    cout << "=============MCAA================\n";
+    MyAutoPtrMCAA<ResourceMCAA> mapm;
+    mapm = generateMCAAResource();
+    mapm.show();
+    /* Bez move constructora i assigmentu było by poniższe a nawet więcej bez compiler elidingu
+    z move konstruktorem i move assigmentem wykona się tylko raz
+    ResourceMCAA countructor
+    ResourceMCAA countructor
+    ResourceMCAA destructor
+    ResourceMCAA destructor*/
 
+    //move konstruktor i assigment przenoszą prawa do obiektu zamiast kopiować
+    //move konstruktor i assigment są wywoływane gdy parametrem jest r-value
+
+    //w większości przypadków move konstruktor i move assigment nie bedą generowane automatycznie
+    //domyślny move constructor i assigment robią to samo co copy konstruktor i assigment
+    //czyli robią kopię
+
+    //!!!jeśli chcemy abo move konstruktor i assigment robiły przeniesienie
+    //trzeba je zrobić ręcznie
+
+    //!!!
+    //jeżeli wywołujemy konstruktor kop. lub assigment operator dla l-value jedyna rozsądna
+    //rzecz to kopiowanie (a nie przenoszenie) bo parametr do kopiowania może być później
+    //używany więc nie powinniśmy go zmieniać
+    //jeżeli jednak argimentem jest r-value wiemt, że jest tymczasowy więc zamiast
+    //kopiowania, które jest drobgie możemy zrobić przeniesienie zasobów, jest to
+    //bezpieczne bo tymczasowy obiekt będzie zniszczony na końcu expression i nie będzie
+    //już używany
+
+    //!!! !!! !!!
+    //w przykładzie powyżej w move funkcjach robimy: "other.mPtr = nullptr;"
+    //bo kiedy other wyjdzie poza scope jego destruktor zostanie wywołany więc
+    //other.mPtr zostanie skasowany więc jeżeli nasz mPtr i otherPtr wskazują na to samo
+    //nasz mPtr zostanie dangling pointer
+
+    //!!! !!! !!!
+    //w funkcji generateMCAAResource kiedy wartość jest zwracana jest przenoszona a nie
+    //kopiowana mimo że gmr jest l-value
+    //Specyfikacja C++ mówi, że automatyczne obiekty zwracane przez funkcję mogą 
+    //być przenoszone mimo, że są l-value, ma to sens bo res byłoby i tak zniszczone na 
+    //koniec funkcji
+    //mimoże kompilator może przenosić zwracane wartości w niektórych przypadkach jest
+    //w stanie zrobić nawet więcej poprzez eliding (nie trzeba robić kopii i przenoszenia)
+    //więc żaden konstruktor (copy/move) nie będzie wywołany
+
+    //czasami kasuje się copy konstructor i assigment jak nie ma potrzeby bo np jest zbyt kosztowne
+
+    //!!!!!!!!!!!!!!
+    //nasza klasa MyAutoPtrMCAA to prawie uniquePtr (nie znam dużych różnic teraz)
 }
