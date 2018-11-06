@@ -1,5 +1,7 @@
 #include <iostream>
 #include "chapterS.hpp"
+using namespace std;
+
 //0 intro, kompilacja
 //1 basics
 //2 variables, fundamental data types
@@ -81,6 +83,9 @@ int main(int argc, char* argv[])
     //17
     //AppendixC
     printf("\n");
+
+    int( *l)(int) = [](int i) -> int {return i*2;};
+    cout << l(12) << endl;
 }
 
 

@@ -127,7 +127,7 @@ void smartPointersAndMoveSemanticsIntro()
     //jest rzeczywiście robiona kopia a nie przenoszone prawo własności
     //!!!std::auto_ptr zostało deprecated w C++11 i nie powinno być używane i prawdopodobnie będzie usuniętew Cpp17
 
-    //!!!problem z C++11 wynikał z tego, że przed C++11 nie byłomechanizmu do odróżnienia "copy semantics" od "movesemantic"
+    //!!!problem z C++11 wynikał z tego, że przed C++11 nie było mechanizmu do odróżnienia "copy semantics" od "movesemantic"
     //można byłojedynie overridować copy semantykę move semantyką co prowadziło do wielu problemów i dziwnych zachowań.
     //nie dzło się okreslić czy res1 = res2 zmodyfikowało obiekt res2 czy nie
     //w c++11 zosta rozróżniona semantyka przenoszenia od kopiowania
@@ -159,8 +159,8 @@ void rvalueReferences()
     //!!!L-value (locator value) -> można rozważyć jako funkcja lub obiekt (lub wyrażenie które ewoluuje do funkcji lub obiektu)
     //wszystkie L-values mają przypisane adres w pamięci
 
-    //początkowo l-values były zdefiniowane jako wartości, które są zdo bycia po lewej stronie przy wyrażeniu przypisania
-    //później dodane zostało słowo const i l-values zostały podzielone na nodivable l-values i non-modifable l-values które są const
+    //początkowo l-values były zdefiniowane jako wartości, które są do bycia po lewej stronie przy wyrażeniu przypisania
+    //później dodane zostało słowo const i l-values zostały podzielone na modifable l-values i non-modifable l-values które są const
 
     //R-values w skrócie są tym czym nie są l-values. Wczyli w szczególności: literały(5), wartości tymczasowe(x+1), anonimowe obiekty(Object(5,6))
     //R-values są ewaluowane do ich wartości, mają expression scope (umierają na końcu expression) i nie mogą być przypisane
@@ -196,7 +196,7 @@ void rvalueReferences()
     //|Non Modifable l-values          |Yes                    |No           |
     //|R-values                        |Yes                    |No           |
     //|----------------------------------------------------------------------|
-    //L-value references do constowych obiektów są szczególnie użyteczne po pozwalają nam przekazać dowolny argument l-value i r-value do funkcji
+    //L-value references do constowych obiektów są szczególnie użyteczne bo pozwalają nam przekazać dowolny argument l-value i r-value do funkcji
     //bez kopiowania argumentu
 
     //W C++11 został dodany nowy typ referencji -> R-value reference
@@ -242,7 +242,7 @@ void rvalueReferences()
 
     int&& rref4 = 4;
     nicNieRob(&rref4);
-    //kiedy inicjalizujemy r-velue literałem  obiekt tymczasowy jest tworzony z literału więc referencja wskazuje na tymczasowy obiekt
+    //kiedy inicjalizujemy r-velue literałem obiekt tymczasowy jest tworzony z literału więc referencja wskazuje na tymczasowy obiekt
 
     //!!!!!!!R-value referencje nie są często stosowane w taki sposób jak były stosowane powyżej
 
@@ -254,12 +254,9 @@ void rvalueReferences()
     fun1(55);
     fun1(move(x3));
 
-    //!!!nie powinno się prawie nigdy zwracać l-value reference ani r-value reference bo w większości przypadków siończy sie z wiszącą referencją kiedy obiekt
+    //!!!nie powinno się prawie nigdy zwracać l-value reference ani r-value reference bo w większości przypadków skończy sie z wiszącą referencją kiedy obiekt
     //wyjdzie poza scope
 }
-
-
-
 
 
 void moveConstructorAndAssigment()
