@@ -4,8 +4,8 @@
 #@ - nazwa pliku docelowego
 #^ - składniki
 CXX=g++
-CXXLAGS=-std=c++14 -Wall -O0 -lstdc++
-LFLAGS=-std=c++14 -Wall -O0 -lstdc++  #opcje linkera
+CXXLAGS=-std=c++17 -Wall -O0 -lstdc++
+LFLAGS=-std=c++17 -Wall -O0 -lstdc++  #opcje linkera
 RELEASE_DIR=release
 
 #CXXLAGS=-std=c++17 -Wall -O0 -lstdc++

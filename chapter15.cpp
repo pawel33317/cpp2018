@@ -7,6 +7,7 @@ void rvalueReferences();
 void moveConstructorAndAssigment();
 void stdMove();
 void uniquePointer();
+void sharedPtr();
 
 void chapter15run()
 {
@@ -16,6 +17,7 @@ void chapter15run()
     moveConstructorAndAssigment();
     stdMove();
     uniquePointer();
+    sharedPtr();
 }
 
 class Resource
@@ -619,3 +621,65 @@ void uniquePointer()
     //delete r; -> undevined behavior bo unique_ptr też będzie kasować obiekt
     //make_unique zapobiega temu
 }
+
+
+class ResourceSP
+{
+public:
+    ResourceSP(){ cout << "ResourceSP constructor\n"; }
+    void show(){ cout << "I am ResourceSP\n"; }
+    ~ResourceSP(){ cout << "ResourceSP destructor\n"; }
+};
+void sharedPtr()
+{
+    //wiele shared_ptr może wskazywać na ten sam obiekt
+    //wewnątrz trzyma info jak wiele shared_ptr współdzieli zasób
+    //dopóki chociaż 1 shared_ptr wskazuje na resource, resource nie zostanie skasowane
+    //skasowanie bedzie po wyjściu ze scope ostatniego shared_ptr
+    //też z memory headera
+    shared_ptr<ResourceSP> sp1 = make_shared<ResourceSP>();
+    {
+        shared_ptr<ResourceSP> sp2 = sp1;
+        cout << "Ilosc referencji do resourca: " << sp2.use_count() << endl;
+    }
+    sp1->show();
+
+    //uzywac make_shared -> prostsze, bezpieczniejsze - nie da się bezpośrednio 
+    //obić 2 shared ptr wskazujących na ten sam obiekt, jest też wydajniejszy
+
+    //sharedPtr w przeciwieństwie do uniquePtr używa wewnętrznie 2 pointerów
+    //1 na resource a drugi na obiekt (blok kontrolny) włączając w to
+    //licznik referencji
+
+    //podczas tworzenia shared_ptr przez konstruktor pamięć na resource i 
+    //"controll block" są alokowane oddzielnie
+    //jednak poprzez użycie make_shared pamięć na obie dane jest alokowana razem
+    //przez co jest szybciej
+
+    //tak więc stworzenie 2 niezależnych shared_ptr na resource doprowadzi do kłopotów
+    //bo będą miały niezależne control bloki i będą myśleli że są jedynym
+    //zarządcą resourca
+    //jednak kiedy shared_ptr jest klonowany poprzez copy assigment dane w kontrol
+    //bloku saaktualizowane aby wskazać, że są teraz współzarządcy
+
+    //unique_ptr mogą być konwertowane do shared_ptr przez konstruktor w shared_ptr
+    //który akceptuje r-value
+    unique_ptr<ResourceSP> up1 = make_unique<ResourceSP>();
+    shared_ptr<ResourceSP> sp3 = move(up1);//przenosi zawartość uniquePtr do sp3
+    //nie da się jednak bezpiecznie przekonwertować unique_ptr do shared_ptr
+    //!!!tak więc jeżeli zamierzamy zrobić funkcję, która zwraca smart pointer
+    //lepiej jest zwracać unique_ptr i przypisywać go do shared_ptr
+    //jeżeli jest to dla nas poprawne
+
+    //NIEBEZPIECZEŃSTWA shared_ptr
+    //ma te co w unique -> nie będędzie prawidłowo usunięty jeżeli był zaalokowany
+    //dynamicznie lub był częścią dynamicznie zaalokowanego obiektu niezdealokowanego
+    //w zmart pointerze dodatkowo trzeba się martwić aby wszystkie shared_ptr'y
+    //zostały zdeletowane
+
+    //shared ptr i array do cpp14 włącznie nie ma obsługi shared ptr dla array
+    //w cpp17 jest taka obsługa jednak make_shared dalej nie ma obsługi dla array
+}
+
+
+//Napisać implementację prostego shared_ptr'a
