@@ -6,6 +6,7 @@ void smartPointersAndMoveSemanticsIntro();
 void rvalueReferences();
 void moveConstructorAndAssigment();
 void stdMove();
+void uniquePointer();
 
 void chapter15run()
 {
@@ -14,6 +15,7 @@ void chapter15run()
     rvalueReferences();
     moveConstructorAndAssigment();
     stdMove();
+    uniquePointer();
 }
 
 class Resource
@@ -501,4 +503,119 @@ void stdMove()
 
     //move może byc przydatne też np w sortowaniu, selection sort, bubble sort działają poprzez swap
     //jest też przydatne gdy chcemy przenieść zawartość zarządzaną przez smart pointery
+}
+
+
+class ResourceUP
+{
+public:
+    ResourceUP(){ cout << "ResourceUP constructor\n"; }
+    ResourceUP(int i){ cout << "ResourceUP constructor 2\n"; }
+    ~ResourceUP(){ cout << "ResourceUP destructor\n"; }
+};
+ostream& operator<<(ostream& o, ResourceUP& res){cout << "I am resource\n"; return o;}
+#include <memory>
+unique_ptr<ResourceUP> getUniquePtrResourceUP()
+{
+    return make_unique<ResourceUP>();
+}
+void takeOwnership(unique_ptr<ResourceUP> res)
+{
+    cout << "koniec takeOwnership func\n";
+}
+void useResource(ResourceUP& res){}
+void uniquePointer()
+{
+    //zarządza czasem życia dynamicznie zaalokowanego obiektu
+    //!!!smart pointery nigdy nie powinny być tworzone dynamicznie
+    //powinny być robione jako zmienne lokalne albo jako mambery klasy
+    //gwarantuje to dobrą dealokację smart pointera
+
+    //w C++11 są 4 smart pointery, auto_ptr -> nie używać, będzie skasowany w 17
+    //unique_ptr, shared_ptr, i weak_ptr
+
+    //unique_ptr zastąpił auto_ptr, powinien być użyty do zarządzania dynamicznie
+    //stworzonym obiektem, który nie jest współdzielony przez różne obiekty
+
+    unique_ptr<ResourceUP> upr {new ResourceUP};
+    unique_ptr<ResourceUP> upr2 = move(upr);
+    //jak upr wyjdzie poza scope destruktor unique pointera obsłuży kasowanie resourca
+    //unique_ptr w przeciwieństwie do auto_ptr prawidłowo implementuje move semantic
+    //w unique pointerze kopiujacy operator przypisania i konstruktor są disabled
+    //trzeba więc użyć semantyki przypisania
+    //unique pointer ma przeciążone operatory * oraz -> zwracają zarządzany obiekt
+    //* zwraca referencję a -> wskaźnik
+
+    //unique_ptr może nie zarządzać niczym jeżeli został przezkazany nullptr lub 
+    //został wywołany konstruktor domyślny: 
+    unique_ptr<ResourceUP> upr3 = move(upr2);
+    //lub bo resource został przeniesiony do innego unique pointera
+    //trzeba więc sprawdzić czy unique pointer zarządza czymć
+    //unique_ptr ma przeciążony operator castowania do boola
+    if (!upr3)
+    {
+        cout << "upr3 nie zarzadza zadnym obiektem\n";
+    }
+    else
+    {
+        cout << "upr3 zarzadza obiektem\n";
+        cout << *upr3;
+    }
+
+    //unique_ptr (auto_ptr nie) rozróżnia skalary i tablice
+    unique_ptr<int[]> up_i3 {new int[3] {10,20,30}};
+    cout << up_i3[1] << endl;//dodatkowy operator dla tablic
+    //!!!jednak prawie zawsze lepiej zrobić std::array, lub wector lub string
+
+
+    //c++14 wprowadza make_unique -> przyjmuje argumenty resourca
+    unique_ptr<ResourceUP> up4 = make_unique<ResourceUP>(6);
+    //używanie make_unique jest opcjonalne ale rekomendowane ponieważ jest prostsze,
+    //i wymaga mniej typowania prz używaniu z auto type deduction
+    auto up5 = make_unique<ResourceUP>(6);
+    //!!!preferować make_unique zamiast ręcznego tworzenia i new
+
+    //bezpieczeństwo ze względu na exceptiony
+    //callFunction(unique_ptr<T>(new T), functionThrowsException());
+    //teoretycznie może być wyciek bo kompilator może utworzyć najpierw
+    //T później exception a dopiero później byłoby tworzenie unique_ptr
+    //z make_unique nie ma tego problemu bo jest to poprostu 1 wywołanie funkcji
+
+    //unique pointer może być bezpiecznie zwracany przez funkcję
+    up5 = getUniquePtrResourceUP();
+    //getUniquePtrResourceUP zwraca tmyczasową wartość która jest przypisana z
+    //użyciem semantyki przenoszenia do up5, bez przypisania byłaby skasowana
+
+    //!!!generalnie nigdy nie powinno się zwracać unique pointera przez wskaźnik
+    //lub referencje, chyba, że jest powód
+
+    //!!!jeżeli chcemy przekazać unique_ptr do funkcji to:
+    //jeżeli chcemy aby ta funkcja przejeła własność nad pointerem, przekazujemy
+    //unique_ptr przez wartość (trzeba użyć move bo unique ptr nie ma copy semantic)
+    {
+        cout << "---------------\n";
+        auto up6 = getUniquePtrResourceUP();
+        takeOwnership(std::move(up6));
+        cout << "koniec funkcji narzednej uniquePointer\n";
+        cout << "---------------\n";
+    }
+    //!!!często jednak nie będziemy chcieli przekazywać własności
+    //!!!przekazywanie unique_ptr przez referencję powinniśmy robić tylko wtedy
+    //!!!gdy funkcja chce zmienić zarządzany obiekt czyli nasze Resource na inne
+    //!!!!!!!!!lepiej zamiast tego przekazać sam Resource przez pointer lub referencję
+    //pozwoli to finkcji niewiedizeć jak wywołujący zarządza obiektem
+    //trzeba użyć .get()
+    useResource(*(up5.get()));
+
+    //można tworzyć unique_ptr jako memnery klas, nie trzeba się wtedy martwić o
+    //dealokację, trzeba jednak pamiętać, że jeżeli obiekt klasy jest tworzony
+    //dynamicznie trzeba go zwolnić
+
+    //!!!!!!!!!!!!!!!!!nadużywanie unique_ptr
+    ResourceUP* r = new ResourceUP();
+    unique_ptr<ResourceUP> upru1(r);
+    //unique_ptr<ResourceUP> upru2(r); -> undevined behavior
+    //bo 2 unique_pointery będą kasować ten sam obiekt
+    //delete r; -> undevined behavior bo unique_ptr też będzie kasować obiekt
+    //make_unique zapobiega temu
 }
