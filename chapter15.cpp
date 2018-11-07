@@ -5,6 +5,7 @@ using namespace std;
 void smartPointersAndMoveSemanticsIntro();
 void rvalueReferences();
 void moveConstructorAndAssigment();
+void stdMove();
 
 void chapter15run()
 {
@@ -12,6 +13,7 @@ void chapter15run()
     smartPointersAndMoveSemanticsIntro();
     rvalueReferences();
     moveConstructorAndAssigment();
+    stdMove();
 }
 
 class Resource
@@ -466,4 +468,37 @@ void moveConstructorAndAssigment()
         //cout << "Czas kopiowania i mnożenia tablicy 1mln elementow: " << timer.elapsed() << endl;
         cout << "Czas przenoszenia i mnożenia tablicy 1mln elementow: 0.034841\n";
     }
+}
+
+
+
+#include<vector>
+template<class T>
+void mySwap(T& a, T& b)
+{
+    T tmp = move(a);
+    a = move(b);
+    b = move(tmp);
+}
+void stdMove()
+{
+    //zdarza się, że chcemy wywołać semantyke przenoszenia a mamy l-value
+    string a = "abc";
+    string b = "cde";
+    mySwap(a,b);
+    cout << a << b << endl;
+
+    vector<string> vs;
+    string s = "string content";
+    cout << s << endl;
+    vs.push_back(move(s));
+    cout << "Zawartość stringa po dodaniu do wektora z std::move: \"" << s << "\"" << endl;
+    //std::move daje4 wskazówke kompilatorowi, że programista już nie potrzebuje tego obiektu
+    //po std::move nie można oczekiwać ze stan obiektu będzie taki sam
+
+    //przedmioty, które kradziemy otrzymujemy przez std::move powinny być pozostawione w null state (np powyższy string)
+    //pozwala to na ponowne użycie zminnej (s), można jej też nie używać
+
+    //move może byc przydatne też np w sortowaniu, selection sort, bubble sort działają poprzez swap
+    //jest też przydatne gdy chcemy przenieść zawartość zarządzaną przez smart pointery
 }
