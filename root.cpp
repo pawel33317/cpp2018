@@ -84,8 +84,8 @@ int main(int argc, char* argv[])
     //AppendixC
     printf("\n");
 
-    int( *l)(int) = [](int i) -> int {return i*2;};
-    cout << l(12) << endl;
+    //int( *l)(int) = [](int i) -> int {return i*2;};
+    //cout << l(12) << endl;
 }
 
 

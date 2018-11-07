@@ -262,6 +262,10 @@ void rvalueReferences()
 
 
 
+
+
+
+
 class ResourceMCAA
 {
 public:
@@ -319,6 +323,69 @@ MyAutoPtrMCAA<ResourceMCAA> generateMCAAResource()
     MyAutoPtrMCAA<ResourceMCAA> gmr{new ResourceMCAA};
     return gmr;
 }
+#include <chrono>
+template<class T>
+class DynamicArrayCA
+{
+    int mSize;
+    T* mArray;
+public:
+    DynamicArrayCA(int size):mSize(size),mArray(new T[size]){}
+    ~DynamicArrayCA(){ delete[] mArray;}
+    // DynamicArrayCA(const DynamicArrayCA& other):mSize(other.mSize),mArray(new T[mSize])
+    // {
+    //     for(int i=0; i<mSize; ++i)
+    //         mArray[i] = (other.mArray)[i];
+    // }
+    // DynamicArrayCA& operator=(const DynamicArrayCA& other)
+    // {
+    //     if(this == &other)
+    //         return *this;
+    //     delete[] mArray;
+    //     mSize = other.mSize;
+    //     mArray = new T[mSize];
+    //     for(int i=0; i<mSize; ++i)
+    //         mArray[i] = (other.mArray)[i];
+    //     return *this;
+    // }
+    DynamicArrayCA(const DynamicArrayCA& other)= delete;
+    DynamicArrayCA& operator=(const DynamicArrayCA& other) = delete;
+    DynamicArrayCA(DynamicArrayCA&& other):mSize(other.mSize),mArray(other.mArray)
+    {
+        other.mArray = nullptr;
+        other.mArray = 0;
+    }
+    DynamicArrayCA& operator=(DynamicArrayCA&& other)
+    {
+        if(this == &other)
+            return *this;
+        delete[] mArray;
+        mSize = other.mSize;
+        mArray = other.mArray;
+        other.mArray = nullptr;
+        other.mSize = 0;
+
+        return *this;
+    }
+    T& operator[](int index){ return mArray[index];}
+    const T& operator[](int index) const { return mArray[index];}
+    int getLength() const {return mSize;}
+};
+class TimerCA
+{
+    chrono::time_point<chrono::high_resolution_clock> mStartTimePoint;
+public:
+    TimerCA():mStartTimePoint(chrono::high_resolution_clock::now()){}
+    void reset(){mStartTimePoint = chrono::high_resolution_clock::now();}
+    double elapsed(){ return chrono::duration_cast<std::chrono::duration<double, std::ratio<1> > >(chrono::high_resolution_clock::now() - mStartTimePoint).count();}
+};
+DynamicArrayCA<int> cloneArrayAndDouble(const DynamicArrayCA<int>& src)
+{
+    DynamicArrayCA<int> newArr{src.getLength()};
+    for(int i = 0; i < src.getLength(); ++i)
+        newArr[i] = src[i] * 2;
+    return newArr;
+}
 void moveConstructorAndAssigment()
 {
     //!!!konstruktor kopiujący jest używany aby zainicjalizować klasę robiąc kopię obiektu tej samej 
@@ -326,10 +393,12 @@ void moveConstructorAndAssigment()
     //Copy assigment jest używany aby skopiować klasę do innej istniejącej klasy
     //C++ dostarcza domyślnie copy constructor i copy assigment jezeli nie podamy wlasnego
     //które robią shallow copy
-    cout << "=============MCAA================\n";
-    MyAutoPtrMCAA<ResourceMCAA> mapm;
-    mapm = generateMCAAResource();
-    mapm.show();
+    {
+        cout << "=============MCAA================\n";
+        MyAutoPtrMCAA<ResourceMCAA> mapm;
+        mapm = generateMCAAResource();
+        mapm.show();
+    }
     /* Bez move constructora i assigmentu było by poniższe a nawet więcej bez compiler elidingu
     z move konstruktorem i move assigmentem wykona się tylko raz
     ResourceMCAA countructor
@@ -376,4 +445,25 @@ void moveConstructorAndAssigment()
 
     //!!!!!!!!!!!!!!
     //nasza klasa MyAutoPtrMCAA to prawie uniquePtr (nie znam dużych różnic teraz)
+
+    {
+        // cout << "=============CA================\n";
+        // TimerCA timer;
+        // DynamicArrayCA<int> arr(1000000);
+        // for (int i =0; i < arr.getLength(); ++i)
+        //     arr[i] = i;
+        // arr = cloneArrayAndDouble(arr);
+        // cout << "Czas kopiowania i mnożenia tablicy 1mln elementow: " << timer.elapsed();
+        cout << "Czas kopiowania i mnożenia tablicy 1mln elementow:   0.0410538\n";
+    }
+
+    {
+        TimerCA timer;
+        DynamicArrayCA<int> arr(1000000);
+        for (int i =0; i < arr.getLength(); ++i)
+            arr[i] = i;
+        arr = cloneArrayAndDouble(arr);
+        //cout << "Czas kopiowania i mnożenia tablicy 1mln elementow: " << timer.elapsed() << endl;
+        cout << "Czas przenoszenia i mnożenia tablicy 1mln elementow: 0.034841\n";
+    }
 }
