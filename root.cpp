@@ -42,15 +42,32 @@ using namespace std;
             //object slicing
             //dynamic casting
             //operator << and printing inherited classes
-// #include "chapter13.hpp"
-// #include "chapter14.hpp"
-// #include "chapter15.hpp"
+//15 semantyka przenoszenia i smart pointery
+            //r-values, move semantics, move constructors and assigments
+            //std::move, unique_ptr, shared_ptr, weak_ptr
+            //circural dependency issue
+
 // #include "chapter16.hpp"
-// #include "chapter17.hpp"
-// #include "chapter18.hpp"
 // #include "appendixA.hpp"
+// lambdy
+// słowa kluczowe poniżej
+// wektor alokator
+// #include "chapter13.hpp"
+// variadic templates
+// #include "chapter14.hpp"
+// wzorce
+// drzewa binarne
+// listy dwukierunkowe wiązane
 // #include "appendixB.hpp"
+// #include "chapter18.hpp"
+// #include "chapter17.hpp"
 // #include "appendixC.hpp"
+// tworzenie własnej biblioteki
+// operacje na plikach c++11, operator >>, openy
+// serializacja
+// std::cref, std::reference_wrapper, std::ref
+// std::forward
+// wskaźniki na funkcje
 #include "boost/filesystem/path.hpp"
 #include <limits>
 void myStrCpy(const char* src, char* dst)
@@ -73,77 +90,69 @@ int main(int argc, char* argv[])
     chapter12run();
 
     chapter15run();
-    //15
-    //AppendixB
-    //AppendixA
-    //16
-    //14
-    //13
-    //18
-    //17
-    //AppendixC
-    printf("\n");
 
-    //int( *l)(int) = [](int i) -> int {return i*2;};
-    //cout << l(12) << endl;
+    printf("\n");
 }
 
 
-//fabryka, dekorator, łańcuch zdarzeń, maszyna stanów, singleton, fasada, kompozyt
-//obserwator https://pl.wikipedia.org/wiki/Wzorzec_projektowy_(informatyka)
-//tworzenie własnej biblioteki
-
-//serialization !!!!
-
+///////////////////////////////////
+//////////1 SŁOWA KLUCZOWE
+///////////////////////////////////
 // alignas **
 // alignof **
 // asm
 // compl
 // decltype	
-// dynamic_cast *
 // export *
 // extern "C" 
 // mutable *
 // noexcept **
 // register
-// template
 // thread_local **
-// throw 
-// try
 // typedef	
 // typeid *
 // typename *
 // union
-// virtual
 // volatile
+// transaction_safe_dynamic
+// https://pl.cppreference.com/w/cpp/keyword
 
-// override (C++11)
-// final (C++11)
-// transaction_safe (PT TS)
-// transaction_safe_dynamic (PT TS)
-//_pragma
-// auto_ptr
-//std::cref
-//std::reference_wrapper
-//std::ref
+///////////////////////////////////
+//////////2 WZORCE
+///////////////////////////////////
+//fabryka
+//dekorator
+//łańcuch zdarzeń
+//maszyna stanów
+//singleton
+//fasada
+//kompozyt
+//RAII
+//obserwator
+//https://infotraining.bitbucket.io/cpp-dp/
+//https://pl.wikipedia.org/wiki/Wzorzec_projektowy_(informatyka)
+
+
 //https://gcc.gnu.org/projects/cxx-status.html#cxx11
+
 //gdb lub inny
-//std move forward function 
-//http://en.cppreference.com/w/cpp/header
+
+//STL LIB -> http://en.cppreference.com/w/cpp/header
+
 //u2
+
 //threading
+
 //sockets
-//random liczby pseudolosowe
+
 //regex
-//operacje na plikach c++11, operator >>, openy
-//lambdy
-//wskaźniki na funkcje
+
 //time
-//drzewa binarne
-//listy dwukierunkowe wiązane
+
 //gui
+
 //unicode characters
+
 //opengl
-//variadic templates
-//stl
-//std::forward
+
+//!!!WSZYSTKO https://en.cppreference.com/w/cpp
