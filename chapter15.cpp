@@ -623,6 +623,7 @@ void uniquePointer()
 }
 
 
+void testMyShareedPtr();
 class ResourceSP
 {
 public:
@@ -679,7 +680,86 @@ void sharedPtr()
 
     //shared ptr i array do cpp14 włącznie nie ma obsługi shared ptr dla array
     //w cpp17 jest taka obsługa jednak make_shared dalej nie ma obsługi dla array
+    cout << "---------test my shared ptr-----------";
+    testMyShareedPtr();
+    cout << "---------test my shared ptr-----------";
 }
 
 
-//Napisać implementację prostego shared_ptr'a
+
+
+
+class ResourceSPtest
+{
+public:
+    ResourceSPtest(){ cout << "ResourceSPtest constructor\n"; }
+    void show() { cout << "I am a ResourceSPtest\n"; }
+    void operator()() { cout << "Functional operator\n"; }
+    void operator++() { cout << "++ operator\n"; }
+    ~ResourceSPtest(){ cout << "ResourceSPtest destructor\n"; }
+};
+template<class T>
+class sp
+{
+    int* mCounter;
+    T* mValue = nullptr;
+public:
+    sp():mCounter(new int){*mCounter = 0;}
+    sp(T* resource):mCounter(new int),mValue(resource){*mCounter=1;}
+    sp(const sp& other):mCounter(other.mCounter), mValue(other.mValue){mCounter[0]++;}
+    sp& operator=(const sp& other)
+    {
+        if(this == &other)
+            return *this;
+        --(*mCounter);
+        if(*mCounter == 0)
+        {
+            delete mCounter;
+            delete mValue;
+        }
+        mCounter = other.mCounter;
+        mValue = other.mValue;
+        ++(*mCounter);
+        return *this;
+    }
+    T* operator->(){ return mValue; }
+    T& operator*(){return *mValue;}
+    void operator->*(int a){ cout << "chujniaaaaaa\n"; }
+    ~sp(){--(*mCounter); if(*mCounter == 0) {delete mCounter; delete mValue;}}
+    int getReferenceCount(){ cout << "Reference count: " << *mCounter << endl; return *mCounter;}
+};
+
+void testMyShareedPtr()
+{
+    sp<ResourceSPtest> sp1;
+    sp<ResourceSPtest> spam;
+
+    sp<ResourceSPtest> sp2(new ResourceSPtest);
+    sp2.getReferenceCount();//1
+
+    sp<ResourceSPtest> sp3(sp2);
+    sp2.getReferenceCount();//2
+
+    {
+        sp<ResourceSPtest> sp4(sp2);
+        sp2.getReferenceCount();//3
+    }
+    sp2.getReferenceCount();//2
+
+    sp1 = sp2;
+    sp2.getReferenceCount();//3
+
+    sp1 = spam;
+    sp2.getReferenceCount();//2
+
+    sp2->show();
+    (*sp2).show();
+
+    sp2->*(0);
+    (*sp2)();
+
+    sp2->operator()();
+    (*sp2).operator()();
+    sp2->operator++();
+    //sp2->++;
+}
