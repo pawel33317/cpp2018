@@ -8,6 +8,7 @@ void moveConstructorAndAssigment();
 void stdMove();
 void uniquePointer();
 void sharedPtr();
+void sharedWeakPointer();
 
 void chapter15run()
 {
@@ -18,6 +19,7 @@ void chapter15run()
     stdMove();
     uniquePointer();
     sharedPtr();
+    sharedWeakPointer();
 }
 
 class Resource
@@ -728,7 +730,6 @@ public:
     ~sp(){--(*mCounter); if(*mCounter == 0) {delete mCounter; delete mValue;}}
     int getReferenceCount(){ cout << "Reference count: " << *mCounter << endl; return *mCounter;}
 };
-
 void testMyShareedPtr()
 {
     sp<ResourceSPtest> sp1;
@@ -762,4 +763,85 @@ void testMyShareedPtr()
     (*sp2).operator()();
     sp2->operator++();
     //sp2->++;
+}
+
+
+
+class PersonSWP
+{
+    string mName;
+    shared_ptr<PersonSWP> mPartner;
+    weak_ptr<PersonSWP> mPartnerWeak;
+public:
+    PersonSWP(const string& name):mName(name){ cout << "created " << mName << endl; }
+    ~PersonSWP(){ cout << "destroyed " << mName << endl; }
+    void setPartner(shared_ptr<PersonSWP>& partner){mPartner = partner;}
+    void showName(){cout << "I am " << mName << endl;}
+    friend ostream& operator<<(ostream& o, const PersonSWP& p)
+    {
+        o << p.mName;
+        return o;
+    }
+    friend bool partnerUp(shared_ptr<PersonSWP>& a, shared_ptr<PersonSWP>& b);
+    friend bool partnerUpWeak(shared_ptr<PersonSWP>& a, shared_ptr<PersonSWP>& b);
+    weak_ptr<PersonSWP> getWeakPtr(){return mPartnerWeak;}
+};
+bool partnerUp(shared_ptr<PersonSWP>& a, shared_ptr<PersonSWP>& b)
+{
+    if(!a || !b)
+        return false;
+    a->mPartner = b;
+    b->mPartner = a;
+    cout << *a << " is connected with " << *b << endl;
+    return true;
+}
+bool partnerUpWeak(shared_ptr<PersonSWP>& a, shared_ptr<PersonSWP>& b)
+{
+    if(!a || !b)
+        return false;
+    a->mPartnerWeak = b;
+    b->mPartnerWeak = a;
+    cout << *a << " is WEAK connected with " << *b << endl;
+    return true;
+}
+void sharedWeakPointer()
+{
+    cout << "---------------sharedWeakPointer\n";
+    auto pawel = std::make_shared<PersonSWP>("Pawel");
+    auto karolina = std::make_shared<PersonSWP>("Karolina");
+    partnerUp(pawel, karolina);//nigdy zasoby się nie zwolnią
+    //nie zostaną zwolnione PersonSWP pawel i karolina bo pawel ma w sobie smart wskaźnik
+    //na karolinę a karolina na pawła jest to
+    //cykliczna referencja A wskazuje na B, B na C a C na A
+    //czyli seria referencji w której jeden obiekt wskazuje na kolejny a ostatni na
+    //pierwszy czyli pętla referencji czy też wskaźników
+
+    //PROBLEM CYKLICZNEJ REFERENCJI MOŻE NAWET WYSTĄPIĆ Z JEDNYM SHARED POINTEREM
+    auto pawel2 = std::make_shared<PersonSWP>("Pawel");
+    pawel2->setPartner(pawel2);//znów wyciek
+
+    //weak pointer został zaprojektowany aby rozwiązać problem z cykliczną referencją
+    //weak_ptr jest obserwatorem może obserwować i ma dostęp do tego samoego zasobu
+    //co shared_ptr ale nie jest właścicielem (nie zliecza referencji)
+
+    auto pawelWEAK = std::make_shared<PersonSWP>("pawelWEAK");
+    auto karolinaWEAK = std::make_shared<PersonSWP>("karolinaWEAK");
+    partnerUpWeak(pawelWEAK, karolinaWEAK);
+    //!!!!!!!!!!!!!!!!!!!!!!!!
+    //!!!nie da się użyć bezpośrednio weak_ptr trzeba castować na shared_ptr
+    //funkcja .lock() wbudowana w weak_ptr konwertuje go do shared_ptr
+    pawelWEAK->showName();
+    //pawelWEAK->getWeakPtr()->showName(); ERROR bo weak ptr nie pozwala na dostęp
+    pawelWEAK->getWeakPtr().lock()->showName();
+    //o zmienną shared_ptr otrzymaną przez locka nie mamy co się martwić
+    //(nawet jakbyśmu ją przypisali do shared_ptr bo jest lokalna i wyjdzie ze scopeu)
+
+    //mój głupi test
+    static shared_ptr<PersonSWP> ssppswp;
+    static shared_ptr<PersonSWP> ssppswp2;
+    ssppswp = pawelWEAK->getWeakPtr().lock();
+    ssppswp2 = karolinaWEAK->getWeakPtr().lock();//przejdzie bo obie zostaną zwolnione
+
+    //weak pointer używamy gdy chcemy współdzielić zasób ale nie zarządzać jego
+    //życiem
 }
