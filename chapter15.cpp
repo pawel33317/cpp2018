@@ -703,31 +703,49 @@ public:
 template<class T>
 class sp
 {
-    int* mCounter;
-    T* mValue = nullptr;
+    int* mCounter { nullptr};
+    T* mValue { nullptr };
 public:
-    sp():mCounter(new int){*mCounter = 0;}
-    sp(T* resource):mCounter(new int),mValue(resource){*mCounter=1;}
-    sp(const sp& other):mCounter(other.mCounter), mValue(other.mValue){mCounter[0]++;}
-    sp& operator=(const sp& other)
+    sp<T>(){}
+    sp<T>(T* resource) : mCounter(new int), mValue(resource)
+    {
+        *mCounter=1;
+    }
+    sp<T>(const sp<T>& other):mCounter(other.mCounter), mValue(other.mValue)
+    {
+        (*mCounter)++;
+    }
+    sp<T>& operator=(const sp<T>& other)
     {
         if(this == &other)
             return *this;
-        --(*mCounter);
-        if(*mCounter == 0)
+        if(mCounter && --(*mCounter) == 0)
         {
             delete mCounter;
             delete mValue;
         }
         mCounter = other.mCounter;
         mValue = other.mValue;
-        ++(*mCounter);
+        if (mCounter)
+            ++(*mCounter);
         return *this;
     }
     T* operator->(){ return mValue; }
-    T& operator*(){return *mValue;}
+    T& operator*(){ return *mValue; }
     void operator->*(int a){ cout << "chujniaaaaaa\n"; }
-    ~sp(){--(*mCounter); if(*mCounter == 0) {delete mCounter; delete mValue;}}
+    ~sp<T>()
+    {
+        if(!mCounter)
+            return;
+        --(*mCounter);
+        if(*mCounter <= 0)
+        {
+            delete mCounter;
+            delete mValue;
+            mCounter = nullptr;
+            mValue = nullptr;
+        }
+    }
     int getReferenceCount(){ cout << "Reference count: " << *mCounter << endl; return *mCounter;}
 };
 void testMyShareedPtr()
