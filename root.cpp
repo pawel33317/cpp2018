@@ -47,8 +47,7 @@ using namespace std;
             //std::move, unique_ptr, shared_ptr, weak_ptr
             //circural dependency issue
 
-// #include "chapter16.hpp"
-// #include "appendixA.hpp"
+// #include "appendixB.hpp"
 // lambdy
 // słowa kluczowe poniżej
 // wektor alokator
@@ -59,7 +58,7 @@ using namespace std;
 // wzorce
 // drzewa binarne
 // listy dwukierunkowe wiązane
-// #include "appendixB.hpp"
+// #include "appendixA.hpp"
 // #include "chapter18.hpp"
 // #include "chapter17.hpp"
 // #include "appendixC.hpp"
@@ -92,6 +91,7 @@ int main(int argc, char* argv[])
 
     chapter15run();
     chapter16run();
+    appendixB();
     printf("\n");
 }
 
