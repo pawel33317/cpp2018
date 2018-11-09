@@ -11,11 +11,15 @@
 using namespace std;
 
 void stlContainers();
+void stlIterators();
+void stlAlgorithms();
 
 void chapter16run()
 {
     cout << "\n\n-----chapter 16 started-----\n";
     stlContainers();
+    stlIterators();
+    stlAlgorithms();
 }
 
 void stlContainers()
@@ -153,5 +157,90 @@ void stlContainers()
     pque.pop();
     cout << pque.front();
     pque.pop();
+    cout << endl;
+}
+
+
+
+void stlIterators()
+{
+    //Iterator - obiekt, który umie iterować (przechodzić) po klasie kontenera
+    //bez konieczności posiadania wiedzy jak działa kontener
+    //w przypadku wielu klas (szczególnie asocjacyjne i listy) iteratory
+    //są podstawowym sposobem dostepu do klas
+
+    //można go sobie wyobrazić jako wskaźnik do elementu w konterze z
+    //zestawem funkcji
+
+    //operator* - dereferencja iteratora - zwraca aktualnny element
+    //operator++/-- przenosi się na kolejny element
+    //operator==/!= sprawdzenie czy 2 iteratry wskazują na to samo
+    //operator= - przypisanie do iteratora nowej pozycji
+
+    //begin() zwraca iterator na początek
+    //end() iterator na element ZA ostatnim, dzięki temu łatwo iterować pętlą
+    //cbegin(), cend() zwraca constowe iteratory (na const wartości)
+
+    //każdy kontener dostarcza iterator
+    //container::iterator, container::const_iterator
+    vector<int> vec {1,2,3,4,5,6};
+
+    for(vector<int>::const_iterator vecIt = vec.begin(); vecIt != vec.end(); ++vecIt)
+    {
+        cout << *vecIt << ", ";
+    }
+    cout << endl;
+
+    list<int> ll {10,20,30,40,50,60};
+    for(list<int>::const_iterator llIt = ll.begin(); llIt != ll.end(); ++llIt)
+    {
+        cout << *llIt << ", ";
+    }
+    cout << endl;
+
+    map<int, int> mp {{10,20},{30,40},{50,60}};
+    for(map<int, int>::const_iterator mpIt = mp.begin(); mpIt != mp.end(); ++mpIt)
+    {
+        cout << "[" << mpIt->first << "," << mpIt->second << "] , ";
+    }
+    cout << endl;
+
+    //iteratory dostarczają prosty sposób iteracji po kontenerze co z algorytmami
+    //stl'a jest dobre
+
+    //Iteratory muszą być zaimplementowane na podstawie klasy, iterator jest
+    //silnie związany z kontenerem
+}
+
+
+#include <algorithm>
+#include <functional>
+void stlAlgorithms()
+{
+    //algorytmy działajace z kontenerami
+    //np: search sort, insert, reorder, copy
+
+    //algorytmy są zaimplementowane jako globalne funkcje i operują na iteratorach
+    //tak więc jednokrotnie zaimplementowany algorytm działa na wszystkich
+    //kontenerach, które dostarczają zbiór iteratorów
+    //jest to super ale może też prowadzić do sytuacji, że np część algorytmów nie
+    //działa z częścią kontenerów prawidłowo, lub wolno
+
+    list<int> l1 {1,2,3,4673456,345,523,434,4};
+    cout << "Max: " << *max_element(l1.begin(), l1.end()) << endl;
+    cout << "Min: " << *min_element(l1.begin(), l1.end()) << endl;
+    list<int>::iterator l1it = find(l1.begin(), l1.end(), 345);
+    l1.insert(l1it, 100000);
+    for_each(l1.begin(), l1.end(), [](int val){ cout << val << ", "; });
+    cout << endl;
+    //sort(l1.begin(), l1.end()); -> nie działa dla klas, lista ma własny sort
+    l1.sort();
+    for_each(l1.begin(), l1.end(), [](int val){ cout << val << ", "; });
+    cout << endl;
+    vector<int> v1 {5234,51,5,54,5,43,343,4,15,65,767};
+
+    sort(v1.begin(), v1.end());
+    reverse(v1.begin(), v1.end());
+    for_each(v1.begin(), v1.end(), [](int val){ cout << val << ", "; });
     cout << endl;
 }

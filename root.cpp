@@ -55,6 +55,7 @@ using namespace std;
 // #include "chapter13.hpp"
 // variadic templates
 // #include "chapter14.hpp"
+// implementacja mapy, set, iteratora
 // wzorce
 // drzewa binarne
 // listy dwukierunkowe wiązane
