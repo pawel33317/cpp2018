@@ -818,7 +818,7 @@ void sharedWeakPointer()
 
     //PROBLEM CYKLICZNEJ REFERENCJI MOŻE NAWET WYSTĄPIĆ Z JEDNYM SHARED POINTEREM
     auto pawel2 = std::make_shared<PersonSWP>("Pawel");
-    pawel2->setPartner(pawel2);//znów wyciek
+    //pawel2->setPartner(pawel2);//znów wyciek
 
     //weak pointer został zaprojektowany aby rozwiązać problem z cykliczną referencją
     //weak_ptr jest obserwatorem może obserwować i ma dostęp do tego samoego zasobu
@@ -837,10 +837,10 @@ void sharedWeakPointer()
     //(nawet jakbyśmu ją przypisali do shared_ptr bo jest lokalna i wyjdzie ze scopeu)
 
     //mój głupi test
-    static shared_ptr<PersonSWP> ssppswp;
-    static shared_ptr<PersonSWP> ssppswp2;
-    ssppswp = pawelWEAK->getWeakPtr().lock();
-    ssppswp2 = karolinaWEAK->getWeakPtr().lock();//przejdzie bo obie zostaną zwolnione
+    // static shared_ptr<PersonSWP> ssppswp;
+    // static shared_ptr<PersonSWP> ssppswp2;
+    // ssppswp = pawelWEAK->getWeakPtr().lock();
+    // ssppswp2 = karolinaWEAK->getWeakPtr().lock();//przejdzie bo obie zostaną zwolnione
 
     //weak pointer używamy gdy chcemy współdzielić zasób ale nie zarządzać jego
     //życiem
