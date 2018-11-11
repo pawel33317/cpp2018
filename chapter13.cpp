@@ -71,6 +71,19 @@ public:
 template<class T>
 int MyArray<T>::getLength(){ return mSize; }
 //bez <T> error: ‘template<class T> class MyArray’ used without template parameters
+
+template<class T, int size>
+class StaticArray
+{
+    T mArr[size];
+public:
+    T* getArray();
+    T& operator[](int index){return mArr[index];}
+};
+
+template<class T, int size>
+T* StaticArray<T, size>::getArray() { return mArr; }
+
 void classTemplates()
 {
     MyArray<double> myArr(5);
@@ -123,4 +136,15 @@ void classTemplates()
     //skompilowane i zlinkowane wszędzie -> bardziej wydajna metoda ale wymaga
     //utrzymywania pliku templates.cpp
 
+
+
+
+    //!!!!!templatki mogą przyjąć też inny parametr zwany non-type parameter
+    //jest on specjalnym typem parametru, który nie zastępuje typu ale WARTOŚĆ
+    //np: wartość całkowita lub enumerator, pointer lub referencja do const obiektu
+    //pointer lub referencja do funkcji lub metody, std::nullptr_t
+    StaticArray<int, 10> sa;
+    sa[4] = 4;
+    cout << sa[4] << endl;
+    //!!!nie musieliśmy dynamicznie alokować 
 }
