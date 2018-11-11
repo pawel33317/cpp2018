@@ -48,10 +48,15 @@ using namespace std;
             //circural dependency issue
 //appendixB //nowe w C++11, C++14, C++17
 
-// lambdy
+//13 function templates, function templateinstances, template classes
+            //template non-type parameters, function template specialization
+            //class template specialization
+            //partial template specialization
+            //partial template specialization for pointers
+
+
 // słowa kluczowe poniżej
-// wektor alokator
-// #include "chapter13.hpp"
+// wektor alokator, iterator
 // variadic templates
 // #include "chapter14.hpp"
 // implementacja mapy, set (drzewa binarne), iteratora, listy dwukierunkowe wiązane
@@ -87,6 +92,7 @@ int main(int argc, char* argv[])
     chapter15run();
     chapter16run();
     appendixB();
+    chapter13run();
     printf("\n");
 }
 
