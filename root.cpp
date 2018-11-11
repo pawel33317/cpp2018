@@ -46,18 +46,17 @@ using namespace std;
             //r-values, move semantics, move constructors and assigments
             //std::move, unique_ptr, shared_ptr, weak_ptr
             //circural dependency issue
+//appendixB //nowe w C++11, C++14, C++17
 
-// #include "appendixB.hpp"
 // lambdy
 // słowa kluczowe poniżej
 // wektor alokator
 // #include "chapter13.hpp"
 // variadic templates
 // #include "chapter14.hpp"
-// implementacja mapy, set, iteratora
+// implementacja mapy, set (drzewa binarne), iteratora, listy dwukierunkowe wiązane
 // wzorce
-// drzewa binarne
-// listy dwukierunkowe wiązane
+
 // #include "appendixA.hpp"
 // #include "chapter18.hpp"
 // #include "chapter17.hpp"
@@ -69,11 +68,7 @@ using namespace std;
 // std::forward
 // wskaźniki na funkcje
 #include "boost/filesystem/path.hpp"
-#include <limits>
-void myStrCpy(const char* src, char* dst)
-{
-    while((*dst++ = *src++));
-}
+
 int main(int argc, char* argv[])
 {
     chapter1run();
