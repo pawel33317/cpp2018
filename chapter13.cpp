@@ -4,12 +4,16 @@ using namespace std;
 
 void functionTemplates();
 void classTemplates();
+void functionTemplateSpecialization();
+void classTemplateSpecialization();
 
 void chapter13run()
 {
     printf("-----chapter 13 started-----\n");
     functionTemplates();
     classTemplates();
+    functionTemplateSpecialization();
+    classTemplateSpecialization();
 }
 
 
@@ -146,5 +150,126 @@ void classTemplates()
     StaticArray<int, 10> sa;
     sa[4] = 4;
     cout << sa[4] << endl;
-    //!!!nie musieliśmy dynamicznie alokować 
+    //!!!nie musieliśmy dynamicznie alokować mArr, ponieważ dla każdej instancji
+    //klasy StaticArray size jest constant
+    //!!!!!!!!!teh ficzer jest używany w bibliotece standardowej w klasie array
+    //std::array<int, 60> arr;
+}
+
+
+template<class T>
+class Storage1
+{
+private:
+    T m_value;
+public:
+    Storage1(T value){m_value = value;}
+    ~Storage1(){}
+    void print(){std::cout << m_value << '\n';}
+};
+#include <cstring>
+template<>
+void Storage1<double>::print()
+{
+    std::cout << std::scientific << m_value << endl;
+}
+#include <cstring>
+template<>
+Storage1<char*>::Storage1(char* value)
+{
+    m_value = new char[std::strlen(value) + 1];
+    std::strcpy(m_value, value);
+}
+template<>
+Storage1<char*>::~Storage1()
+{
+    delete[] m_value;
+}
+void functionTemplateSpecialization()
+{
+    cout << "-----------------function specialization-------\n";
+    //function templates służą do wygenerowania wielu funkcji o takiej
+    //samej implementacji ale różnych typach
+
+    //czasami jednak chcemy zrobić inną implementację dl jakiegoś typu
+    Storage1<int> iVal{5};
+    Storage1<double> dVal{5.23};
+    iVal.print();
+    dVal.print();//wykona się specjalizowana
+
+    //aby zrobić specjalizację: zdefinuiwać spacjalizowaną funkcję (jeżeli jest to
+    //metoda to zrobić to poza klasą), zmieniając typ templatki na nasz
+
+    //gdy kompilator zacznie tworzyć Storage1<double>::print zauważy, że istnieje
+    //jawnie zdefiniowana funkcja i uzyje naszej jawnej zamiast generować z
+    //templatki
+
+    //template,. mówi kompilatorowi że chodzi o function template ale nie przyjmuje
+    //template parametrów (bo w tym przypadku wszystkie parametry określiliśmy
+    //jawnie)
+
+    char* stringg = new char[40];
+    std::strcpy(stringg, "ala ma kota");
+    cout << stringg << endl;
+    Storage1<char*> cVal {stringg};
+    delete[] stringg;
+    //cVal.print();//śmieci bo jest po delete trzeba spacjalizację
+
+    cVal.print();//po dodaniu specjalizacji
+}
+
+template <class T>
+class Storage8
+{
+private:
+    T m_array[8];
+public:
+    void set(int index, const T &value){m_array[index] = value;}
+    const T& get(int index){return m_array[index];}
+};
+template <>
+class Storage8<bool>
+{
+private:
+    unsigned char m_data = 0;
+public:
+    void set(int index, bool value)
+    {
+        if(value)
+            m_data |= 1 << index;
+        else
+            m_data &= ~(1 << index);
+    }
+    const bool get(int index)
+    {
+        return m_data & (1 << index);
+    }
+};
+void classTemplateSpecialization()
+{
+    Storage8<int> si;
+    for(int i = 0; i < 8; ++i)
+        si.set(i, i);
+
+    //dla bool'a jest małowydajne, można zrobić nową klasę ale będzie lipa
+    //bo ta będzie służyła dla wszystkich poza boolami a dla booli będzie inna
+    //klasa z inną nazwą
+
+    //class template specializationa pozwala na specjalizacje template class
+    //dla szczególnego typu
+    //specialized functions/classes mają pierwszeństwo nad ogólnym template
+    //!!!class template specializations są traktowane nak całkowicie niezalezne klasy
+    //wiec możemy zmienić wszystko
+
+    Storage8<bool> sb;
+    for(int i = 0; i < 8; ++i)
+        sb.set(i, true);
+
+    for(int i = 0; i < 8; ++i)
+        cout << sb.get(i) << ",";
+    cout << endl;
+
+    //template<> mówi kompilatorowi, że poniższe dotyczy szablonu
+    //dodaliśmy <bool> do klasy aby pokazać, że dotyczy to tylko boola
+    //warto utrzymywać wspólny interfejs między templatkami a ich specjalizacjami
 }
