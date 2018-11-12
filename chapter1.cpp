@@ -1,4 +1,4 @@
-#include <iostream> //dodaj zawartość tego pliku tutaj
+#include <iostream>//dodaj zawartość tego pliku tutaj
 
 void strukturaProgramu();
 void zmienneInicjalizacjaiPrzypisanie();
@@ -15,7 +15,7 @@ void headerGuards();
 
 void chapter1run()
 {
-    printf("-----chapter 1 started-----\n");
+    std::cout << "-----chapter 1 started-----\n";
     strukturaProgramu();
     zmienneInicjalizacjaiPrzypisanie();
     funkcje();
@@ -33,8 +33,8 @@ void strukturaProgramu()
     //int x; //declaration statement
     //2 + 3; //expression statement
 
-    //biblioteka prekompilowany kod zawierający np funkcje i 
-    //spakowany do ponownego użycia
+    //biblioteka prekompilowany kod zawierający np funkcje
+    //i spakowany do ponownego użycia
 
     //syntax - składnia opisuje jak sentencje są skonstruowane w języku
 }
@@ -46,16 +46,16 @@ void zmienneInicjalizacjaiPrzypisanie()
 
     //definicja spowoduje odłożenie miejsca w pamięci
     int x; //np adres 0x1111
-    x = 5; //zapisz pod adresem 0x1111 wartość 1 
+    x = 5; //zapisz pod adresem 0x1111 wartość 1
 
     //!!!zmienne w c++ są l-value --> bo mają trwały adres w pamięci
-    //!!!jeżeli chcemy zrobić przypisanie lewa strona musi być l-value 
+    //!!!jeżeli chcemy zrobić przypisanie lewa strona musi być l-value
 
     //!!!r-values wskazuje na wartości nie powiązane z trwałym adresem w pamięci
     //!!!np pojedyncze liczby "6", wyrażenia "5+5"
     //!!!r-values są tymczasowe i znikają po statement gdzie wystąpiły
 
-    x = x + 1; // l-val + r-val evaluate to r-val and is assigned to l-val; /*!!!*/
+    x = x + 1; //l-val + r-val evaluate to r-val and is assigned to l-val;
 
     //!!!lewa strona musi mieć adres a prawa produkować wartość
 
@@ -65,7 +65,7 @@ void zmienneInicjalizacjaiPrzypisanie()
     //inicjalizacja może być tylko po definicji
 
     //!!!używać inicjalizacji zamiast przypisania jak możliwe
-    //zmienne nie są domyślnie inicjalizowane więc jest spam
+    //zmienne lokalne nie są domyślnie inicjalizowane więc jest spam
 }
 
 void funkcje()
@@ -74,7 +74,7 @@ void funkcje()
     //nie można definiować funkcji w innej funkcji
 
     //zalety funkcji organizacja, reużywalność, testowanie, rozszerzalność
-    //abstrakcja trzeba znać tylko we i wy
+    //!!!abstrakcja trzeba znać tylko we i wy
     //używać do: kodu który się powtarza, kodu który ma zestaw we i wy
     //funkcja powinna robić 1 rzecz
     //jak funkcja jest zbyt długa trzeba dzielić
@@ -91,12 +91,13 @@ void zasadyNazwenictwa()
 
 void operatory()
 {
-    //!!!literal zafixowana wartość (zahardkodowana w kodzie)
+    //!!!literał zafixowana wartość (zahardkodowana w kodzie)
     //literał zwraca siebie
     //operand - literał, zmienna i funkcja - zwracają wartość
     //operator "np +" mówi jak łączyć operandy
 
-    //operatory są unarne "-", binarne "+", terenary ??? - "-" jest i unarny i binarny
+    //operatory są unarne "-", binarne "+", terenary ??? - 
+    //"-" jest i unarny i binarny
 }
 
 void bialeZnaki()
@@ -104,9 +105,8 @@ void bialeZnaki()
     //linia powinna mieć max 80 znaków
     //wcięcia to tabulacja lub 4 spacje
     //jeżeli linia jest zbyt długa powinna być łamana a operator na końcu linii
-    //jaęeli np inicjalizujemy kilka zmiennych można przesunąć spacjami lub tabami  wartości do tego samego poziomu
-
-    //http://www.learncpp.com/cpp-tutorial/17-forward-declarations/
+    //jeżeli np inicjalizujemy kilka zmiennych można przesunąć spacjami
+    //lub tabami wartości do tego samego poziomu
 }
 
 void forwardDeclaration()
@@ -117,7 +117,7 @@ void forwardDeclaration()
     //forwardDeclaration(int a);
     //forwardDeclaration(int); też ok
 
-    //!!!jeżeli nie będzie ciała funkcji programskom piluje się poprawnie 
+    //!!!jeżeli nie będzie ciała funkcji program skompiluje się poprawnie
     //!!!ale przy linkowaniu się wywali jeżeli będzie użycie
 
     //deklaracja mówi jedynie kompilatorowi że funkcja istnieje
@@ -136,15 +136,18 @@ void headerFiles()
     //!!!pliki header zostały stworzone aby umieszczać w nich forward deklaracje
     //nie powinno tam być kodu bo zostanie wincludowany
 
-    //<include> jak plik został załączony razem z kompilatorem w specjalnym miejscu wyznaczonym przez system
-    //"include" jak plik był dostarczony czyli powinien szukać w source kodzie później w innych dołączonych lokalizacjach do kompilacji
+    //<include> jak plik został załączony razem z kompilatorem w specjalnym
+        //miejscu wyznaczonym przez system
+    //"include" jak plik był dostarczony czyli powinien szukać w source kodzie
+        //później w innych dołączonych lokalizacjach do kompilacji
     //"" dla wszystkich plików poza dołączonymi przez kompilator
 
-    //nie powinno polagać się na includach w header plikach
+    //nie powinno polegać się na includach w header plikach
     //jeżeli jest potrzebny w cpp powinien tam też załączony
 
     //"iostream.h" != "iostream"
-    //iostream bez h zostałstworzony po ustandaryzowaniu ANSI cpp i funkcje zostały wrzucone do std
+    //iostream bez h zostałstworzony po ustandaryzowaniu ANSI cpp i funkcje
+        //zostały wrzucone do std
     //stary pozostał dla kompatybilności
 
     //include z subkatalogu
@@ -171,7 +174,8 @@ void preprocesor()
 
 void headerGuards()
 {
-    //zabezpieczają przed wielokrotnym includem tego samego pliku np kiedy includujemy w pliku C plik A i B a B includuje A
+    //zabezpieczają przed wielokrotnym includem tego samego pliku np kiedy
+        //includujemy w pliku C plik A i B a B includuje A
 
     #ifndef CHAPTER1_HPP //na początku pliku
     #define CHAPTER1_HPP

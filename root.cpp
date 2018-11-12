@@ -46,8 +46,8 @@ using namespace std;
             //r-values, move semantics, move constructors and assigments
             //std::move, unique_ptr, shared_ptr, weak_ptr
             //circural dependency issue
-//appendixB //nowe w C++11, C++14, C++17
-
+//appendixB //nowe w C++11
+            //C++14, C++17
 //13 function templates, function templateinstances, template classes
             //template non-type parameters, function template specialization
             //class template specialization

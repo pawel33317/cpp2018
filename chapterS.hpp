@@ -1,3 +1,5 @@
+#include <cstdlib>
+
 void nicNieRob(void*);
 void chapter1run();
 void chapter2run();

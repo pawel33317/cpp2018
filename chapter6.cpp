@@ -18,7 +18,7 @@ void wielowymiaroweTablicePointery();
 void stdArrayIvector();
 void chapter6run()
 {
-    printf("\n\n-----chapter 6 started-----\n");
+    std::cout << "\n\n-----chapter 6 started-----\n";
     arrays();
     simpleSort();
     multidimensionalArrays();
@@ -46,10 +46,11 @@ namespace Imie
         WSZYSCY
     };
 }
-//void funChangeArray(const int arr[5]) //zapobiega zmianom compilation error jak będzie zmiana wartości
-//przyjmuje jako wskaźnik
-//void funChangeArray(int arr[]) //tak też przekazuje wskaźnik
-//void funChangeArray(int arr[5])//tak też przekazuje wskaźnik
+//void funChangeArray(const int arr[5])
+    //zapobiega zmianom compilation error jak będzie zmiana wartości
+    //przyjmuje jako wskaźnik
+    //void funChangeArray(int arr[]) //tak też przekazuje wskaźnik
+    //void funChangeArray(int arr[5])//tak też przekazuje wskaźnik
 void funChangeArray(int* arr)
 {
     arr[4] = 55;
@@ -64,16 +65,17 @@ void arrays()
 
     int array[4];//!!!length musi bać znany na etapie kompilacji
     array[Ptak] = 55;
-    printf("array[enum] = %d\n", array[Ptak]);//nie działa dla enum class trzeba rzutować jawnie na inta
+    printf("array[enum] = %d\n", array[Ptak]);
+        //nie działa dla enum class trzeba rzutować jawnie na inta
 
     int z = 5;
-    int array2[z];//!!!x nieznane na etapie kompilacji, nie powinno się tak robić
+    int array2[z];//!!!z nieznane na etapie kompilacji, nie powinno się tak robić
                   //kompilatory mogą to akceptować ze względu na standard C99
                   //robią to dynamicznie..., tak samo jest z cin
     nicNieRob(array2);
 
-    int initArr1[5] = {1, 2, 3, 4, 5}; //initializer list
-    int initArr2[5] {1, 2, 3, 4, 5}; //uniform initialization
+    int initArr1[5] = {1, 2, 3, 4, 5}; //initializer list ?
+    int initArr2[5] {1, 2, 3, 4, 5}; //uniform initialization ?
     int initArr3[] = {1, 2, 3, 4, 5};
     int initArr4[] {1, 2, 3, 4, 5};
     nicNieRob(initArr1);
@@ -82,9 +84,10 @@ void arrays()
     nicNieRob(initArr4);
 
     int initArr5[5] {1, 2};//pozostałe są inicjalizowane zerami
-                           //jakby było zadużo compilation error
-    printf("int initArr5[5] {1, 2}, initArr5[3]=%d\n",initArr5[3]);
-    int arr6[] {}; //initjalizacja zerami
+                           //jakby było za dużo compilation error
+    printf("int initArr5[5] {1, 2}, initArr5[3]=%d\n", initArr5[3]);
+    int arr6[] {}; //initjalizacja zerami - to akurat pusta tabloca 0B
+    std::cout << "sizeof(int arr6[] {}) = " << sizeof(arr6) << std::endl;
     nicNieRob(arr6);
 
     //trik z array która ma rozmiar enuma
@@ -92,14 +95,15 @@ void arrays()
     array9[Imie::EWA] = 99;
     printf("array9[Imie::EWA] = %d\n", array9[Imie::EWA]);
 
-    //!!!użyeanie enum class jako indexów tablicy jest bolesne przez castowanie
+    //!!!używeanie enum class jako indexów tablicy jest bolesne przez castowanie
     //mozna zrobić zwykłego enuma w namespace
 
     //!!!tablice są przekazywane do funkcji jako wskaźnik
     int arr10[5] {};
     //int arr11[4] {};
     funChangeArray(arr10);
-    //funChangeArray(arr11); zadziała ale to błąd bo zmieniamy nie nasz obszar pamięci
+    //funChangeArray(arr11); zadziała ale to błąd bo zmieniamy nie nasz
+        //obszar pamięci
     printf("Wartosc arr10[0] zmieniona przez funkcje to %d\n", arr10[4]);
 
     int arr12[4] {};
@@ -117,11 +121,11 @@ void arrays()
 void simpleSort()
 {
    int arr[] {4,77,55,2,1,56,8,34,11,0};
-   for(auto val : arr)
+   for(auto& val : arr)
       printf("%d ", val);
    printf("\n");
    std::sort(arr, arr + (sizeof(arr)/sizeof(arr[0])));
-   for(auto val : arr)
+   for(auto& val : arr)
       printf("%d ", val);
    printf("\n");
 
@@ -133,7 +137,7 @@ void simpleSort()
          if (a2 > a)
             std::swap(a, a2);
 
-   for(auto val : arr2)
+   for(auto& val : arr2)
       printf("%d ", val);
    printf("\n");
 }
@@ -156,10 +160,12 @@ void multidimensionalArrays()
 #include <cstring>
 void cstringi()
 {
-    char cstring[] = "cstring";//!!!automatycznie dodany \0 na końcu null terminator
-    //cstring = "sssss"; nie wolno bo to tablica
+    char cstring[] = "cstring";
+        //!!!automatycznie dodany \0 na końcu null terminator
+        //cstring = "sssss"; nie wolno bo to tablica
     nicNieRob(cstring);
     printf("strcmp(a,a) = %d\n", strcmp(cstring, cstring));
+    
     //std::cin.getline(name, 255); gwarantuje pobranie max 255 znaków
     //przydatne funkcje z cstring
     //strcpy
@@ -200,20 +206,21 @@ void wskazniki()
     //ale przy zwracaniu przez funkcję już nie :/, ja lubie po typie
 
     //pointery nie są inicjalizowane domyslnie zawierają śmieci
-    double d = 5.5;
+    double d = 555.55;
     int* z = reinterpret_cast<int*>(&d);
     printf("reinterpret_cast<int*>((double)5.5) = %d\n", *z);
 
     printf("%p\n%p\n", z, &z);
+
     //int* z = 4 -> zabronione
     //!!!nie można przypisać ręcznie adresu do wskaźnika w c++
     //!!!rozmiar wszystkich pointerów jest taki sam 4/8 zależy od architektury
 
     //int*p; printf("%d", *p); //segmentation fault
 
-    //!!!pointery poza adresem mogą jeszcze wskazywać na null value
-    //null ptr
+    //!!!pointery poza adresem mogą jeszcze wskazywać na null value - nullptr
     //pointery konwertują się do booli więc można zrobić poniższe
+
     int* p {0}; //można go teraz wyłuskać
     if (p)
         printf("%d", *p);
@@ -227,14 +234,13 @@ void wskazniki()
     int* q = 0;
     ptrFun(q);
     ptrFun(z);
-    ptrFun(nullptr); //wywoła fun(std::nullptr_t t)
-
-    //!!!używać tylko nullptr
+    ptrFun(nullptr); //wywoła fun(std::nullptr_t t), tylko ta
+        //!!!używać tylko nullptr
 
     Struktura* struktura = new Struktura{111,222};
     printf("s.val1 = %d, s.val2 = %d\n", struktura->val1, (*struktura).val2);
-    //powyższe użycia są równoznaczne
-    //!!! opcja z -> lepsza bo niema problemów z kolejnością operatorów
+        //powyższe użycia są równoznaczne
+        //!!! opcja z -> lepsza bo niema problemów z kolejnością operatorów
 
     //!!!używać -> zamiast (*).
 
@@ -244,6 +250,8 @@ void wskazniki()
     nicNieRob(za);
     nicNieRob((void*)zb);
 }
+
+
 
 
 void f1(int* z)//traktowane jako pointer
@@ -258,26 +266,31 @@ void f3(int z[10])//traktowane jako pointer to samo co wyżej
 {
     //printf("sizeof( void f3(int z[10])  ) = %lu\n", sizeof(z));
 }
-
 void pointeryWtablicach()
 {
-    //zmienna tablicowazawiera adres pierwszego elementu -> jakby bł wskażnikiem ale nie jest
+    //zmienna tablicowa zawiera adres pierwszego elementu
+        //jakby był wskażnikiem ale nie jest
 
     //!!!zmienna tablicowa to nie pointer -> int* != int[4]
 
     //!!!często tablice są "decay" -> niejawnie konwertowane na pointer
-    //tracą wtedy np informacje o długosci
+        //tracą wtedy np informacje o długosci
 
     char array[] {"abcdefghijklmnopr"};
-    //poniżej następuje niejawne rzutowanie na pointer
+        //poniżej następuje niejawne rzutowanie na pointer
     printf("niejawnie zrzutowana na pointer %s\n", array);
+
+
     int* p = new int();
-    printf("sizeof zmienna tablicowa = %lu\n", sizeof(array));//pointer ma 8 więc to nei pointer
+    printf("sizeof zmienna tablicowa = %lu\n", sizeof(array));
+        //pointer ma 8 więc to nie pointer
+
 
     printf("pointer, &pointer %p, %p\n", p, &p);
     delete p;
     printf("array  , &array   %p, %p\n", array, &array);
-    //!!!address-of operator dla tablicy dalej wskazuje na adres pierwszego elementu a nie jak w przypadku pointerów adres pointera
+        //!!!address-of operator dla tablicy dalej wskazuje na adres pierwszego
+        //elementu a nie jak w przypadku pointerów adres pointera
 
     //przy przekazywaniu do funkcji array są niejawnie rzutowane na pointery
     int t[] {1,2,3,4,5,6,7,8,9,10};
@@ -289,7 +302,6 @@ void pointeryWtablicach()
     //bo to jest równoważne wszystko to pointery
 
     //!!!tablice w strukturach i klasach nie rozpadają się
-
 }
 
 
@@ -306,44 +318,49 @@ void arytmetykaPointerow()
 
 void cstringiIsymbolicconstants()
 {
-    char v1[] {"ala ma kota"};//traktowana jak zmienna więc pamięć siewyczyści po wyjściu za scope
-    //!!!automatic duration
+    char v1[] {"ala ma kota"};
+        //traktowana jak zmienna więc pamięć się wyczyści po wyjściu ze scope
+        //!!!automatic duration
     v1[0] = 'A';
     printf("%s\n",v1);
 
-    const char* v2 {"ala ma kota"};//!!!zapisana do pamięci read-only bez consta też
+    const char* v2 {"ala ma kota"};
+        //!!!zapisana do pamięci read-only bez consta też
     const char* v3 {"ala ma kota"};
-    //!!!static duration
-    //!!!lepiej dodać const na początku 
-    //v2[0] = 'A';//nie można użyć bo pamięć read only
+        //!!!static duration
+        //!!!lepiej dodać const na początku
+        //v2[0] = 'A';//nie można użyć bo pamięć read only
     printf("%s\n",v2);
-
     printf("v1: %p, v2: %p, v3:%p\n", v1, v2, v3);
 
     //!!!można używać c-style symbolic constants ale trzeba dodać const
 
     //char c = 'Q';
-    //std::cout << &c; -> wypisze spam bo uzna że to wskaźnik na char więc potraktuje jako string
+    //std::cout << &c; -> wypisze spam bo uzna że to wskaźnik na char
+    //więc potraktuje jako string
 }
 
 void dynamicznaAlokacja()
 {
     //alokacja pamięci
-    //static dla statycznych i globalnych zmiennych przy starcie programu
-    //automatic dla parametrów funkcji i lokalnych zmiennych po wejściu w blok
-    //dynamic alocation -> rozmiar nie musi być znany podczas czasu kompilacji
-    //   brak automatycznej dealokacji
+        //static dla statycznych i globalnych zmiennych przy starcie programu
+        //automatic dla parametrów funkcji i lokalnych zmiennych po wejściu w blok
+        //dynamic alocation -> rozmiar nie musi być znany podczas czasu kompilacji
+            //brak automatycznej dealokacji
 
     //rozmiar stosu jest mały kilka MB
     //pamięć na stercie przyznaje system operacyjny
 
     //systam ładuje aplikację przy uruchomieniu do pamięci
     //-> ta przydzielona pamięć jest podzielona na różne obszary
-    //1 obszar zawiera kod,  inny dla normalnych operacji (śledzenia wywołań funkcji, niszczenia globalnych i lokalnych zmiennych ...)
+    //1 obszar zawiera kod, inny jest przeznaczony dla normalnych operacji
+        //(śledzenia wywołań funkcji, niszczenia globalnych
+        //i lokalnych zmiennych ...)
 
     int* z = new int {66};
-    delete z;//z jest teraz dangling pointer -> wyłuskanie teraz undefined behavior
-    //ponowny wykonanie delete undefined behavior
+    delete z;
+        //z jest teraz dangling pointer -> wyłuskanie teraz undefined behavior
+        //ponowny wykonanie delete undefined behavior
     z = nullptr;
 
     //!!!nulować zmienną po dealokacji
@@ -362,7 +379,9 @@ void dynamicznaAlokacja()
     //memory leak -> utrata adresu zaalokowanej pamięci
     //!!!przy tablicach trzeba używać delete[] zamiast delete bo undefined behavior
 
-    //!!!delete[] wie ile skasować bo new[] pilnuje to, niestety nie jest to dostępne dla programisty
+    //!!!delete[] wie ile skasować bo new[] pilnuje to,
+        //niestety nie jest to dostępne dla programisty
+
     int* arr = new int[10] {1,2}; //inicjalizacja 1,2,0,0,0,0 ...zerami od c++11
     printf("arr[0] = %d\n", arr[4]);
 
@@ -380,14 +399,14 @@ void pointeryIconsty()
     const int ci = 5;
     int vi = 55;
     //int* p = &ci; //nie dziala bo różne type const
-    const int* p {&ci}; //non const pointer to const value
+    const int* p {&ci}; //non const pointer do const value
     const int* p2 {&vi}; //ok tak można rzutować
 
     //const pointer
     int* const p3 {&vi}; //musi być zainicjalizowany
     //p3 = &vi; error bo const
 
-    //const pointer to const value
+    //const pointer do const value
     const int* const cpcv {&vi};
     nicNieRob((void*)p);
     nicNieRob((void*)p2);
@@ -400,7 +419,7 @@ void fun(int (&arrRef)[13])//!!!nie rozpada sie na wskaznik
     printf("array length is: %lu\n", sizeof(arrRef)/sizeof(arrRef[0]));
 }
 void zmienneReferencyjne()
-{ 
+{
     //referencje działają jako alias
 
     //rodzaje
@@ -409,7 +428,7 @@ void zmienneReferencyjne()
     // do r-value -> od c++11 (move semantic)
 
     int val = 5;
-    int &ref = val; //teraz to znaczy nei adres-of tylko reference to
+    int &ref = val; //teraz to znaczy nie adres-of tylko reference to
     //ten sam adres co zmienna
 
     //!!!referencja musi zostać zainicjalizowana
@@ -417,35 +436,41 @@ void zmienneReferencyjne()
 
     //l-value ma adres i czas życia
     //r-values tymczasowe bez adresu (expression scope)
+
     const int i = 55;
-    //const &iii = i; error
-    //const &iii = 6; error
+    const int& iii = i;
+    const int& iii3 = 6;
+    nicNieRob((void*)&iii);
+    nicNieRob((void*)&iii3);
     nicNieRob(&val);
     nicNieRob(&ref);
     nicNieRob((void*)&i);
     //referencje nie mogą być zmieniane aby wskazywać na coś innego
 
-    //!!!przekazanie referencji tablicy do funkcjie powoduje że nie rozpada się do wskaźnika
+    //!!!przekazanie referencji tablicy do funkcji powoduje że
+    //nie rozpada się do wskaźnika
     int a[13] {1,2,3,4,5,5,5,5,5,5,5,5,5};
     fun(a);
 
     //!!!referencja działa jak CONSTOWY wyłuskany wskaźnik
     //kompilator implementuje referencje używając wskaźników
 
-    //!!!używać referencji zamiast wskaźników, chynba że trzeba alokować pamięć
+    //!!!używać referencji zamiast wskaźników, chyba że trzeba alokować pamięć
 
     int xx {99};
     const int& bb {xx}; //można przypisać const var, non const var i r-values
     const int& zz {66+66}; //przypisanie r-value 
     nicNieRob((void*)&bb);
-    //!!! 
-    //!!! wydłużony czas życia r-value normalnie nie byłoby już możliwości odczytania wyniku
+
+    //!!! wydłużony czas życia r-value normalnie nie byłoby już możliwości 
+        //odczytania wyniku
     printf("zz = %d\n",zz);
 
-    //!!!Referencje do constowych wartości są używane często jako parametry funkcji
-    //bo nie robią kopii i mogą przyjąć zmienne, stałe i r-values
+    //!!!Referencje do constowych wartości są używane często jako parametry 
+        //funkcji bo nie robią kopii i mogą przyjąć zmienne, stałe i r-values
 
-    //!!!jeżeli zmienna nie jest pointerem i typem prostym przesyłać przez referencję
+    //!!!jeżeli zmienna nie jest pointerem i typem prostym przesyłać
+        //przez referencję
 }
 
 void foreachLoops()
@@ -459,9 +484,10 @@ void foreachLoops()
     printf("\n");
     //!!! w for-each loops używać referencji lub const referencji
     //foreach nie działa z pointerami na tablicę, czy dynamicznymi tablicami
-    //w foreach nie ma możliwości pobrania indeksu bo np działa na linked listach które nie mają jednoznacznych indeksów
-
+    //w foreach nie ma możliwości pobrania indeksu bo
+        //np działa na linked listach które nie mają jednoznacznych indeksów
 }
+
 
 void modifyPtrAddress(int*& ptr)
 {
@@ -469,12 +495,16 @@ void modifyPtrAddress(int*& ptr)
 }
 void wielowymiaroweTablicePointery()
 {
-    int (*arr)[10] = new int[5][10] {};//!!!trzeba znać prawy wymiar w czasie kompilacji
+    int (*arr)[10] = new int[5][10] {};
+        //!!!trzeba znać prawy wymiar w czasie kompilacji
     delete[] arr;
-    auto arr2 = new int[2][3];//!!!trzeba znać prawy wymiar w czasie kompilacji
+
+    auto arr2 = new int[2][3];
+        //!!!trzeba znać prawy wymiar w czasie kompilacji
     delete[] arr2;
 
-    int** arr3 = new int*[5];//!!!wymiary nie muszą być znane w czasie kompilacji
+    int** arr3 = new int*[5];
+        //!!!wymiary nie muszą być znane w czasie kompilacji
     for (int i = 0; i < 5; ++i)
     {
         arr3[i] = new int[10];
@@ -486,7 +516,7 @@ void wielowymiaroweTablicePointery()
     int* p = new int;
     printf("Adres pointera przed modyfikacja: %p\n", p);
     modifyPtrAddress(p);
-    printf("Adres pointera  po  modyfikacji : %p\n", p);
+    printf("Adres pointera po modyfikacji : %p\n", p);
     delete --p;
 }
 
@@ -495,18 +525,22 @@ void wielowymiaroweTablicePointery()
 #include <vector>
 void stdArrayIvector()
 {
-    std::array<int, 3> arr {1,2,3};//rozmiar musi być znany na etapie kompilacji i nie można go ominąć
-    //używa tyle pamięci co typy proste
+    std::array<int, 3> arr {1,2,3};
+        //rozmiar musi być znany na etapie kompilacji i nie można go ominąć
+        //używa tyle pamięci co typy proste
     printf("std::Arr[2] = %d\n", arr[2]);
-    arr.at(2);//tu jest sprawdzanie poprawności throws error wolniejsze ale bezpieczniejsze
+    arr.at(2);//tu jest sprawdzanie poprawności throws error 
+        //wolniejsze ale bezpieczniejsze
     printf("Array size: %lu\n", arr.size());
-    //!!!zawsze przekazywać std::array przez referencję lub const referencję
-    //!!!nie rozpada się do pointerów jak tablice
+        //!!!zawsze przekazywać std::array przez referencję lub const referencję
+        //!!!nie rozpada się do pointerów jak tablice
     std::sort(arr.begin(), arr.end());
 
     std::vector<int> vec {3,2,4,1};
-    printf("std::vector.at(3) = %d\n", vec.at(3));//[] też działa jak w array
-    vec.resize(44); //reszta wypełniona 0   //czasochłonne
+    printf("std::vector.at(3) = %d\n", vec.at(3));
+        //[] też działa jak w array
+    vec.resize(44);
+        //reszta wypełniona 0   //czasochłonne
     printf("std::vector.at(3) = %d\n", vec[22]);
 
     //!!! !!!vector przechowuje 8 booli jako 1 bajt :)

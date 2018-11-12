@@ -272,4 +272,6 @@ void classTemplateSpecialization()
     //template<> mówi kompilatorowi, że poniższe dotyczy szablonu
     //dodaliśmy <bool> do klasy aby pokazać, że dotyczy to tylko boola
     //warto utrzymywać wspólny interfejs między templatkami a ich specjalizacjami
+
+    //PARTIAL TEMPLATE SPECIALIZATION NOT DONE
 }

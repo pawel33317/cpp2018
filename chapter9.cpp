@@ -16,13 +16,14 @@ void shallowVsDeepCopying();
 
 void chapter9run()
 {
-    printf("\n\n-----chapter 9 started-----\n");
+    std::cout << "\n\n-----chapter 9 started-----\n";
     infroductionOperatorOverrloading();
     operatoryArytmetyczne_uzywajac_FriendOrMemberOrExternalFunc();
     operatortIO();
     operatoryUnarneIPorownania();
     operatoryInkrementacji();
-    operatorSubscript();//dodatkowo inicjalizacja tablicy obiektow bez domyslnego konstruktora
+    operatorSubscript();
+        //dodatkowo inicjalizacja tablicy obiektow bez domyslnego konstruktora
     operatorNawiasow();
     typeCastOverloading();
     konstruktorKopiujacy();
@@ -36,12 +37,12 @@ void infroductionOperatorOverrloading()
     //operatory to funkcje
     //x+y => można tłumaczyć na -> operator+(x,y)
 
-    //!!!jeżeli oba operandy są typu prostego kompilator odpali wbudowaną procedurę 
+    //!!!jeżeli oba operandy są typu prostego kompilator odpali wbudowaną procedurę
     //lub error
 
-    //!!!dowolny operanc jest typem użytkownika -> kompilator szuka przeciążenia
-    //operatora zdefiniowanego przez użytkownika
-    //jak nie znajdzie spróbuje zmienić typ użytkownika na prosty jak nie to error
+    //!!!dowolny operand jest typem użytkownika -> kompilator szuka przeciążenia
+    //operatora zdefiniowanego przez użytkownika, jak nie znajdzie spróbuje
+    //zmienić typ użytkownika na prosty jak nie to error
 
     //przeciążać nie można tylko -> ?:, ::, ., .*
     //nie można stworzyć nowych operatorów lub zmienić nazwy
@@ -59,10 +60,6 @@ void infroductionOperatorOverrloading()
 }
 
 
-
-
-
-
 class Cents
 {
 private:
@@ -73,8 +70,9 @@ public:
     int getCents() const {return mCents;}
 
     friend Cents operator+(const Cents& c1, const Cents& c2);
-    friend Cents operator*(const Cents& c1, const Cents& c2) //tak raczej nie robić
-    //ciało robić poza klasą
+    friend Cents operator*(const Cents& c1, const Cents& c2)
+        //tak raczej nie robić
+        //ciało robić poza klasą
     {
         return Cents(c1.mCents*c2.mCents, 0);
     }
@@ -86,8 +84,9 @@ public:
         return Cents(mCents/c2.mCents,0);
     }
 };
-//Cents operator-(const Cents& c1, const Cents& c2);//DODAC W HPP bo nie ma deklaracji
-//JAKO FRIEND FUNC
+//Cents operator-(const Cents& c1, const Cents& c2);
+    //DODAC W HPP bo nie ma deklaracji
+    //JAKO FRIEND FUNC
 Cents operator+(const Cents& c1, const Cents& c2)
 {
     return Cents(c1.mCents + c2.mCents, 0);
@@ -130,23 +129,23 @@ void operatoryArytmetyczne_uzywajac_FriendOrMemberOrExternalFunc()
     // << >> -> bo std::ostream (lewy parametr) nie jest *this
     // operator(Cents, int) -> możemy jako member
     // operator(int, Cents) -> NIE możemy jako member bo int nie jest typu Cents
-    // !!!nie da sięzrobić przeciążenia operatora jako member jeżeli
+    // !!!nie da się zrobić przeciążenia operatora jako member jeżeli
     // lewy operator nie jest klasą bądź też nie jest klasą którą możemy modyfikować
 
     //dla operatorów binarnych które nie modyfikują lewego operandu np
     //operator+ preferowane są zwykłe lub friend funkcje zamiast memberów
-    //bo można zrobić (int, cents) (cents, int) wszystkie parametry są widoczne i nie ma this
+    //bo można zrobić (int, cents) (cents, int) wszystkie parametry są widoczne
+        //i nie ma this
 
-    //dla operatorów któr modyfikują lewy operand np operator +=
+    //dla operatorów które modyfikują lewy operand np operator +=
     //preferowana jest member function bo lewy operand musi być typu klasy
 
-    //unarne jako member bo nie mają parametró
+    //unarne jako member bo nie mają parametrów
 
     //= [] () -> jako member
     //unarne jako member
     //binarne modyfikujące np += jako member
     //binarne niemodyfikujące np + jako normal lub friend func
-
 }
 
 
@@ -157,11 +156,13 @@ class Point3D
 public:
     Point3D(int xx, int yy, int zz) : x{xx}, y{yy}, z{zz} {}
 
-    //!!!std::ostream -> nie pozwala na kopiowanie, więc trzeba zwrócić przez wartość
+    //!!!std::ostream -> nie pozwala na kopiowanie, więc trzeba zwrócić
+        //przez wartość
     //!!!można też zwrócić void ale późnie nie zadziała kolejne <<
     //!!!pozwala to na łańcuch
     friend std::ostream& operator<<(std::ostream& o, const Point3D& p);
-    friend std::istream& operator>>(std::istream& i, Point3D& p);//może zwracać void
+    friend std::istream& operator>>(std::istream& i, Point3D& p);
+        //może zwracać void
 };
 std::ostream& operator<<(std::ostream& o, const Point3D& p)
 {
@@ -179,16 +180,15 @@ void operatortIO()
     //!!!std::cout jest typu std::ostream
     Point3D p {4, 5, 6};
     std::cout << p << std::endl;
-    //!!!jeżelie chcemy aby operator binarny był chainable trzeba
-    //zwracać lewy operator przez referencję -> w tym wypadku parametr był
-    //przekazany do funkcji więc musi istnieć, nie musimy się obawiać, że zostanie zniszczony
+    //!!!jeżelie chcemy aby operator binarny był chainable trzeba zwracać
+        //lewy operator przez referencję -> w tym wypadku parametr był
+        //przekazany do funkcji więc musi istnieć, nie musimy się obawiać
+        //że zostanie zniszczony
 
     Point3D p2 {0,0,0};
     //std::cin >> p2; //ODKOMENTOWAC
     std::cout << p2 << std::endl;
 }
-
-
 
 
 
@@ -233,7 +233,7 @@ void operatoryUnarneIPorownania()
     printf("CentX a != Centx b: %d\n", a != b);
     //! operator głównie to zmiany zwracanej wartości boola
 
-    //!!! nie definiować operatorów któe nie mają sensu dla danej klasy
+    //!!! nie definiować operatorów które nie mają sensu dla danej klasy
     //!!! warto przeciążać operator < bo umożliwiaja sortowanie
     std::vector<CentX> vec {CentX{11}, CentX{1}, CentX{5}};
     std::sort(vec.begin(), vec.end());
@@ -258,8 +258,10 @@ public:
         return *this; //chainable
     }
 
-    CentY operator++(int)//postfix -> placeholder brak nazwy mówi kompilatorowi, że nie będziemy używać tej zmiennej
-    //int to fake argument tylko poto aby rozróżnić pist i pre inkrementację
+    CentY operator++(int)
+        //postfix -> placeholder brak nazwy mówi kompilatorowi,
+        //że nie będziemy używać tej zmiennej
+        //int to fake argument tylko po to aby rozróżnić pist i pre inkrementację
     {
         CentY tmp{val};
         ++(*this);//++val;
@@ -288,12 +290,14 @@ public:
     ~IntList() {delete[] mList;}
     //w operatorze subscript parametrem może być cokolwiek
     //int& operator[](std::string) 
-    int& operator[](const int index) //zwraca referencję żeby można było coś tam wpisać
+    int& operator[](const int index)
+        //zwraca referencję żeby można było coś tam wpisać
     {
         return mList[index];
     }
 
-    int operator[](const int index) const //może zwracać też const int&
+    int operator[](const int index) const
+        //może zwracać też const int&
     {
         assert(index <= 10);
         return mList[index];
@@ -307,11 +311,11 @@ void operatorSubscript()
     printf("IntList[3] = %d\n", il[3]);
     const IntList il2 {10, 0};
     printf("const IntList[3] = %d\n", il2[3]);
+
     //!!!uważać żeby nie wykonać [] operatora na pointerze
     IntList* ilptr = new IntList(10, 5);
     printf("(*ilptr)[3]: %d\n", (*ilptr)[3]);
     printf("ilptr[0][3]: %d\n", ilptr[0][3]);
-
 
     //IntList* ilList = new IntList[3](10, 5);
     //!!!nie da się zainicjalizować tablicy obiektów alokowanych dynamicznie
@@ -322,6 +326,7 @@ void operatorSubscript()
     for (int i = 0; i < liczbaObiektow; ++i)
     {
         new(&ilList[i]) IntList{10, 5};
+        //delete &ilList[i];
     }
     printf("ilList[1][1]: %d\n", ilList[1][3]);
 }
@@ -356,22 +361,25 @@ void operatorNawiasow()
     //!!!pozwala wybrać typ parametrów i ilość
     //!!!obowiązkowo jako member
     //!!!w przypadku funkcji operator () jest operatorem wywołania funkcji
-    //!!!w przypadku klas operator () jest zwykłym operatorem który wywołuje funkcję operator()
+    //!!!w przypadku klas operator () jest zwykłym operatorem,
+        //który wywołuje funkcję operator()
 
     Matrix m {};
     printf("m(3,3) = %d\n", m(3,3));
     printf("m() = %d\n", m());
 
     //!!!Operator() jest często używany do roienia funktorów
-    //czyli klas które działają jak funkcje -> ich zaletą jest to że mogą
-    //przechowywać dane
+        //czyli klas które działają jak funkcje -> ich zaletą jest to że mogą
+        //przechowywać dane
 
     Functor f;
     std::cout << "f(5): " << f(5);
     std::cout << ", f(6): " << f(6) << std::endl;
-    //funktory są lepsze od funkcji ze staticami bo można robić więcej niż 1 instancję
-
+    //funktory są lepsze od funkcji ze staticami bo można robić więcej
+        //niż 1 instancję
 }
+
+
 
 class CentQ
 {
@@ -395,8 +403,6 @@ void typeCastOverloading()
     std::cout << "static_cast<int>(CentQ) = " << static_cast<int>(c) << std::endl;
     std::cout << "(CentQ)Dolar = " << (CentQ)d << std::endl;
 }
-
-
 
 
 
@@ -437,8 +443,12 @@ private:
     int mNumerator;
     int mDenominator;
 public:
-    Fraction2(int numerator=0, int denominator=1): mNumerator(numerator), mDenominator(denominator)
-    { printf("Konstruktor Fraction2(numerator=%d, denominator=%d)\n", mNumerator, mDenominator); }
+    Fraction2(int numerator=0, int denominator=1)
+        :mNumerator(numerator), mDenominator(denominator)
+    {
+        printf("Konstruktor Fraction2(numerator=%d, denominator=%d)\n",
+                mNumerator, mDenominator);
+    }
 private:
     Fraction2(const Fraction2& other){ }
 };
@@ -446,12 +456,12 @@ void konstruktorKopiujacy()
 {
     //Do tworzenia nowego obiektu na bazie starego
     //tworzony domyślnie, brak tylko gdy zrobimy swój lub move constructor
-    //!!!ponieważ nie wie dużo o klasie wykorzystuje memberwise initialization
-    //!!!czyli inicjalizuje każdy member nowej klasy starym memberem
+        //!!!ponieważ nie wie dużo o klasie wykorzystuje memberwise initialization
+        //!!!czyli inicjalizuje każdy member nowej klasy starym memberem
 
     //!!!COPY ELISION (opuszczenie) -> RVO
-    //pominięcie przez kompilator copy konstruktora głównie dla
-    //obiektów anonimowych -> więc treść copy konstruktora się nie wywoła
+        //pominięcie przez kompilator copy konstruktora głównie dla
+        //obiektów anonimowych -> więc treść copy konstruktora się nie wywoła
     //!!!wylaczenie RVO (copy elision) -fno-elide-constructors
 
     Fraction f1 {4,5};//uniform initialization KONSTRUKTOR ZWYKLY
@@ -459,11 +469,11 @@ void konstruktorKopiujacy()
 
     Fraction f3 = 8;//copy initialization -> konwertuje 8 na Fraction
                     //KONSTRUKTOR ZWYKLY (dla prawej strony) i KOPIUJACY dla lewej
-                    //PRZEZ ELISION RVO copy construc się nie wywoła
+                    //PRZEZ ELISION RVO copy constructor się nie wywoła
 
     Fraction f4 = Fraction(9, 10);//copy initialization
                     //KONSTRUKTOR ZWYKLY (dla prawej strony) i KOPIUJACY dla lewej
-                    //PRZEZ ELISION RVO copy construc się nie wywoła
+                    //PRZEZ ELISION RVO copy constructor się nie wywoła
 
     std::cout << f1 << f2 << f3 << f4;
 
@@ -473,7 +483,8 @@ void konstruktorKopiujacy()
 
     Fraction f6 (Fraction(11, 12));//direct initialization calls COPY CONSTRUCTIR
                                    //oraz Konstruktor zwykły
-                                   //PRZEZ ELISION RVO copy construc się nie wywoła
+                                   //PRZEZ ELISION RVO copy constructor
+                                   //się nie wywoła
 
 
     //Fraction six = Fraction(6);   //ELISION
@@ -500,8 +511,15 @@ class MyString
 private:
     std::string  mString;
 public:
-    explicit MyString(int size) {mString.resize(size); printf("Set size to: %d\n", size);}
-    explicit MyString(const MyString& os) { std::cout << "MyString copy constructor\n"; }
+    explicit MyString(int size)
+    {
+        mString.resize(size);
+        printf("Set size to: %d\n", size);
+    }
+    explicit MyString(const MyString& os)
+    {
+        std::cout << "MyString copy constructor\n";
+    }
 };
 
 class MyString2
@@ -511,41 +529,54 @@ private:
     //MyString2(char){}; -> lepsze rozwiązanie to delete
 public:
     MyString2(char) = delete;
-    explicit MyString2(int size) {mString.resize(size); printf("Set size to: %d\n", size);}
-    explicit MyString2(const MyString2& os) { std::cout << "MyString copy constructor\n"; }
+    explicit MyString2(int size)
+    {
+        mString.resize(size);
+        printf("Set size to: %d\n", size);
+    }
+    explicit MyString2(const MyString2& os)
+    {
+        std::cout << "MyString copy constructor\n";
+    }
 };
 void explicitDelete()
 {
     printf("===============================\n");
     //!!!C++ traktuje konstruktor jako operator niejawnej konwersji
-    //Fraction f = 6; -> 6 zostanie niejawne przekonwertowane na Fraction konstruktorem
+    //Fraction f = 6; -> 6 zostanie niejawne przekonwertowane
+        //na Fraction konstruktorem
+
     //void printx(Fraction f){}... -> printx(9); jak wyżej
-    //ta niejawna konwersja działą zawsze: dla uniform, direct, copy initialization
+        //ta niejawna konwersja działa zawsze: dla uniform, direct,
+        //copy initialization
 
     //!!!Konstruktory, które można wykorzystać do niejawnej konwersji
-    //są nazywane konstruktorami konwertującymi
-    //przed C++11 tylko konstruktor jedno parametrowy był konwertujący
+        //są nazywane konstruktorami konwertującymi
+        //przed C++11 tylko konstruktor jedno parametrowy był konwertujący
 
-    //MyString ms1 = 'x';//set size to 120 -> bo implicit conversion czyli chujnia
+    //MyString ms1 = 'x';
+        //set size to 120 -> bo implicit conversion czyli chujnia
 
     //MyString ms1 = 'x'; -> nie zadziała bo dodano słówko explicit do konstruktora
-    //!!!zabrania to wykonania niejawnej konwersji do typu MyString
-    //czyli nie rozwinie się do MtString ms1 = MyString('x');
-    //direct i uniform dalej działa
+        //!!!zabrania to wykonania niejawnej konwersji do typu MyString
+        //czyli nie rozwinie się do MtString ms1 = MyString('x');
+        //direct i uniform dalej działa
+
     MyString ms1('x');
     MyString ms2{'x'};//uniform zabrania tylko narrowing konwersji
-    static_cast<MyString>('x'); //jawna konwersja dalej działa
+    static_cast<MyString>('x');//jawna konwersja dalej działa
 
-    //MyString ms3 = MyString(111); //EXPLICIT COPY CONSTRUCTOR
-    //!!!zabrania niejawnego wykonania copy konstruktora
+    MyString ms4 = MyString(111); //EXPLICIT COPY CONSTRUCTOR
+        //!!!zabrania niejawnego wykonania copy konstruktora
+
     MyString ms3(MyString(111));
+    //!!!rozważać robienie konstruktorów explicit
 
-    //!!!rozważać robienie konstruktoró explicit
-
-    //MyString2 ms21('x'); -> prywatny konstruktor zablokowana możliwość inicjalizacji charem
+    //MyString2 ms21('x'); -> prywatny konstruktor zablokowana możliwość
+        //inicjalizacji charem
     //!!!ale wciąż można wykonać prywatny konstrujktor będąc wewnątrz klasy
-    //!!!lepiej użyć delete
-    //!!!delete można użyć też do copy konstruktora, operatorów, ...
+        //!!!lepiej użyć delete
+        //!!!delete można użyć też do copy konstruktora, operatorów, ...
 }
 
 
@@ -567,34 +598,38 @@ public:
 };
 void operatorPrzypisania()
 {
-    //!!!assigment operator jest używane do skopiowania wartości z jednego obiektu do innego
+    //!!!assigment operator jest używane do skopiowania wartości z jednego
+        //obiektu do innego
+
     //!!!cele copy construktora i operatora przypisania są prawie takie same
     //jednak copy constructor inicjalizuje nowy obiekt a operator przypisania
     //zmienia content istniejącego
 
-    //jeżeli nowy obiekt musi zostać utworzony przed kopiowaniem używany jest copy construktor
+    //jeżeli nowy obiekt musi zostać utworzony przed kopiowaniem używany
+        //jest copy construktor
     //jeżeli nie musi być tworzony używany jest operator przypisania
 
     //copy assigment nie jest domyślnie tylko gdy user zadeklarował
-    //move constructor lub inny copy assigment
+        //move constructor lub inny copy assigment
 
-    //operator przypisania mus; beć jako member
+    //operator przypisania musi beć jako member
     Contener c {55};
     Contener c2 {33};
     Contener c3;
     c3 = c2 = c;
     printf("C3.content = %d\n", c3.content);
+
     //c = c; -> self assigment bezsensowne i groźne z dynamiczną pamięcią
     //w operatorze rozwiązanie
 
-    //dla copy konstruktora nie ma sensu tego sprawdzać bo niema możliwości przypisania
-    //nowo tworzonego obiektu do siebie
+    //dla copy konstruktora nie ma sensu tego sprawdzać bo niema możliwości
+        //przypisania nowo tworzonego obiektu do siebie
 
-    //!!!domyślnie iestnieje copy assigment działa jako copy constructor
-    //czyli używa memberwise assigment
+    //!!!domyślnie iestnieje copy assigment, działa jako copy constructor
+        //czyli używa memberwise assigment
 
     //!!!można usunąć
-    //Contener& operator=(const Contener& other) = delete;
+        //Contener& operator=(const Contener& other) = delete;
 }
 
 
@@ -606,8 +641,8 @@ private:
     int mSize;
     char* mData;
 public:
-    Data(const char* string) : 
-        mSize(std::string(string).length()), 
+    Data(const char* string) :
+        mSize(std::string(string).length()),
         mData(new char[mSize+1])
     {
         std::strcpy(mData, string);
@@ -658,8 +693,9 @@ void shallowVsDeepCopying()
 {
     //!!!shallow copy == memberwise copy
     //to co domyślnie dostarcza copy assigment oraz copy konstruktor
-    //czyli c++ przy assigment operatorze kopiuje każdy obiekt indywidualnie
-    //a przy konstruktorze kopiującym inicjalizuje kżde pole direct inicjalizacją
+        //czyli c++ przy assigment operatorze kopiuje każdy obiekt indywidualnie
+        //a przy konstruktorze kopiującym inicjalizuje kżde pole
+            //direct inicjalizacją
 
     //!!!shallow - płytka kopia kopiuje wskaźniki a nie alokuje nowej pamięci
 
@@ -668,18 +704,18 @@ void shallowVsDeepCopying()
     {
         Data data2 = data;
     }
+
     //jakby konstruktor kopiujacy byl domyslny czyli robil plytka kopie
-    //tutaj by się wysypało bo data2 -> skasowałaby mData na które wskazywałyby
-    //oba obiekty data i data2
+        //tutaj by się wysypało bo data2 -> skasowałaby mData na które wskazywałyby
+        //oba obiekty data i data2
     std::cout << data;
     Data data3 {""};
     data3 = data;
     std::cout << data3;
 
     //!!!w implementacji operatora jest dodatkowo w stosunku do copy konstruktora:
-    //self-assigment check
-    //return *this
-    //dealokacja pamięci -> obowiązkowe bo memory leak bo mógł wcześniej mieć wartość
-            //lepiej użyć np wektora
-
+    //self-assigment check, return *this
+    //dealokacja pamięci -> obowiązkowe bo memory leak,
+        //mógł wcześniej mieć wartość
+        //lepiej użyć np wektora
 }

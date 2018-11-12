@@ -39,45 +39,48 @@ public:
 };
 void kompozycja()//composition
 {
-    //has-a: //!!!obiekt ma
-    //budowanie złożonego obiektu z prostych mp:
-    //komputer -> płyta, cpu, karta...
+    //part of: //!!!jest częścią
+        //budowanie złożonego obiektu z prostych np:
+        //komputer -> płyta, cpu, karta...
 
     //klasy i struktury sączęsto nazywane composite type
 
-    //!!!kompozycja ma dwa typu kompozycję i agregację
+    //!!!kompozycja ma dwa typy kompozycję i agregację
 
     //!!!kompozycja warunki relacji
-    //member jest częścią obiektu
-    //member może należeć tylko do jednej klasy w danym czasie 
-    //życie membera zależy od klasy -> tworzony i niszczony z obiektem
-    //member nic nie wie o klasie UNDIRECTIONAL -> relacja jednokierunkowa
-        //-> obiekt nei wie że jest częścią klasy
+        //member jest częścią obiektu
+        //member może należeć tylko do jednej klasy w danym czasie
+        //życie membera zależy od klasy -> tworzony i niszczony z obiektem
+        //member nic nie wie o klasie UNDIRECTIONAL -> relacja jednokierunkowa
+            //-> obiekt nie wie że jest częścią klasy
 
     //Kompozycja nie mówi nic o przenoszeniu części
-    //można przenosić pola
-    //może mieć jedno pole danego typu lob WIELE
-    //NP klasa ulamek ma licznik i mianownik. Licznik i mianownik nie wiedza
-    //ze sa czescia klasy
+        //można przenosić pola
+        //może mieć jedno pole danego typu lub WIELE
+        //NP klasa ulamek ma licznik i mianownik
+            //licznik i mianownik nie wiedza ze sa czescia klasy
 
     //!!!kompozycją są klasy i struktory z normalnymi danymi stosowymi
-    //oraz dynamicznymi ale klasa musi nimi zarządzać
-    //danymi klasy zarządza tylko klasa w przypadku kompozycji
+        //oraz dynamicznymi ale klasa musi nimi zarządzać
+        //danymi klasy zarządza tylko klasa w przypadku kompozycji
 
-    //kompozycja może korzystać z części które dostała jako dane wejściowe 
-    //zamiast tworzyć własną część
-    //kompozycja może przekazać destrukcję memberów innemu obiektowi np garbage collector
+    //kompozycja może korzystać z części które dostała jako dane wejściowe
+        //zamiast tworzyć własną część
+        //kompozycja może przekazać destrukcję memberów innemu obiektowi
+            //np garbage collector
 
-    //Kiedy tworzyć klasy a subklasy zamiast bezpośredniej implementacji ?
-    //Np klasa CREATURE ma w sobie klasę LOCATION która ma 2 inty x i y
-    //można zrobić CREATURE które ma 2 inty zamiast klasy LOCATION (gorsze)
-    //rozwiązanie z klasą LOCATION lepsze bo klasa jest prostsza łatwiejsza do
-    //zrozumienia bardziej skoncentrowana
-    //może być reusable nawet do innych celów
-    //klasa zawierająca LOCATION będzie mniej złożona bo location może
-    //robić ciężką pracę
-    //dobrze żeby jedna klasa robiła jedną pracę i nie martwić się o pracę subklas
+    //Kiedy tworzyć klasy i subklasy zamiast bezpośredniej implementacji ?
+        //Np klasa CREATURE ma w sobie klasę LOCATION która ma 2 inty x i y
+        //można zrobić CREATURE które ma 2 inty zamiast klasy LOCATION (gorsze)
+        //rozwiązanie z klasą LOCATION lepsze bo klasa jest prostsza łatwiejsza
+            //do zrozumienia bardziej skoncentrowana
+        //może być reusable nawet do innych celów
+        //klasa zawierająca LOCATION będzie mniej złożona bo location może
+            //robić ciężką pracę
+        //dobrze żeby jedna klasa robiła jedną pracę i nie martwić się
+            //o pracę subklas
 }
+
 
 
 class Teacher
@@ -95,15 +98,15 @@ void agregacja()
 {
     //has-a: //!!!obiekt ma
     //agregacje -> drugi rodzaj kompozycji
+
     //warunki
-    //member lub wiele memberów jest częścią klasy 
-    //member może należeć do więcej niż jednego obiektu klasy w tym samym czasie
-        //pointery i referencje
-    //życie membera nie jest zarządzane przez obiekt
-    //member nie wie o istnieniu klasy
+        //member lub wiele memberów jest częścią klasy 
+        //member może należeć do więcej niż jednego obiektu klasy
+            //w tym samym czasie pointery i referencje
+        //życie membera nie jest zarządzane przez obiekt
+        //member nie wie o istnieniu klasy
 
     //undirectional relation
-
     //agregacja nie jest odpowiedzialna za tworzenie i niszczenie memberów
 
     Teacher* t1{};
@@ -111,17 +114,15 @@ void agregacja()
 
     delete[] t1; //jeszcze żyje
 
-    //!!!jak robimy program zaimplementujmy NAJPROSTSZA relację, która spełnia
-    //nasze potrzeby a nie taką, która wydaje się być poprawna w realnym świecie
+    //!!!jak robimy program zaimplementujmy NAJPROSTSZA relację,
+        //która spełnia nasze potrzeby a nie taką,
+        //która wydaje się być poprawna w realnym świecie
 
     //agregację można mieszać z kompozycją
-    //agregacja jest niebezpieczniejsza bo nie kasuje memberów i może być memory leak
+    //agregacja jest niebezpieczniejsza bo nie kasuje memberów
+        //i może być memory leak
     //faworyzować kompozycję nad agregacją
 }
-
-
-
-
 
 
 
@@ -163,7 +164,8 @@ struct Car
 };
 struct CarWarehause
 {
-    Car cars[4] {Car{1, "Toyota"}, Car{2, "VAG"}, Car{3, "Mercedes"}, Car{4, "BMW"}};
+    Car cars[4] {Car{1, "Toyota"}, Car{2, "VAG"},
+                 Car{3, "Mercedes"}, Car{4, "BMW"}};
 };
 struct Driver
 {
@@ -173,17 +175,18 @@ struct Driver
 using namespace std;
 void asocjacja()
 {
-    //brak domniemanych relacji człość <-> część
-    //warunki
-    //member nie jest związany z klasą
-    //member może należeć do więcej niż jednej klasy w danym czasie
-    //obiekt nie zarządza czasem życia membera
-    //member może ale nie musi wiedzieć o życiu obiektu
+    //brak domniemanych relacji całość <-> część
 
-    //np doktor ma relacje z pacjentem ale pacjentem ale 
-    //pacjent nie jest częścią doktora
-    //pacjent może mieć wielu doktorów a doktor pacientów
-    //ich czas życia nie jest powiązany
+    //warunki
+        //member nie jest związany z klasą
+        //member może należeć do więcej niż jednej klasy w danym czasie
+        //obiekt nie zarządza czasem życia membera
+        //member może ale nie musi wiedzieć o życiu obiektu
+
+    //np doktor ma relacje z pacjentem ale pacjentem ale
+        //pacjent nie jest częścią doktora
+        //pacjent może mieć wielu doktorów a doktor pacientów
+        //ich czas życia nie jest powiązany
 
     //uses-a -> doktor używa pacjenta do zarobku
     //pacjent używa doktora do leczenia
@@ -204,15 +207,16 @@ void asocjacja()
     //unikać dwukierunkowych relacji bo łatwo o błąd
 
     //obiekty mogą mieć relacje z obiektami tego samego typu
-    // -> reflexife associaton == zwrotne powiązanie
-    //np trening ma w sobie powiązanie do obiektu trening -> wymagania wstępne
+        // -> reflexife associaton == zwrotne powiązanie
+        //np trening ma w sobie powiązanie do obiektu trening -> wymagania wstępne
+
 
     //Inny pokaz asocjacji jednokierunkowej bez pointerów z klasą pośrednią
     Driver r {3, "Pawel"};
     CarWarehause cw;
     cout << r.imie << " ma samochod " << cw.cars[r.carID].nazwa << endl;
-    //zamiast pointera Driver ma id obiektu
-    //lepsze gdy mamy coś w bazie lub pliku
+        //zamiast pointera Driver ma id obiektu
+        //lepsze gdy mamy coś w bazie lub pliku
 
     // property          COMPOSITION         AGGREGATION         ASSOCIATION
     // relation          WHOLE/PART          WHOLE/PART          UNRELATED
@@ -227,18 +231,18 @@ void asocjacja()
 void dependency()
 {
     //np kwiat pszczoła -> kolejny najprostszy typ relacji
-    //owiekt wywołuje funkcjonalność innego obiektu do ukończenia zadania
-    //najsłabsza relacja jednokierunkowa
+        //obiekt wywołuje funkcjonalność innego obiektu do ukończenia zadania
+        //najsłabsza relacja jednokierunkowa
 
     cout << "cout jest powiązany z tym tekstem" << endl;
 
     //różnice z asocjacją
-    //w asocjacji jedna klasa trzyma pośredni lub bezpośredni link do drugiej
-    //np doktor ma array pacjentów i może zawsze ich sprawdzić
+        //w asocjacji jedna klasa trzyma pośredni lub bezpośredni link do drugiej
+        //np doktor ma array pacjentów i może zawsze ich sprawdzić
 
     //dependency nie są reprezentowane na poziomie klasy
-    //zależny obiekt nie jest zlinkowany jako member
-    //potrzebny obiekt jest tworzony na potrzebę np otwarcie pliku
+        //zależny obiekt nie jest zlinkowany jako member
+        //potrzebny obiekt jest tworzony na potrzebę np otwarcie pliku
 }
 
 #include <cstring>
@@ -250,10 +254,26 @@ private:
 public:
     IntArray() : mSize(0), mData(nullptr) {}
     IntArray(int size) : mSize(size), mData(new int[size]) {}
-    ~IntArray() { delete[] mData;}
-    void erase() { delete[] mData; mData = nullptr; mSize = 0;}
-    int& operator[](int index) {return mData[index];}
-    void realocate(int newSize) {erase(); mData = new int[newSize]; mSize = newSize;}
+    ~IntArray()
+    {
+        delete[] mData;
+    }
+    void erase()
+    {
+        delete[] mData;
+        mData = nullptr;
+        mSize = 0;
+    }
+    int& operator[](int index)
+    {
+        return mData[index];
+    }
+    void realocate(int newSize)
+    {
+        erase();
+        mData = new int[newSize];
+        mSize = newSize;
+    }
     void resize(int newSize)
     {
         int* newData = new int[newSize];
@@ -296,17 +316,20 @@ std::ostream& operator<<(std::ostream& o, const IntArray& ia)
 void klasyKontenerowe()
 {
     //mają:
-    //tworzenie pustego kontenera
-    //insert obiektu
-    //remove obiektu
-    //raport ilości obiektów
-    //czyszczenie kontenera
-    //dostarczają dostęp do obiektów
-    //sortują elementy
+        //tworzenie pustego kontenera
+        //insert obiektu
+        //remove obiektu
+        //raport ilości obiektów
+        //czyszczenie kontenera
+        //dostarczają dostęp do obiektów
+        //sortują elementy
 
     //konterner klasy występują zwykle w 2 wariantach
-    //Value containers -> compositions trzymają kopie obiektów i zarządzają ich życiem
-    //Reference containers -> aggregations -> trzymają pointery i nie odpowiadają za życie
+    //Value containers -> compositions trzymają kopie obiektów
+        //i zarządzają ich życiem
+
+    //Reference containers -> aggregations -> trzymają pointery
+        //i nie odpowiadają za życie
 
     //kontenery mogą trzymać jeden typ danych w c++
 
@@ -330,7 +353,8 @@ void klasyKontenerowe()
 class IntArray2 : public IntArray
 {
 public:
-    explicit IntArray2(const std::initializer_list<int>& il) : IntArray(il.size())
+    explicit IntArray2(const std::initializer_list<int>& il)
+        : IntArray(il.size())
     {
         std::cout << "IntArray2 Initializer list\n";
         int iterator = 0;
@@ -352,39 +376,39 @@ public:
 void initializerList()
 {
     cout << "==========================\n";
-    int array[5] {1,2,3,4,5};//uniform initialization or initializer_list ??
-    int array2[5] = {1,2,3,4,5};//initializer_list
+    int array[5] {1,2,3,4,5};
+        //uniform initialization or initializer_list ??
+    int array2[5] = {1,2,3,4,5};
+        //initializer_list
     int* array3 = new int[5] {1,2,3,4,5};
-    //int* array4 = new int[5] = {1,2,3,4,5}; ERROR
+        //int* array4 = new int[5] = {1,2,3,4,5}; ERROR
+
     nicNieRob(array);
     nicNieRob(array2);
     nicNieRob(array3);
+    delete[] array3;
 
-    //przed c++11 list initialization była dostępna tylko dla statycznych i
-    //dynamicznych tablic
+    //przed c++11 list initialization była dostępna tylko dla
+        //statycznych i dynamicznych tablic
 
-    //!!!gdy kompilator widzi initializer list antomatycznie konwertuje 
-    //to do obiektu std::initializer_list
+    //!!!gdy kompilator widzi initializer list antomatycznie konwertuje
+        //go do obiektu std::initializer_list
 
     //std::initializer_list ma metodę size która zwraca ilość elementów
     //std::initializer_list nie ma przeciazonego operatora [] nie wiadomo czemu
 
-    //!!!PRzy implementacji konstruktora z std::initializer_list powinno się dodać
-    //!!!list assigment operator
-    //!!!deep copy
-    //!!!zrobić konstruktor explicit
+    //!!!Przy implementacji konstruktora z std::initializer_list powinno się dodać
+        //!!!list assigment operator
+        //!!!deep copy
+        //!!!zrobić konstruktor explicit
+
     IntArray2 ia2 {1,22,33,4,5};
 
-
-    //ia2 = {4,3,45,5,3,3};nie zadziałą przez explicit, bez tego rozwalilo by program
-    //bo użyłby domyślnego operatora przypisania 
-    //(z wcześniej przerobionej listy na obiekt IntArray2) i plytka kopia
-
-    //IntArray2 ia3 = {1,2,3,4,5}; -> nie zadziala tylko przez explicit
-    cout << ia2;
+    //IntArray2 ia3 = {1,2,3,4,5};
+        //nie zadziala tylko przez explicit
 
     //std::initializer list można użyć też dla operatora przypisania
-    //żeby zmienić aktualne wartości
+        //żeby zmienić aktualne wartości
     ia2 = {55,66,77,88,99,999,888,777,666};//operator przypisania
     cout << ia2;
 }

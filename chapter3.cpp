@@ -29,7 +29,7 @@ void priorytetOperatorow()
     //R->L +, -, ++, --, !, ~, (type), sizeof, &, *, new, new[], delete, delete[]
     //L->R ->*, .*
     //L->R *, /, %
-    //L->R +, - 
+    //L->R +, -
     //L->R <<, >>
     //L->R <, <=, >, =>
     //L->R ==, !=
@@ -42,18 +42,18 @@ void priorytetOperatorow()
     //R->L throw
     //L->R ,
 
-    //!!!używać () jeżeli wyrażenie ma więcej niż 1 operator nawet jeżeli to niekonieczne
+    //!!!używać () jeżeli wyrażenie ma więcej niż 1 operator nawet
+        //jeżeli jest to niekonieczne
     //^ XOR operator
     int x = 5;
     x = 6 - -6;
     printf("x = 6 - -6; x=%d\n", x);
     printf("4/0.0 = %f\n", 4/0.0);
     //printf("4/0.0 = %f", 4/static_cast<int>(0.0)); crash
-    printf("7 %% 4 = %d\n", 7%5);
-    //przec c++11 nie było sprecyzowane jak dzielić inty więc wynik mógł być
+    printf("7 %% 5 = %d\n", 7%5);
+    //przed c++11 nie było sprecyzowane jak dzielić inty więc wynik mógł być
     //ujemny lub dodatni a zaokrąglenie w górę lub w dół
     //teraz zaokrągla się w kierunku 0 czyli ucina ułamek i znak jest liczby a (a%b)
-
 }
 
 void incrementDecrementOperatory()
@@ -66,17 +66,19 @@ void incrementDecrementOperatory()
 
     //stosować pre inkrementację zamiast post, bardziej odporna na błądy i szybsza
 
-    //int value = add(x, ++x); nie jest zdefiniowane w której kolejności argumenty są zdefiniowane -> wynik nieznany
+    //int value = add(x, ++x); nie jest zdefiniowane w której kolejności
+        //argumenty są zdefiniowane -> wynik nieznany
     //x = x++; wynik nieznany
 
-    //funkcja ma side-effect jeżeli: modyfikuje stan, input, output lub wywołuje inną funkcję
+    //funkcja ma side-effect jeżeli: modyfikuje stan, input, output lub
+        //wywołuje inną funkcję
     //!!!zmienna z side-effect nie powinna być użyta więcej niż raz w 1 statement
 }
 
 void sizeOfComaCondtional()
 {
     int z[15] {};
-    printf("sizeof char[15] = %lu\n", sizeof(z));
+    printf("sizeof int[15] = %lu\n", sizeof(z));
 
     //przecinek ewolułuje do najbardziej prawej wartości, ma też najniższy prio
     int g = (z[0]++, 6);
@@ -87,9 +89,10 @@ void sizeOfComaCondtional()
 
     //Operator conditional ?: -> terenary operator czyli bierze 3 argumenty
     //std::cout << (x > y) ? x : y; wyewoluuje do poniższego bo ?: ma mały prio
-    //<std::cout << ( x > y)) ? x : y;
+    //(std::cout << ( x > y)) ? x : y;
 
-    //!!!conditional operatora używać tylko do prostych operacji żeby zwiększyć czytelność
+    //!!!conditional operatora używać tylko do prostych operacji żeby
+        //zwiększyć czytelność
     //conditional operator ewoluuje jako wyrażenie więc można użyć do consta np
     //if/else ewoluuje jako zbiór statement
 }
@@ -103,16 +106,17 @@ void relationOperators()
 void logicalOperators()
 {
     //! && ||
-    // wszystko !0 == true
+    //wszystko !0 == true
     //!!! jeżeli ! jest stosowane do wyniku, wyrażenie powinno być w nawiasach
-    //short circuit evaluation (if a++ && b++), jak a != true to be się nei wywoła
-    //&& ma wyższy prio
+
+    //short circuit evaluation (if a++ && b++), jak a != true to b się nie wywoła
+    //!!! && ma wyższy prio
 
     //De Morgan's law
     //!( x && y )  == !x || !y
     //!( x || y )  == !x && !y
 
-    //nie ma XOP operatora zamiast tego poniższe i tylko na boolach
+    //nie ma XOR operatora porównania zamiast tego poniższe i tylko na boolach
     //if (a != b != c ...)
 }
 
@@ -159,8 +163,8 @@ void operatoryBitowe()
     printf("3 ^ 2 : ");
     printBinary(static_cast<uint8_t>(3 ^ 2));
 
-    constexpr uint8_t bit1 = 1 << 0;//bit 3
-    constexpr uint8_t bit2 = 1 << 1;//bit 3
+    constexpr uint8_t bit1 = 1 << 0;//bit 1
+    constexpr uint8_t bit2 = 1 << 1;//bit 2
     constexpr uint8_t bit3 = 1 << 2;//bit 3
 
     u = 0u;
@@ -173,12 +177,12 @@ void operatoryBitowe()
     printf("Wyłączenie 3 bitu: u=15(1111); u &= ~0b0100: ");
     printBinary(u);
 
-    u=0u;
+    u = 0u;
     u |= (bit1 | bit2 | bit3);
     printf("Włączenie bitu 1, 2, 3; u=0: ");
     printBinary(u);
 
-    u=15u;
+    u = 15u;
     u &= ~(bit2 | bit3);
     printf("Wyłączenie bitu 2, 3; u=15: ");
     printBinary(u);
@@ -188,7 +192,8 @@ void operatoryBitowe()
     printf("Zamiana bitu 1, 2; u=15: ");
     printBinary(u);
 
-    //maski oszczędzają pamięć i funkcja nie bedzie musiała mieć wielu parametrów bo np 1 int czyli 1 parametr może mieć w sobie 32 ustawienia
+    //maski oszczędzają pamięć i funkcja nie bedzie musiała mieć wielu parametrów
+        //ponieważ np 1 int czyli 1 parametr może mieć w sobie 32 ustawienia
 
     std::bitset<4> bits;
     printf("bitset<4> = %s\n", bits.to_string().c_str());

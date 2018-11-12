@@ -33,5 +33,3 @@ $(RELEASE_DIR)/%.o: %.cpp
 clean:
 	rm -rf $(TARGET) *.o $(RELEASE_DIR)
 .PHONY: clean
-
-

@@ -12,7 +12,7 @@ void constAndSymbolic(int param);
 void nicNieRob(void*){};
 void chapter2run()
 {
-    printf("\n\n-----chapter 2 started-----\n");
+    std::cout << "\n\n-----chapter 2 started-----\n";
 
     typyProste();
     zmienneZeStalymRozmiarem();
@@ -33,9 +33,9 @@ void typyProste()
     //!!!zmienna to alias na adres w pamięci
 
     //int i = 5; //copy initialization
-    //int i(5); //direct initialization LEPSZE
-    //int i{5}; //uniform initialization NAJLEPSZE
-    //int i{}; //inicjalizuje zerem
+    //int i(5);  //direct initialization LEPSZE
+    //int i{5};  //uniform initialization NAJLEPSZE
+    //int i{};   //inicjalizuje zerem
     //!!!uniform initialization nie pozwala na narrowing int i {4.5}
 
     //int i;
@@ -44,7 +44,7 @@ void typyProste()
     //int e{9}, f{10};
     //!!!int a, b = 5; a jest niezainicjalizowane
 
-    //!!!nie deklarować wielu zmiennych w jednej linie jeżeli są tam inicjalizowane
+    //!!!nie deklarować wielu zmiennych w jednej lini jeżeli są tam inicjalizowane
     //!!!definiować zmienne jak najbliżej ich użycia
 
     //void oznacza brak typu
@@ -58,7 +58,7 @@ void typyProste()
     std::cout << "Size of int is: " << sizeof(long double) << " bytes" << std::endl;
     //on x64 int is still 4 bytes
 
-    //!!!us "long" instead "long int" etc
+    //!!!use "long" instead "long int" etc
     unsigned char uchar = std::numeric_limits<unsigned char>::max();
     printf("Max unsigned char value is %d", uchar);
 
@@ -72,12 +72,14 @@ void zmienneZeStalymRozmiarem()
 
     //uint8_t i int_8t mogą być traktowane jako char ale to błąd kompilatorów
 
-    //zmienne z zafixowanym rozmiarem mogą być wolne i 
-    //mogą nie odpalić się na jakiś architekturach ltóre nie wspierają takiego rozmiaru zmiennej
+    //zmienne z zafixowanym rozmiarem mogą być wolne i mogą nie odpalić
+    //się na jakiś architekturach które nie wspierają takiego rozmiaru zmiennej
     //po to zostąły stworzone poniższe zmienne
 
-    int_fast32_t if32 {}; //zmienna która ma minimum 32 bajty i jest szybka (najszybsza dostępna)
-    int_least32_t il32 {}; //zmienna która ma minimum 32 bajty (najmniejsza dostępna)
+    int_fast32_t if32 {}; //zmienna która ma minimum 32 bajty i jest szybka 
+        //(najszybsza dostępna)
+    int_least32_t il32 {}; //zmienna która ma minimum 32 bajty 
+        //(najmniejsza dostępna)
     nicNieRob(&if32);
     nicNieRob(&il32);
 }
@@ -114,8 +116,8 @@ void chars()
     //int8_t jest zwykle traktowany jako char ale to błąd
     printf("w ASCII litera a ma liczbę: %d\n", static_cast<int>('a'));
 
-    //std::endl w przeciwieństwie do \n gwarantuje że jeżeli są jakieś skolejkowane
-    //bufory będą wyautputowane przed kontynuacją
+    //std::endl w przeciwieństwie do \n gwarantuje że jeżeli są 
+        //jakieś skolejkowane bufory będą wyautputowane przed kontynuacją
 
     //wchar_t nie używać tylko do windows api
     //char16_t & char32_t są do utf16/32
@@ -127,7 +129,8 @@ void chars()
 void literals()
 {
     //!!!w c++ są 2 typy stałych literals i symbolic
-    //literal constants są nazywane literals, są wpisane w kod i nie da się zmienić ich wartości
+    //literal constants są nazywane literals, są wpisane w kod i nie da 
+        //się zmienić ich wartości
     //np true, 5, 3.14159, 6.02e22, 'a', "Hello"
 
     //numeric literals powinny mieć sufixy np
@@ -152,10 +155,11 @@ void constAndSymbolic(int param)
     nicNieRob(&a);
 
     constexpr int constExprInt {5};
-    char tab[constExprInt];//ze zwykłym constem byłoby to niedozwolone mimo że się kompiluje
+    char tab[constExprInt];//ze zwykłym constem byłoby to niedozwolone
+                           //mimo że się kompiluje
     nicNieRob(tab);
 
-    //zmienne powinny być najpierw constexpr -> const -> bez jeżeli możliwe
+    //zmienne powinny być najpierw constexpr -> const -> bez, jeżeli możliwe
 
     //SYMBOLIC CONSTANTS
     #define MAX_COSTAM 5 //nie używać bo brak w debuggerze i mają zawsze file scope

@@ -47,7 +47,16 @@
         "strstream": "cpp",
         "cinttypes": "cpp",
         "typeindex": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "unordered_map": "cpp",
+        "fstream": "cpp",
+        "optional": "cpp",
+        "sstream": "cpp",
+        "string_view": "cpp",
+        "forward_list": "cpp",
+        "numeric": "cpp"
     },
     "python.linting.pylintEnabled": false,
     "editor.renderWhitespace": "all"

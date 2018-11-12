@@ -2,5 +2,5 @@
 
 void functionWithoutDeclarationInHpp()
 {
-    printf("functionWithoutDeclarationInHpp\n");
+    std::cout << "functionWithoutDeclarationInHpp" << std::endl;
 }

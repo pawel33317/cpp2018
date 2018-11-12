@@ -1,6 +1,6 @@
 #include <iostream>
-#include "chapterS.hpp"
 #include <typeinfo>
+#include "chapterS.hpp"
 using namespace std;
 
 void cpp11();
@@ -24,7 +24,8 @@ void cpp11()
     //char_16_t, char32_t ----------------------------
     //constexpr
     //decltype
-    struct {
+    struct
+    {
         string name;
     } object1;
     object1.name = "nazwa1";
@@ -33,20 +34,21 @@ void cpp11()
     cout << "object2.name = " << object2.name << endl;
 
     //default wymusza utworzenie metody np konstruktora
-            //domyślnego mimo, że zadeklarowaliśmy inny
+        //domyślnego mimo, że zadeklarowaliśmy inny
 
-    //delegating constructors - wywołanie innego konstruktora na liście inilizacyjnej 8.6
-            //konstruktor delegujący nie może nic inicjalizować na liście
+    //delegating constructors - wywołanie innego konstruktora na
+        //liście inilizacyjnej 8.6
+        //konstruktor delegujący nie może nic inicjalizować na liście
 
     //converting konstruktor - konstruktory zdolne do niejawnej konwersji 9.13
-            //np przekazujemy int 5 do funkcji przyjmującej typ ObjectX i int
-            //zostanie do niego skonwertowany
+        //np przekazujemy int 5 do funkcji przyjmującej typ ObjectX i int
+        //zostanie do niego skonwertowany
 
-    //explicit zabrania niejawnej konwersji w konstruktorach np przekazany chara 9.13
-            //nie zostanie zrzutowany na inta
+    //explicit zabrania niejawnej konwersji w konstruktorach np przekazany
+        //chara 9.13 nie zostanie zrzutowany na inta
 
-    //delete konstruktor lub metoda każde użycie takiej funkcji jest rozważane 9.13
-            //jako compilation error (zamiast robienia metod private)
+    //delete konstruktor lub metoda każde użycie takiej funkcji jest rozważane
+        //jako compilation error (zamiast robienia metod private) 9.13
 
     //enum clases 4.5a
 
@@ -55,7 +57,7 @@ void cpp11()
     //lambda expressions
         //[przechwytywanie](parametry)->returnType{ciało}
         //[]<tparams>()exceptionSpecifier->{}   //od C++20
-        //[]()->{}   //const lambda obiekty pobierane przez kopię (tylko niektóre
+        //[]()->{}   //const lambda obiekty pobierane przez kopię (tylko niektóre)
             //np statyczne czy constexpr chyba) są const w lambdzie
         //[](){}   //return type traktowany jako auto, czyli pobrany z returna
         //[]{}   //funkcja bez argumentów
@@ -66,7 +68,8 @@ void cpp11()
         int l3 = 0;
         //auto lambda1 = []() { //nie widzi l1 i l2
         //auto lambda1 = [=](){ //nie pozwala na modyfikację l1 i l2
-        auto lambda1 = [&, l3](){ //wszystko przez referencje oprocz l3 które jest przez wartość
+        auto lambda1 = [&, l3](){ //wszystko przez referencje oprocz l3
+                                  //które jest przez wartość
             cout << l1++ << ++l2 << l3 << endl;
         };
         cout << ++l1 << ++l2 << endl;
@@ -103,7 +106,7 @@ void cpp11()
 
     //typedef can not typedef template class ----------------------------
 
-    //uniform initialization - {} zaruje, nie poazwla na narrowing 2.1
+    //uniform initialization - {} zeruje, nie poazwla na narrowing 2.1
 
     //user-defined literals ----------------------------
 
@@ -151,7 +154,7 @@ void cpp14()
     cout << "--------------------cpp14-----\n";
     //mały update w większości poprawki
 
-    //agregate memner initialization
+    //agregate member initialization
         //Rectangle x{ 2.0, 2.0 }; nawet jeżeli x.a i x.b mają domyslne wartości
 
     //binary literals
@@ -164,7 +167,7 @@ void cpp14()
 
     //auto return type = auto add(int x, int y){}
 
-    //generic lambdas and lapbdas capture expressions ----------------------------
+    //generic lambdas and lambdas capture expressions ----------------------------
 
     //relaxed constexpr functions ----------------------------
 
@@ -177,9 +180,10 @@ void cpp14()
 
 void cpp17()
 {
-    //zaakceptwana w c++17
+    //zaakceptwana w 2017
 
-    //__has_include preprocessor identifier to check if optional header files are available
+    //__has_include preprocessor identifier to check if optional header files
+        //are available
 
     //if statements that resolve at compile time
 
@@ -193,7 +197,7 @@ void cpp17()
 
     //Removal of std::auto_ptr and some other deprecated types
 
-    //static_assert no longer requires a diagnostic text message parameter 
+    //static_assert no longer requires a diagnostic text message parameter
 
     //std::any
 
@@ -203,7 +207,8 @@ void cpp17()
 
     //std::opcional
 
-    //std::shared_ptr  can now manage C-style arrays (but std::make_shared can’t create them yet)
+    //std::shared_ptr can now manage C-style arrays
+        //(but std::make_shared can’t create them yet)
 
     //Structured binding declarations
 

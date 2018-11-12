@@ -20,7 +20,7 @@ void autoKeyword();
 
 void chapter4run()
 {
-    printf("\n\n-----chapter 4 started-----\n");
+    std::cout << "\n\n-----chapter 4 started-----\n";
 
     blokiILokalneZmienne();
     zmienneGlobalneILinkage();
@@ -41,13 +41,15 @@ void blokiILokalneZmienne()
 
     //SCOPE określa gdzie zmienna jest dostępna
     //DURATION określa kiedy zmienna jest tworzona i niszczona
-    //LINKAGE określa czy wiele wystąpień identyfikatora odnosi się do tej samej zmiennej czy nie 
+    //LINKAGE określa czy wiele wystąpień identyfikatora odnosi się do tej samej
+        //zmiennej czy nie 
                 //internal, external, no linkage
 
     //LOCAL VARIABLES   -> duration AUTOMATIC
     //                  -> scope BLOCK (local)
-    //                  -> linkage NO LINKAGE -> może odnosić się tylko do ogriczonego zakresu w którym istnieje 
-    //                     czyli np zmienne o tych samych nazwach w innych funkcjach są niezależne
+    //                  -> linkage NO LINKAGE -> może odnosić się tylko do
+        //ogriczonego zakresu w którym istnieje, czyli np zmienne o tych
+        //samych nazwach w innych funkcjach są niezależne
 
     //zmiennt wewnątrz inner bloków widzą zmienne z outer bloków
     //shadowing zmienne wewnątrz nested bloków mogą mieć nazwy jak z outer bloków
@@ -69,19 +71,28 @@ void blokiILokalneZmienne()
 int global_zmienna {5}; //powinna być zadeklarowana na górze pliku
                         //domyślnie EXTERNAL
 const int const_global_zmienna{2}; //domyślnie INTERNAL bo const
+
 //UŻYCIE STATIC POZA BLOKIEM
-static int static_global_zmienna{10}; //INTERNAL linkage -> widoczna tylko w tym pliku
-//extern int extern_global_zmienna{11}; //EXTERNAL linkage -> widoczna również poza tym plikiem
+static int static_global_zmienna{10}; 
+        //INTERNAL linkage -> widoczna tylko w tym pliku
+
+//extern int extern_global_zmienna{11};
+    //EXTERNAL linkage -> widoczna również poza tym plikiem
     //jeżeli chcę zrobić niezainicjalizowaną zmienną non-const nie używać
-    //extern bo kompilator pomyśli że jest to forward declaration
+        //extern bo kompilator pomyśli że jest to forward declaration
+
 //UŻYCIE STATIC POZA BLOKIEM
-static int getNewID()//funkcje mają domyślne linkage extern
-                     //w forward deklaracji extern nie jest potrzebne bo kompilator umie rozróżnić bo brak ciała
-                     //w każdym pliku może być o takiej nazwie nowa, tak samo ze zmiennymi
-                     {
-                         static int i{0};
-                         return ++i;
-                     }
+static int getNewID()
+{
+    static int i{0};
+    return ++i;
+}
+    //funkcje mają domyślne linkage extern
+    //w forward deklaracji extern nie jest potrzebne bo kompilator 
+        //umie rozróżnić bo brak ciała
+    //w każdym pliku może być o takiej nazwie nowa, tak samo ze zmiennymi
+
+
 void zmienneGlobalneILinkage()
 {
     //GLOBAL VARIABLES  -> duration STATIC od początku do końca programu
@@ -92,39 +103,53 @@ void zmienneGlobalneILinkage()
 
     int global_zmienna{10};//przesłonięcie
     ::global_zmienna++;
-    printf("::global_zmienna = %d, global_zmienna = %d\n", ::global_zmienna, global_zmienna);
+    printf("::global_zmienna = %d, global_zmienna = %d\n",
+        ::global_zmienna, global_zmienna);
+
+    //::powoduje odwołanie się do zmiennej globalnej
     nicNieRob(&static_global_zmienna);
 
     //!!!aby użyć zmiennej z linkage External trzeba zrobić jej forward declaration
-    //extern int  extern_global_zmienna;//forward declaration extern robi co innego w zależności od kontekstu
+    //extern int extern_global_zmienna;
+        //forward declaration extern robi co innego w zależności od kontekstu
     //printf("%d\n", extern_global_zmienna);
 
-    //!!!nie używać nin const zmiennych globalnych mo to sens głównie przy logach i np uchwycie do bazy danych, uchwycie do dźwięku itp
+    //!!!nie używać non-const zmiennych globalnych bo to sens głównie przy
+        //logach i np uchwycie do bazy danych, uchwycie do dźwięku itp
+
     //!!!zmienne globalne powinny być w namespace ewentualnie prefix g_
-    //!!!zamiast zmiennej globalnej lepiej zrobić statyczną i zrobić funkcję extern która umożliwia robić na niej zmiany, w razie czego będzie tylko jedna funkcja w kodzie do zmiany
-    //!!!przekazywać zmienne globalne do funkcji które jej potrzebują nie używać w nich bezpośrednio
+    //!!!zamiast zmiennej globalnej lepiej zrobić statyczną i zrobić funkcję
+        //extern która umożliwia robić na niej zmiany, w razie czego
+        //będzie tylko jedna funkcja w kodzie do zmiany
+
+    //!!!przekazywać zmienne globalne do funkcji które jej potrzebują
+        //nie używać w nich bezpośrednio
 
     //JOKE: what is the best prefix for global variable ?
-    //"//"
+        //"//"
 
     //!!!ZMIENNE STATIC DURATION
-    //!!!użycie słowa static na zmiennych lokalnych nie zmienia ich LINKAGE a DURATION
+        //!!!użycie słowa static na zmiennych lokalnych nie zmienia ich 
+        //LINKAGE a DURATION
+
     //zmienne statyczne są tworzone i inicjalizowane tylko raz i trzymają swoją
-    //wartość nawet po wyjściu z własnego scope
+        //wartość nawet po wyjściu z własnego scope
     //można użyć prefixu s_
 
     printf("genId: %d, genId: %d, genId: %d\n", getNewID(), getNewID(), getNewID());
 }
+
+
 //Constants.hpp -> za każdym razem będą wczytane wszystkie zmienne z namespace
-/*
-namespace Constants
-{
-    const double pi{3.14159}...
-}
-*///INNE rozwiązanie zamienić w hpp na "extern const double pi" a zainicjalizować w constatns.cpp
-  //dodatkowo zmiana stałych nie będzie w hpp więc nie będzie wymagana rekompilacja wszystkich pliuków które includują constants.hpp
-  //ZLE bo nie mogą być constexpr i może to być wolniejsze
-  //jak nie ma powodu oryginalne rozwiązanie z initjalizacją constów w hpp lepsze
+        // namespace Constants
+        // {
+        //     const double pi{3.14159}...
+        // }
+//INNE rozwiązanie zamienić w hpp na "extern const double pi" a zainicjalizować
+//w constatns.cpp, dodatkowo zmiana stałych nie będzie w hpp więc nie będzie
+//wymagana rekompilacja wszystkich plików które includują constants.hpp
+    //ZLE bo nie mogą być constexpr i może to być wolniejsze
+    //jak nie ma powodu oryginalne rozwiązanie z initjalizacją constów w hpp lepsze
 
 
 
@@ -133,7 +158,10 @@ namespace NS1 //lepiej jakby było w hpp
     int ns1Var {5};//zmienna globalna
 
     static int ns1Var2;
-    namespace //wewnątrz anonimowego namespace tworzone są tylko zmienne statyczne z internal linkage
+
+
+    namespace //wewnątrz anonimowego namespace tworzone są tylko zmienne
+              //statyczne z internal linkage
     {
         int ns1Var3Statyczna;
     }
@@ -150,11 +178,14 @@ namespace NS1//to samo namespace może być w innym pliku
 int cout(){return 5;}
 void namespaces()
 {
-    //wszystko bez namespace jest zadeklarowane w domyślnym namespace ::(resolution operator)
+    //wszystko bez namespace jest zadeklarowane w domyślnym namespace ::
+        //(resolution operator)
     ::nicNieRob(&NS1::ns1Var2);
     ::nicNieRob(&NS1::ns1Var3Statyczna);
+
     printf("NS1::ns1Var = %d\n", NS1::ns1Var);
     //!!!to samo namespace może być zadeklarowane  w wielu miejscach
+
     namespace NSAlias = NS1::Details;
     printf("Namespace alias NSAlias = BS1::Details %d\n", NSAlias::details);
 
@@ -162,7 +193,8 @@ void namespaces()
     cout << "using std::cout; użycie std przed cout niepotrzebne\n";
     //nawet jeżeli będzie konflikt użyje std::cout
 
-    using namespace std;//używa bez namespace finlcji i zmiennych z namespace std
+    using namespace std;//używa bez namespace funkcji i zmiennych z namespace std
+    //zadeklarowano używanie namespace std bez konkretnych funkcji
     //tu jeżeli wykryje konflikt nazw wysypie się
 
     //!!! nie używać using w globalscope poza blokiem a najlepiej w ogóle
@@ -181,20 +213,23 @@ void rzutowanieNiejawne()
     //floating promotion z mniejszych fo double
     long l{44};//numeric promotion
 
-    short s{2};//
+    short s{2};
     double d{3};//numeric conversion z większego do mniejszego lub różne typy
     nicNieRob(&l);
     nicNieRob(&d);
     nicNieRob(&s);
 
-    //WYRAŻENIA opa typy są rzutowane do tego samego
+    //WYRAŻENIA oba typy są rzutowane do tego samego
     //!!!jeżeli operandy są mniejsza od int operator wyrażenia zmienia je na int
     //short + short ==> int + int = int
     //jeżeli operandy dalej się nie zgadzają są rzutowane na najeikszy typ operandu
-    //int < uint < lomg < ulong < long long < ulong long < float < double < long dluble
+    //int < uint < lomg < ulong < long long < ulong long < float 
+            //< double < long dluble
     printf("short + short = %s\n", typeid(s+s).name());
 
-    std::cout << "5u-10=" << 5u-10 << std::endl;//bo typy zostały zrzutowane na uint
+    std::cout << "5u-10=" << 5u-10 << std::endl;
+        //bo typy zostały zrzutowane na uint
+
     //unsigned int value = 10; while (value-- >= 0) {}//ENDLESS LOOP
 }
 
@@ -214,15 +249,18 @@ void stringi()
 
     std::string str;
     //std::cin >> str;//cin pobiera tylko do whitespace dla stringa
-    //więc jeżeli będzie np IMIE Nazwisko to pobrane zostanie tylko Imie a nazwisko zostanie w buforze
+    //więc jeżeli będzie np IMIE Nazwisko to pobrane zostanie tylko Imie
+        //a nazwisko zostanie w buforze
     //std::getline(std::cin, str);//pobiera całą linię
     printf("Domyślna wartość stringa to \"%s\"\n",str.c_str());
-    
 
-    //użycie getline nie zadziała po cin(dla inta) bo cin pozostawi \n a getlina od razu go wczyta
+    //użycie getline nie zadziała po cin(dla inta) bo cin pozostawi \n
+        //a getlina od razu go wczyta
 
-    //!!!użtwając cin dla numerycznych wartości warto dodać std::cin.ignore(32767, '\n') aby kasował kończący znak \n
-    //std::cin.ignore mówi jak wiele znaków należy zignorować 
+    //!!!użtwając cin dla numerycznych wartości warto dodać
+        //std::cin.ignore(32767, '\n') aby kasował kończący znak \n
+
+    //std::cin.ignore mówi jak wiele znaków należy zignorować
 
     std::string length {"duzo znakow .........."};
     printf("text \"%s\" ma %lu znakow\n", length.c_str(), length.length());
@@ -260,7 +298,8 @@ void enumy()
     nicNieRob(&zwierzee);
 
     //Zwierze noweZwierze = COLOR_BLACK; ERROR
-    //!!!Każdy enum jest rozważany jako różny typ nie można przypisać zwierze do kolor
+    //!!!Każdy enum jest rozważany jako różny typ nie można przypisać zwierze
+        //do kolor
     //enum powinien być w hpp wczytywany wiele razy bo nie zużywa ramu
     //warto używać np przy zwracaniu błędów ERR_BUFFER, ERR_WRITE, ERR_READ
 
@@ -280,25 +319,26 @@ void enumy()
         SROKA
     };
 
-    //!!!enum clasy są silnie typowane więc nie można porównać 2 enumeratorów z różnych enumów
+    //!!!enum clasy są silnie typowane więc nie można porównać 2 enumeratorów
+        //z różnych enumów
     //if (Kolor::BIALY == Ptak::SKOWRONEK);
 
     //!!!enumeratory w enum class są jego częścią nie mają jego scopu
-    //słowo class przy enum znów jest w innym contexście podobnie jak static
-
+    //słowo class przy enum znów jest w innym contekście podobnie jak static
 }
 
 void typedesfIaliasy()
 {
-    typedef double distance_t;//type def jest nieladny dla wskaźników do funkcji
+    typedef double distance_t;//type def jest nieładny dla wskaźników do funkcji
     distance_t dt = 4.44;
     nicNieRob(&dt);
     typedef std::vector<std::pair<int, int> > wektorParIntInt;
     wektorParIntInt vpii {std::make_pair(4,4), std::make_pair(4,4)};
     printf("Pierwszy element pierwszej pary w wektorze to %d\n", vpii.front().first);
-    //!!!dodawać sufix -T dla typedefów
+    //!!!dodawać sufix _t dla typedefów
+
     std::int16_t int16 {222};//cstdint + cpp11
-    std::uint64_t uint64 {std::numeric_limits<std::uint64_t>::max()};
+    std::uint64_t uint64 { std::numeric_limits<std::uint64_t>::max() };
     nicNieRob(&int16);
     std::cout << "maksymalna wartość uint64 to: " << uint64 << std::endl;
 
@@ -322,12 +362,13 @@ struct Czlowiek //!!!deklaracja struktury nie zajmuje pamięci
 struct Czlowiek2
 {
 public:
-    //!!!  the non-static member initialization 
+    //!!!  the non-static member initialization
     int wiek {11};
     //!!! w cpp11 można zainicjalizować pole struktury/klasy
-    //!!! w cpp11 i niżej jeżeli zainicjalizujemy domyślną wartością pole nie używając
-    //uniform initialization nie będzie możliwości zainicjalizowania pól przy tworzeniu zmiennej
-    //trzeba pisać konstruktor
+    //!!! w cpp11 i niżej jeżeli zainicjalizujemy domyślną wartością
+        //pole nie używając uniform initialization,
+        //nie będzie możliwości zainicjalizowania pól przy tworzeniu zmiennej
+        //trzeba pisać konstruktor
 
     std::string imie {"Marian"};
     struct Czlowiek {};
@@ -338,13 +379,19 @@ public:
 void struktury()
 {
     //!!!struktura to agregowany typ danych
-    Czlowiek pawel {99, "Pawel"};//!!!można zainicjalizować strukturę czy klasę przez initializer list poniżej cpp11 tak samo tylko z "="
+
+    Czlowiek pawel {99, "Pawel"};
+        //!!!można zainicjalizować strukturę czy klasę przez initializer list
+        //poniżej cpp11 tak samo tylko z "="
+
     printf("Wiek %s to %d\n", pawel.imie.c_str(), pawel.wiek);
     Czlowiek2 pawel2 {99, "Pawel"};
     Czlowiek pawel3;
     Czlowiek pawel4 {};
-    printf("Niezainicjalizowana struktura: Wiek %s to %d wysokosc %d\n", pawel3.imie.c_str(), pawel3.wiek, pawel3.wysokosc);
-    printf("Pusta uniform initialization: Wiek %s to %d wysokosc %d\n", pawel4.imie.c_str(), pawel4.wiek, pawel4.wysokosc);
+    printf("Niezainicjalizowana struktura: Wiek %s to %d wysokosc %d\n",
+        pawel3.imie.c_str(), pawel3.wiek, pawel3.wysokosc);
+    printf("Pusta struktura uniform initialization: Wiek %s to %d wysokosc %d\n",
+        pawel4.imie.c_str(), pawel4.wiek, pawel4.wysokosc);
 }
 
 class A
