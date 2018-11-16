@@ -430,7 +430,7 @@ class KlasaZeZmiennaStaticDoZainicjalizowania
         public:
             _inicjalizator()
             {
-                printf("Inicjalizuje zmienna statyczna\n");
+                //printf("Inicjalizuje zmienna statyczna\n"); !!!odkomentowac
                 tablicaDoZainicjalizowania[0] = 11;
                 tablicaDoZainicjalizowania[1] = 22;
                 tablicaDoZainicjalizowania[2] = 33;

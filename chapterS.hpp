@@ -25,3 +25,6 @@ void chapter16run();
 void appendixB();
 
 void chapter13run();
+
+void w_fabryka();
+void w_singleton();

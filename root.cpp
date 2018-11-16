@@ -76,7 +76,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    chapter1run();
+    /*chapter1run();
     chapter2run();
     chapter3run();
     chapter4run();
@@ -92,7 +92,10 @@ int main(int argc, char* argv[])
     chapter15run();
     chapter16run();
     appendixB();
-    chapter13run();
+    chapter13run();*/
+
+    w_fabryka();
+    w_singleton();
     printf("\n");
 }
 

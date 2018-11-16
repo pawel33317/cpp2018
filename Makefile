@@ -13,8 +13,11 @@ RELEASE_DIR=release
 LIBS = -l boost_system -l boost_filesystem -lm -lrt -lpthread
 
 SRCS := $(wildcard *.cpp)
+WZORCE_SRCS := $(wildcard wzorce/*.cpp)
 OBJS := $(patsubst %.cpp,%.o,$(SRCS))
 OBJS_RELEASE := $(patsubst %.cpp,$(RELEASE_DIR)/%.o,$(SRCS))
+OBJS_RELEASE += $(patsubst wzorce/%.cpp,$(RELEASE_DIR)/%.o,$(WZORCE_SRCS))
+
 
 TARGET := app.bin
 
@@ -29,6 +32,10 @@ $(TARGET): $(OBJS_RELEASE)
 $(RELEASE_DIR)/%.o: %.cpp
 	@mkdir -p $(RELEASE_DIR)
 	$(CXX) $(CXXLAGS) -c $< -o $@
+
+$(RELEASE_DIR)/%.o: wzorce/%.cpp
+	$(CXX) $(CXXLAGS) -c $< -o $@ -I.
+
 
 clean:
 	rm -rf $(TARGET) *.o $(RELEASE_DIR)
