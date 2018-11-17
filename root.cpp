@@ -96,6 +96,8 @@ int main(int argc, char* argv[])
 
     w_fabryka();
     w_singleton();
+
+    i_iterator();
     printf("\n");
 }
 

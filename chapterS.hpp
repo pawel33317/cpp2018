@@ -28,3 +28,4 @@ void chapter13run();
 
 void w_fabryka();
 void w_singleton();
+void i_iterator();

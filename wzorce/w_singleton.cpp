@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <memory>
 #include "chapterS.hpp"
@@ -46,6 +45,9 @@ public:
 void w_singleton()
 {
     printf("-----w_singleton-----\n");
+
+
+
     printf("-----w_singleton pointer implementation-----\n");
     SingletonPtrImp* s = SingletonPtrImp::getInstance();
     if(s)
@@ -55,6 +57,9 @@ void w_singleton()
         s2->show();
     cout << "singleton 1 addr: " << s << endl << "singleton 2 addr: "<< s2 << endl;
     delete s;
+
+
+
 
     printf("-----w_singleton reference implementation-----\n");
     SingletonRefImp& sri = SingletonRefImp::getInstance();
