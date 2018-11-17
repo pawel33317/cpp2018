@@ -56,10 +56,10 @@ using namespace std;
 
 
 // słowa kluczowe poniżej
-// wektor alokator, iterator
+// wektor alokator
 // variadic templates
 // #include "chapter14.hpp"
-// implementacja mapy, set (drzewa binarne), iteratora, listy dwukierunkowe wiązane
+// implementacja mapy, set (drzewa binarne), listy dwukierunkowe wiązane
 // wzorce
 
 // #include "appendixA.hpp"
@@ -98,36 +98,13 @@ int main(int argc, char* argv[])
     w_singleton();
 
     i_iterator();
+    i_keywords();
     printf("\n");
 }
-
-
-///////////////////////////////////
-//////////1 SŁOWA KLUCZOWE
-///////////////////////////////////
-// alignas **
-// alignof **
-// asm
-// compl
-// decltype	
-// export *
-// extern "C" 
-// mutable *
-// noexcept **
-// register
-// thread_local **
-// typedef	
-// typeid *
-// typename *
-// union
-// volatile
-// transaction_safe_dynamic
-// https://pl.cppreference.com/w/cpp/keyword
 
 ///////////////////////////////////
 //////////2 WZORCE
 ///////////////////////////////////
-//fabryka
 //dekorator
 //łańcuch zdarzeń
 //maszyna stanów
