@@ -1,5 +1,4 @@
 #include <iostream>
-#include "chapterS.hpp"
 
 void pointersAndReferencesToBaseClass();
 void funkcjeVirtualIPolimorfizm();
@@ -14,7 +13,7 @@ void objectSlicing();
 void dynamicCast();
 void printDerivedClassUsingOperator();
 
-void chapter12run()
+void t_chapter12run()
 {
     std::cout << "\n\n-----chapter 12 started-----\n";
     pointersAndReferencesToBaseClass();

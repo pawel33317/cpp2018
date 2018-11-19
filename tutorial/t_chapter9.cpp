@@ -1,5 +1,4 @@
 #include <iostream>
-#include "chapterS.hpp"
 
 void infroductionOperatorOverrloading();
 void operatoryArytmetyczne_uzywajac_FriendOrMemberOrExternalFunc();
@@ -14,7 +13,7 @@ void explicitDelete();
 void operatorPrzypisania();
 void shallowVsDeepCopying();
 
-void chapter9run()
+void t_chapter9run()
 {
     std::cout << "\n\n-----chapter 9 started-----\n";
     infroductionOperatorOverrloading();

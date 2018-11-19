@@ -3,14 +3,14 @@
 
 void priorytetOperatorow();
 void incrementDecrementOperatory();
-void nicNieRob(void*);
+void t_nicNieRob(void*);
 void sizeOfComaCondtional();
 void relationOperators();
 void logicalOperators();
 void operatoryBitowe();
 
 
-void chapter3run()
+void t_chapter3run()
 {
     printf("\n\n-----chapter 3 started-----\n");
 
@@ -61,8 +61,8 @@ void incrementDecrementOperatory()
     int x = 5;
     int y = x++; 
     //kompilator tworzy tmpX inkrementuje x i zwraca tmpX, póxniej ją kasuje
-    nicNieRob(&x);
-    nicNieRob(&y);
+    t_nicNieRob(&x);
+    t_nicNieRob(&y);
 
     //stosować pre inkrementację zamiast post, bardziej odporna na błądy i szybsza
 

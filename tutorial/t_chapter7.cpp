@@ -1,7 +1,6 @@
 #include <iostream>
-#include "chapterS.hpp"
+#include "all.hpp"
 
-void nicNieRob(void*);
 void funParamsAndArgs(int);
 void zwracanieWartosci();
 void inlineFunc();
@@ -16,7 +15,7 @@ void assertStaticAssert();
 void commandLineArgs(int argc, char** argv);
 void ellipsisVaList();
 
-void chapter7run(int argc, char** argv)
+void t_chapter7run(int argc, char** argv)
 {
     std::cout << "\n\n-----chapter 7 started-----\n";
     funParamsAndArgs(5);//5 to argument
@@ -118,7 +117,7 @@ void zwracanieWartosci()
     const int& x = getRef();//!!!musi być const bo funkcja zwraca r-val
     //const& wydłuża czas życia r-value
 
-    nicNieRob((void*)&x);
+    t_nicNieRob((void*)&x);
 
     //aby zwrócić kilka wartości: struktura, touple
     std::tuple<int, int> tuple2val = getTwoVal();
@@ -126,8 +125,8 @@ void zwracanieWartosci()
             std::get<0>(tuple2val), std::get<1>(tuple2val));
 
     auto [a, b] = getTwoVal(); //od c++17
-    nicNieRob(&a);
-    nicNieRob(&b);
+    t_nicNieRob(&a);
+    t_nicNieRob(&b);
     //jeżeli zwracanie kilku wartości następuje w kilku miejscach lepiej
         //zrobić strukturę
         //dla pojedynczych tuple
@@ -141,8 +140,8 @@ void inlineFunc()
 
     //funkcje inlineowe są kopiowane w miejsce wywołania
     //zwiększa to rozmiar aplikacji
-    int x = getNum();
-    nicNieRob(&x);
+    int x = t_getNum();
+    t_nicNieRob(&x);
 
     //na upartego inline func może być też w c++ file jeśeli jest tylko tam użyta
 

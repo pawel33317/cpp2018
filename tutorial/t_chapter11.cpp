@@ -1,5 +1,5 @@
 #include <iostream>
-#include "chapterS.hpp"
+#include "all.hpp"
 
 void dziedziczenie();
 void konstruktoryIInicjalizacja();
@@ -8,7 +8,7 @@ void dodanieNowejFunkcjonalnosciIwywolywanieDziedziczonychFunkcjiIoverriding();
 void ukrywaniePokazanieOdziedziczonejFunkcjonalnosci();
 void wielodziedziczenie();
 
-void chapter11run()
+void t_chapter11run()
 {
     std::cout << "n\n-----chapter 11 started-----\n";
     dziedziczenie();
@@ -68,7 +68,7 @@ void dziedziczenie()
     Base* b3 = &d4;
     d4.printName(); //z derived
     b3->printName();//z base
-    nicNieRob(b3);
+    t_nicNieRob(b3);
     //delete b3; -> nie wolno bo jest na stosie
     //Derived* d5 = new Base(); 
         //Derived to nie base => czlowiek to nie sportowiec
@@ -341,7 +341,7 @@ void wielodziedziczenie()
         //np getID() a obie klasy bazowe ją mają
     Derived1020 d1020;
         //d1020.getID(); //AMBIGOUS
-    nicNieRob(&d1020);
+    t_nicNieRob(&d1020);
 
     Derived21020 d21020;
     d21020.getID();
@@ -352,7 +352,7 @@ void wielodziedziczenie()
 
     //problem diamentowy
     DaimondDerived dd;
-    nicNieRob(&dd);
+    t_nicNieRob(&dd);
     //cout << dd.valA; DWUZNACZNE
         //problem rozwiązuje virtual dziedziczenie, będzie o tym później
 

@@ -15,10 +15,12 @@ LIBS = -l boost_system -l boost_filesystem -lm -lrt -lpthread
 SRCS := $(wildcard *.cpp)
 SRCS_WZORCE := $(wildcard wzorce/*.cpp)
 SRCS_INNE := $(wildcard inne/*.cpp)
-OBJS := $(patsubst %.cpp,%.o,$(SRCS))
+SRCS_TUTORIAL := $(wildcard tutorial/*.cpp)
+#OBJS := $(patsubst %.cpp,%.o,$(SRCS))
 OBJS_RELEASE := $(patsubst %.cpp,$(RELEASE_DIR)/%.o,$(SRCS))
-OBJS_RELEASE += $(patsubst wzorce/%.cpp,$(RELEASE_DIR)/%.o,$(SRCS_WZORCE))
-OBJS_RELEASE += $(patsubst inne/%.cpp,$(RELEASE_DIR)/%.o,$(SRCS_INNE))
+OBJS_RELEASE += $(patsubst wzorce/%.cpp,$(RELEASE_DIR)/wzorce/%.o,$(SRCS_WZORCE))
+OBJS_RELEASE += $(patsubst inne/%.cpp,$(RELEASE_DIR)/inne/%.o,$(SRCS_INNE))
+OBJS_RELEASE += $(patsubst tutorial/%.cpp,$(RELEASE_DIR)/tutorial/%.o,$(SRCS_TUTORIAL))
 
 
 TARGET := app.bin
@@ -33,15 +35,19 @@ $(TARGET): $(OBJS_RELEASE)
 #kompilacja
 $(RELEASE_DIR)/%.o: %.cpp
 	@mkdir -p $(RELEASE_DIR)
-	$(CXX) $(CXXLAGS) -c $< -o $@
+	$(CXX) $(CXXLAGS) -c $< -o $@ -I./headers/
 
-$(RELEASE_DIR)/%.o: wzorce/%.cpp
-	echo $(pwd)
-	$(CXX) $(CXXLAGS) -c $< -o $@ -I.
+$(RELEASE_DIR)/wzorce/%.o: wzorce/%.cpp
+	@mkdir -p $(RELEASE_DIR)/wzorce
+	$(CXX) $(CXXLAGS) -c $< -o $@ -I./headers/
 
-$(RELEASE_DIR)/%.o: inne/%.cpp
-	$(CXX) $(CXXLAGS) -c $< -o $@ -I.
+$(RELEASE_DIR)/inne/%.o: inne/%.cpp
+	@mkdir -p $(RELEASE_DIR)/inne
+	$(CXX) $(CXXLAGS) -c $< -o $@ -I./headers/
 
+$(RELEASE_DIR)/tutorial/%.o: tutorial/%.cpp
+	@mkdir -p $(RELEASE_DIR)/tutorial
+	$(CXX) $(CXXLAGS) -c $< -o $@ -I./headers/
 
 clean:
 	rm -rf $(TARGET) *.o $(RELEASE_DIR)

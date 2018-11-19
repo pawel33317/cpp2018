@@ -1,5 +1,5 @@
 #include <iostream>
-#include "chapterS.hpp"
+#include "all.hpp"
 using namespace std;
 
 //0 intro, kompilacja
@@ -54,11 +54,19 @@ using namespace std;
             //partial template specialization
             //partial template specialization for pointers
 
-
+//skonczyc templates
 // variadic templates
 // #include "chapter14.hpp"
 // implementacja mapy, set (drzewa binarne), listy dwukierunkowe wiązane
 // wzorce
+    //dekorator
+    //łańcuch zdarzeń
+    //maszyna stanów
+    //fasada
+    //RAII
+    //obserwator
+    //https://infotraining.bitbucket.io/cpp-dp/
+    //https://pl.wikipedia.org/wiki/Wzorzec_projektowy_(informatyka)
 
 // #include "appendixA.hpp"
 // #include "chapter18.hpp"
@@ -74,57 +82,19 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    /*chapter1run();
-    chapter2run();
-    chapter3run();
-    chapter4run();
-    chapter5run();
-    chapter6run();
-    chapter7run(argc, argv);
-    chapter8run();
-    chapter9run();
-    chapter10run();
-    chapter11run();
-    chapter12run();
-
-    chapter15run();
-    chapter16run();
-    appendixB();
-    chapter13run();*/
-
-    w_fabryka();
-    w_singleton();
-
-    i_iterator();
-    i_keywords();
-    i_allocator();
-    printf("\n");
+    t_main_call(argc, argv);
+    i_main_call();
+    w_main_call();
+    std::cout << std::endl;
 }
-
-///////////////////////////////////
-//////////2 WZORCE
-///////////////////////////////////
-//dekorator
-//łańcuch zdarzeń
-//maszyna stanów
-//singleton
-//fasada
-//kompozyt
-//RAII
-//obserwator
-//https://infotraining.bitbucket.io/cpp-dp/
-//https://pl.wikipedia.org/wiki/Wzorzec_projektowy_(informatyka)
-
-
-//https://gcc.gnu.org/projects/cxx-status.html#cxx11
-
-
-
 //threading, transaction_safe_dynamic, transaction_safe, mutex,
     //semafor, conditional_variable
 //sockets
 //regex
 //STL LIB -> http://en.cppreference.com/w/cpp/header
+//CPP17, 20, 14 features
+    //https://gcc.gnu.org/projects/cxx-status.html#cxx11
+
 
 //!!!WSZYSTKO https://en.cppreference.com/w/cpp
 //gdb lub inny

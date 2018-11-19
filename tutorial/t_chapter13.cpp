@@ -1,5 +1,4 @@
 #include <iostream>
-#include "chapterS.hpp"
 using namespace std;
 
 void functionTemplates();
@@ -7,7 +6,7 @@ void classTemplates();
 void functionTemplateSpecialization();
 void classTemplateSpecialization();
 
-void chapter13run()
+void t_chapter13run()
 {
     printf("-----chapter 13 started-----\n");
     functionTemplates();

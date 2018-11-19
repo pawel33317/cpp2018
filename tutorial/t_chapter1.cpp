@@ -7,13 +7,13 @@ void zasadyNazwenictwa();
 void operatory();
 void bialeZnaki();
 void forwardDeclaration();
-void functionWithoutDeclarationInHpp();
+void t_functionWithoutDeclarationInHpp();
 void headerFiles();
 void preprocesor();
 void headerGuards();
 
 
-void chapter1run()
+void t_chapter1run()
 {
     std::cout << "-----chapter 1 started-----\n";
     strukturaProgramu();
@@ -128,7 +128,7 @@ void forwardDeclaration()
     //więc nie można wykonać poniższej funkcji bo jest brak deklaracji
     //aby zadeklarować że istnieje można to zrobić w dowolnym pliku np w tym
     //nie musi to być hpp od pliku w którym jest funkcja
-    functionWithoutDeclarationInHpp();
+    t_functionWithoutDeclarationInHpp();
 }
 
 void headerFiles()

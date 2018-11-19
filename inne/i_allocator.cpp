@@ -2,7 +2,6 @@
 #include <memory>
 #include <cassert>
 #include <vector>
-#include "chapterS.hpp"
 using namespace std;
 
 template<class T>

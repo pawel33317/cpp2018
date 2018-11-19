@@ -1,5 +1,5 @@
 #include <iostream>
-#include "chapterS.hpp"
+#include "all.hpp"
 using namespace std;
 
 void smartPointersAndMoveSemanticsIntro();
@@ -10,7 +10,7 @@ void uniquePointer();
 void sharedPtr();
 void sharedWeakPointer();
 
-void chapter15run()
+void t_chapter15run()
 {
     cout << "\n\n-----chapter 15 started-----\n";
     smartPointersAndMoveSemanticsIntro();
@@ -281,10 +281,10 @@ void rvalueReferences()
         //chyba równoważne z powyższym move
     cout << ref22 << endl;
 
-    nicNieRob(&lref);
-    nicNieRob((void*)&lref3);
-    nicNieRob(&rref);
-    nicNieRob(&ref2);
+    t_nicNieRob(&lref);
+    t_nicNieRob((void*)&lref3);
+    t_nicNieRob(&rref);
+    t_nicNieRob(&ref2);
 
     //Rvalue references cannot be initialized witch L-values
     //|----------------------------------------------------------------------|
@@ -315,7 +315,7 @@ void rvalueReferences()
             //czyli po wyjściu z bloku
 
     int&& rref4 = 4;
-    nicNieRob(&rref4);
+    t_nicNieRob(&rref4);
         //kiedy inicjalizujemy r-velue literałem obiekt tymczasowy jest tworzony
             //z literału więc referencja wskazuje na tymczasowy obiekt
 

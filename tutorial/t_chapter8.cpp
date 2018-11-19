@@ -1,6 +1,5 @@
 #include <iostream>
-#include "chapterS.hpp"
-
+#include "all.hpp"
 
 void klasy();
 void konstruktory();
@@ -19,7 +18,7 @@ void typyZagniezdzone();
 void czasWykonaniaKoduChrono();
 
 
-void chapter8run()
+void t_chapter8run()
 {
     std::cout << "\n\n-----chapter 8 started-----\n";
     klasy();
@@ -116,9 +115,9 @@ void konstruktory()
     //!!!nie używać copy initialization
 
     C g = c;//konstruktor kopiujący wciąż istnieje
-    nicNieRob(&d);
-    nicNieRob(&g);
-    nicNieRob(&q);
+    t_nicNieRob(&d);
+    t_nicNieRob(&g);
+    t_nicNieRob(&q);
 
     E ee;//odpala konstruktor domyslny czyli bezparametrowy
 

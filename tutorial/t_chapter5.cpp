@@ -3,13 +3,13 @@
 void halt();
 void ify();
 void switche();
-void nicNieRob(void*);
 void gotoStatement();
 void petle();
 void randomNumbers();
 void wprowadzanieDanych();
+void t_nicNieRob(void*);
 
-void chapter5run()
+void t_chapter5run()
 {
     std::cout << "\n\n-----chapter 5 started-----\n";
     halt();
@@ -48,14 +48,14 @@ void switche()
                       //testowany operatorem==
          {
             int g = 5;
-            nicNieRob(&g);
+            t_nicNieRob(&g);
          }
          int z;
          printf("Kolor to red\n");
          break;//zapobiega wykonaniu kolejnego case
       case Kolor::BLACK:
          z = 4;
-         nicNieRob(&z);
+         t_nicNieRob(&z);
          printf("Kolor to black\n");
          break;
       //case Kolor::BLACK: //nie może się powtarzać
@@ -81,7 +81,7 @@ void gotoStatement()
     printf("Printf przed goto\n");
     int z;
     z = 5;
-    nicNieRob(&z);
+    t_nicNieRob(&z);
     //int x = 55;
     //ERROR - !!!jeżeli zmienna będzie inicjalizowana nie można skoczyć za nią
 skip:
@@ -107,7 +107,7 @@ void petle()
    {
       printf("Wewnątrz do while\n");
       bool b = false;
-      nicNieRob(&b);
+      t_nicNieRob(&b);
    }
    while(true == false);//nie można użyć b w tej linii bo została zniszczona
 

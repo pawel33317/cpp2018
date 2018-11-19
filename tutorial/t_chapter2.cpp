@@ -8,9 +8,9 @@ void boole();
 void chars();
 void literals();
 void constAndSymbolic(int param);
+void t_nicNieRob(void*){};
 
-void nicNieRob(void*){};
-void chapter2run()
+void t_chapter2run()
 {
     std::cout << "\n\n-----chapter 2 started-----\n";
 
@@ -80,8 +80,8 @@ void zmienneZeStalymRozmiarem()
         //(najszybsza dostępna)
     int_least32_t il32 {}; //zmienna która ma minimum 32 bajty 
         //(najmniejsza dostępna)
-    nicNieRob(&if32);
-    nicNieRob(&il32);
+    t_nicNieRob(&if32);
+    t_nicNieRob(&il32);
 }
 
 void zmienneZmiennoPrzecinkowe()
@@ -137,7 +137,7 @@ void literals()
     //int l lub L, long long ll lub LL
     //są opcjonalne jeżeli domyślne bo kompilator wie
     unsigned int uintt = 5u;
-    nicNieRob(&uintt);
+    t_nicNieRob(&uintt);
 
     int sysLiczbowe = 12;
     sysLiczbowe = 010;//prefix 0 
@@ -152,12 +152,12 @@ void literals()
 void constAndSymbolic(int param)
 {
     int a {param}; //lepsze niż int const a {param};
-    nicNieRob(&a);
+    t_nicNieRob(&a);
 
     constexpr int constExprInt {5};
     char tab[constExprInt];//ze zwykłym constem byłoby to niedozwolone
                            //mimo że się kompiluje
-    nicNieRob(tab);
+    t_nicNieRob(tab);
 
     //zmienne powinny być najpierw constexpr -> const -> bez, jeżeli możliwe
 

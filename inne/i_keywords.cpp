@@ -1,7 +1,6 @@
 #include <iostream>
 #include <memory>
 #include <cassert>
-#include "chapterS.hpp"
 using namespace std;
 
 

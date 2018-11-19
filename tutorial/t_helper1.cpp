@@ -1,6 +1,6 @@
 #include <iostream>
 
-void functionWithoutDeclarationInHpp()
+void t_functionWithoutDeclarationInHpp()
 {
     std::cout << "functionWithoutDeclarationInHpp" << std::endl;
 }

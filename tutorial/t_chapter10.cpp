@@ -1,5 +1,5 @@
 #include <iostream>
-#include "chapterS.hpp"
+#include "all.hpp"
 
 void kompozycja();
 void agregacja();
@@ -8,7 +8,7 @@ void dependency();
 void klasyKontenerowe();
 void initializerList();
 
-void chapter10run()
+void t_chapter10run()
 {
     printf("\n\n-----chapter 10 started-----\n");
     kompozycja();
@@ -383,9 +383,9 @@ void initializerList()
     int* array3 = new int[5] {1,2,3,4,5};
         //int* array4 = new int[5] = {1,2,3,4,5}; ERROR
 
-    nicNieRob(array);
-    nicNieRob(array2);
-    nicNieRob(array3);
+    t_nicNieRob(array);
+    t_nicNieRob(array2);
+    t_nicNieRob(array3);
     delete[] array3;
 
     //przed c++11 list initialization była dostępna tylko dla

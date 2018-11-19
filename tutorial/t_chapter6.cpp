@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdio>
 
-void nicNieRob(void*);
+void t_nicNieRob(void*);
 void arrays();
 void simpleSort();
 void multidimensionalArrays();
@@ -16,7 +16,8 @@ void zmienneReferencyjne();
 void foreachLoops();
 void wielowymiaroweTablicePointery();
 void stdArrayIvector();
-void chapter6run()
+
+void t_chapter6run()
 {
     std::cout << "\n\n-----chapter 6 started-----\n";
     arrays();
@@ -72,23 +73,23 @@ void arrays()
     int array2[z];//!!!z nieznane na etapie kompilacji, nie powinno się tak robić
                   //kompilatory mogą to akceptować ze względu na standard C99
                   //robią to dynamicznie..., tak samo jest z cin
-    nicNieRob(array2);
+    t_nicNieRob(array2);
 
     int initArr1[5] = {1, 2, 3, 4, 5}; //initializer list ?
     int initArr2[5] {1, 2, 3, 4, 5}; //uniform initialization ?
     int initArr3[] = {1, 2, 3, 4, 5};
     int initArr4[] {1, 2, 3, 4, 5};
-    nicNieRob(initArr1);
-    nicNieRob(initArr2);
-    nicNieRob(initArr3);
-    nicNieRob(initArr4);
+    t_nicNieRob(initArr1);
+    t_nicNieRob(initArr2);
+    t_nicNieRob(initArr3);
+    t_nicNieRob(initArr4);
 
     int initArr5[5] {1, 2};//pozostałe są inicjalizowane zerami
                            //jakby było za dużo compilation error
     printf("int initArr5[5] {1, 2}, initArr5[3]=%d\n", initArr5[3]);
     int arr6[] {}; //initjalizacja zerami - to akurat pusta tabloca 0B
     std::cout << "sizeof(int arr6[] {}) = " << sizeof(arr6) << std::endl;
-    nicNieRob(arr6);
+    t_nicNieRob(arr6);
 
     //trik z array która ma rozmiar enuma
     int array9[Imie::WSZYSCY];
@@ -163,7 +164,7 @@ void cstringi()
     char cstring[] = "cstring";
         //!!!automatycznie dodany \0 na końcu null terminator
         //cstring = "sssss"; nie wolno bo to tablica
-    nicNieRob(cstring);
+    t_nicNieRob(cstring);
     printf("strcmp(a,a) = %d\n", strcmp(cstring, cstring));
     
     //std::cin.getline(name, 255); gwarantuje pobranie max 255 znaków
@@ -247,8 +248,8 @@ void wskazniki()
     void* za; //!!!nie kasować voidowych wskaźników
     const void* zb = nullptr;
     za = q;
-    nicNieRob(za);
-    nicNieRob((void*)zb);
+    t_nicNieRob(za);
+    t_nicNieRob((void*)zb);
 }
 
 
@@ -408,10 +409,10 @@ void pointeryIconsty()
 
     //const pointer do const value
     const int* const cpcv {&vi};
-    nicNieRob((void*)p);
-    nicNieRob((void*)p2);
-    nicNieRob((void*)p3);
-    nicNieRob((void*)cpcv);
+    t_nicNieRob((void*)p);
+    t_nicNieRob((void*)p2);
+    t_nicNieRob((void*)p3);
+    t_nicNieRob((void*)cpcv);
 }
 
 void fun(int (&arrRef)[13])//!!!nie rozpada sie na wskaznik
@@ -440,11 +441,11 @@ void zmienneReferencyjne()
     const int i = 55;
     const int& iii = i;
     const int& iii3 = 6;
-    nicNieRob((void*)&iii);
-    nicNieRob((void*)&iii3);
-    nicNieRob(&val);
-    nicNieRob(&ref);
-    nicNieRob((void*)&i);
+    t_nicNieRob((void*)&iii);
+    t_nicNieRob((void*)&iii3);
+    t_nicNieRob(&val);
+    t_nicNieRob(&ref);
+    t_nicNieRob((void*)&i);
     //referencje nie mogą być zmieniane aby wskazywać na coś innego
 
     //!!!przekazanie referencji tablicy do funkcji powoduje że
@@ -460,7 +461,7 @@ void zmienneReferencyjne()
     int xx {99};
     const int& bb {xx}; //można przypisać const var, non const var i r-values
     const int& zz {66+66}; //przypisanie r-value 
-    nicNieRob((void*)&bb);
+    t_nicNieRob((void*)&bb);
 
     //!!! wydłużony czas życia r-value normalnie nie byłoby już możliwości 
         //odczytania wyniku

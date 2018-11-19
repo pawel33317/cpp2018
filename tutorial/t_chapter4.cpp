@@ -7,7 +7,7 @@
 
 void blokiILokalneZmienne();
 void zmienneGlobalneILinkage();
-void nicNieRob(void*);
+void t_nicNieRob(void*);
 void namespaces();
 void rzutowanieNiejawne();
 void rzutowanieJawne();
@@ -18,7 +18,7 @@ void struktury();
 void rozmiaryKlas();
 void autoKeyword();
 
-void chapter4run()
+void t_chapter4run()
 {
     std::cout << "\n\n-----chapter 4 started-----\n";
 
@@ -55,10 +55,10 @@ void blokiILokalneZmienne()
     //shadowing zmienne wewnątrz nested bloków mogą mieć nazwy jak z outer bloków
 
     int zmienna = 5;
-    nicNieRob(&zmienna);
+    t_nicNieRob(&zmienna);
     {
         int zmienna = 3;
-        nicNieRob(&zmienna);
+        t_nicNieRob(&zmienna);
     }
 
     //!!!nie używać zmiennych o tych zamych nazwach wewnątrz zagnieżdżonych bloków
@@ -107,7 +107,7 @@ void zmienneGlobalneILinkage()
         ::global_zmienna, global_zmienna);
 
     //::powoduje odwołanie się do zmiennej globalnej
-    nicNieRob(&static_global_zmienna);
+    t_nicNieRob(&static_global_zmienna);
 
     //!!!aby użyć zmiennej z linkage External trzeba zrobić jej forward declaration
     //extern int extern_global_zmienna;
@@ -180,8 +180,8 @@ void namespaces()
 {
     //wszystko bez namespace jest zadeklarowane w domyślnym namespace ::
         //(resolution operator)
-    ::nicNieRob(&NS1::ns1Var2);
-    ::nicNieRob(&NS1::ns1Var3Statyczna);
+    ::t_nicNieRob(&NS1::ns1Var2);
+    ::t_nicNieRob(&NS1::ns1Var3Statyczna);
 
     printf("NS1::ns1Var = %d\n", NS1::ns1Var);
     //!!!to samo namespace może być zadeklarowane  w wielu miejscach
@@ -206,7 +206,7 @@ void namespaces()
 void rzutowanieNiejawne()
 {
     float f {3};//implicit conversion, działa tylko na typach prostych
-    nicNieRob(&f);
+    t_nicNieRob(&f);
 
     //niejawna konwersja dzieli się na 2 rodzaje PROMOTION i CONVERSION
     //integral promotion z mniejszych fo int lub uint
@@ -215,9 +215,9 @@ void rzutowanieNiejawne()
 
     short s{2};
     double d{3};//numeric conversion z większego do mniejszego lub różne typy
-    nicNieRob(&l);
-    nicNieRob(&d);
-    nicNieRob(&s);
+    t_nicNieRob(&l);
+    t_nicNieRob(&d);
+    t_nicNieRob(&s);
 
     //WYRAŻENIA oba typy są rzutowane do tego samego
     //!!!jeżeli operandy są mniejsza od int operator wyrażenia zmienia je na int
@@ -291,11 +291,11 @@ void enumy()
     //!!!enum ewoluuje do typu z rodzaju integer głównie inta
 
     int zwierzeVar {ZWIERZE_KROWA2};
-    nicNieRob(&zwierzeVar);
+    t_nicNieRob(&zwierzeVar);
 
     //!!!można tworzyć zmienne typu enuma ale trzeba castować
     Zwierze zwierzee = static_cast<Zwierze>(-5);//wartości nie mogą się powtarzać w enumie
-    nicNieRob(&zwierzee);
+    t_nicNieRob(&zwierzee);
 
     //Zwierze noweZwierze = COLOR_BLACK; ERROR
     //!!!Każdy enum jest rozważany jako różny typ nie można przypisać zwierze
@@ -331,7 +331,7 @@ void typedesfIaliasy()
 {
     typedef double distance_t;//type def jest nieładny dla wskaźników do funkcji
     distance_t dt = 4.44;
-    nicNieRob(&dt);
+    t_nicNieRob(&dt);
     typedef std::vector<std::pair<int, int> > wektorParIntInt;
     wektorParIntInt vpii {std::make_pair(4,4), std::make_pair(4,4)};
     printf("Pierwszy element pierwszej pary w wektorze to %d\n", vpii.front().first);
@@ -339,14 +339,14 @@ void typedesfIaliasy()
 
     std::int16_t int16 {222};//cstdint + cpp11
     std::uint64_t uint64 { std::numeric_limits<std::uint64_t>::max() };
-    nicNieRob(&int16);
+    t_nicNieRob(&int16);
     std::cout << "maksymalna wartość uint64 to: " << uint64 << std::endl;
 
     //lepsze od typedef jest using
     using wektorParIntInt2 = std::vector<std::pair<int,int> >;
     //!!!to using nie jest związane z automatycznym użyciem namespaców
     wektorParIntInt2 wpii2 {std::make_pair(3,3)};
-    nicNieRob(&wpii2);
+    t_nicNieRob(&wpii2);
     //!!!używać type aliases zamiast typedefs
 }
 
@@ -463,7 +463,7 @@ void autoKeyword()
 
     //type inference
     auto d = 5.5;
-    nicNieRob(&d);
+    t_nicNieRob(&d);
     //auto b; b=5; musi być zainicjalizowane
     autoTest();
 }

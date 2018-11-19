@@ -1,13 +1,12 @@
 #include <iostream>
 #include <typeinfo>
-#include "chapterS.hpp"
 using namespace std;
 
 void cpp11();
 void cpp14();
 void cpp17();
 
-void appendixB()
+void t_appendixB()
 {
     cout << "\n\n-----chapter appendixB started-----\n";
     cpp11();

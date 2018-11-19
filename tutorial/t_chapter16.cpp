@@ -7,14 +7,13 @@
 #include <stack>
 #include <queue>
 #include <forward_list>
-#include "chapterS.hpp"
 using namespace std;
 
 void stlContainers();
 void stlIterators();
 void stlAlgorithms();
 
-void chapter16run()
+void t_chapter16run()
 {
     cout << "\n\n-----chapter 16 started-----\n";
     stlContainers();
