@@ -30,3 +30,4 @@ void w_fabryka();
 void w_singleton();
 void i_iterator();
 void i_keywords();
+void i_allocator();

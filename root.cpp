@@ -55,8 +55,6 @@ using namespace std;
             //partial template specialization for pointers
 
 
-// słowa kluczowe poniżej
-// wektor alokator
 // variadic templates
 // #include "chapter14.hpp"
 // implementacja mapy, set (drzewa binarne), listy dwukierunkowe wiązane
@@ -99,6 +97,7 @@ int main(int argc, char* argv[])
 
     i_iterator();
     i_keywords();
+    i_allocator();
     printf("\n");
 }
 
@@ -119,24 +118,22 @@ int main(int argc, char* argv[])
 
 //https://gcc.gnu.org/projects/cxx-status.html#cxx11
 
-//gdb lub inny
 
+
+//threading, transaction_safe_dynamic, transaction_safe, mutex,
+    //semafor, conditional_variable
+//sockets
+//regex
 //STL LIB -> http://en.cppreference.com/w/cpp/header
 
+//!!!WSZYSTKO https://en.cppreference.com/w/cpp
+//gdb lub inny
+//gui
+//time
+//unicode characters
+//opengl
 //u2
 
-//threading
 
-//sockets
 
-//regex
 
-//time
-
-//gui
-
-//unicode characters
-
-//opengl
-
-//!!!WSZYSTKO https://en.cppreference.com/w/cpp
