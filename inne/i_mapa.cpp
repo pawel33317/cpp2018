@@ -131,7 +131,7 @@ public:
         cout << "Nie znaleziono elementu: " << key << endl;
 
         //throw
-        return *current->mVal;//Ta linia jest bezwzględnie zła, jest tylko 
+        return *current->mVal;//Ta linia jest bezwzględnie zła, jest tylko
                               //dlatego bo kompilator wyświetla ostrzeżenia
     }
 };

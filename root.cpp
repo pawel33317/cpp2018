@@ -1,109 +1,49 @@
 #include <iostream>
 #include "all.hpp"
+#include "boost/filesystem/path.hpp"
 using namespace std;
 
-//0 intro, kompilacja
-//1 basics
-//2 variables, fundamental data types
-//3 operatory
-//4 bloki, scope, linkagestatic, namespaces, rzutowania, 
-            //enumy, typedefy, struct i auto
-//5 control flow, if, switch, goto, while,break, random
-//6 arrays, sorcint, c-strings, pointers, dynamic memory, 
-            //referebces, foreach, void ptr, std::array, std::vector
-//7 parametry/argumenty funkcji ref ptr val, inline
-            //fun overloading, domyślne parametry, wskaźniki na funkcje
-            //stos i sterta, vector advanced, rekursja, handling errors
-            //assert, static_assert, commandline args, ellipsis
-//8 OOP podstawy, klasy i membery, public/private dostęp i enkapsulacja
-            //konstruktory, inicjalizacja w konstruktorze, non-static inicjalizacja
-            //nakładanie się konstruktorów, destruktory, THIS, klasy i headery
-            //obiekty i metody i pola, static member variables and functions
-            //friend functions, anonimowe obiekty, typy zagnieżdżone
-            // o kodzie
-//9 przeciazenia operatorow: aryrmetyczne, używając friend funkcji,
-            //uzywajac normalnych funkcji, I/O, używając metod, unarne -+!m
-            //==, ++ --, [], (), operator typecast, copy constructor,
-            //copy initialization, konwertowanie konstruktorów jawnych i delete
-            // = operator, shallow - deep copy
-//10 relacje obiektów: kompozycja, agregacja, asocjacja, zależności,
-            //klasy kontenerowe, initializer_list
-//11 podstawy dziedziczenia, kolejność dziedziczenia, konstruktory i inicjalizacja
-            //specyfikatory dostępu, nowe moetody w klasie dziedziczącej,
-            //ukrywanie odziedziczonych funkcjonalności, wielodziedziczenie
-//12 pointery i referencje do klasy bazowej
-            //funkcje virtual i polimorfizm
-            //overrride, final, covriant return type
-            //virtual destruktory assigmenty i virtualization overriding
-            //early binding and late binding
-            //virtual table
-            //pure virtual functions, abstract clases, interfaces
-            //virtual base classes
-            //object slicing
-            //dynamic casting
-            //operator << and printing inherited classes
-//15 semantyka przenoszenia i smart pointery
-            //r-values, move semantics, move constructors and assigments
-            //std::move, unique_ptr, shared_ptr, weak_ptr
-            //circural dependency issue
-//appendixB //nowe w C++11
-            //C++14, C++17
-//13 function templates, function templateinstances, template classes
-            //template non-type parameters, function template specialization
-            //class template specialization
-            //partial template specialization
-            //partial template specialization for pointers
-
-// skonczyc templates
-// variadic templates
-// #include "chapter14.hpp"
-// implementacja, set (drzewa binarne), listy dwukierunkowe wiązane
-// wzorce
-    //łańcuch zdarzeń
+//skonczyc templates
+//variadic templates
+//#include "chapter14.hpp" exceptions
+//wzorce
     //fasada
+    //łańcuch zdarzeń
     //RAII
     //obserwator
     //https://infotraining.bitbucket.io/cpp-dp/
     //https://pl.wikipedia.org/wiki/Wzorzec_projektowy_(informatyka)
-
-
-// #include "appendixA.hpp"
-// #include "chapter18.hpp"
-// #include "chapter17.hpp"
-// #include "appendixC.hpp"
-// tworzenie własnej biblioteki
-// operacje na plikach c++11, operator >>, openy
-// serializacja
-// std::cref, std::reference_wrapper, std::ref
-// std::forward
-// wskaźniki na funkcje
-#include "boost/filesystem/path.hpp"
+//#include "appendixA.hpp" static vs dynamic libraries
+//#include "chapter18.hpp" Input and output + operacje na plikach c++11
+//#include "chapter17.hpp" std::string
+//#include "appendixC.hpp" end
+//tworzenie własnej biblioteki
+//serializacja
+//trudniejsze wskaźniki na funkcje + bind
 
 int main(int argc, char* argv[])
 {
     t_main_call(argc, argv);
     w_main_call();
     i_main_call();
-
     std::cout << std::endl;
 }
-//threading, transaction_safe_dynamic, transaction_safe, mutex,
-    //semafor, conditional_variable
-//sockets
-//regex
-//STL LIB -> http://en.cppreference.com/w/cpp/header
-//CPP17, 20, 14 features
-    //https://gcc.gnu.org/projects/cxx-status.html#cxx11
+//threading, transaction_safe_dynamic, transaction_safe, mutex, conditional_variable
+//socket programming sys/socket
+//regex expressions
+//filesystem library
+//C++11/14/17 new feature - unicode characters
+//Najważniejsze funkcje - std::time
+//functional - std::cref, std::reference_wrapper, std::ref, std::forward
+//STL LIB -> http://en.cppreference.com/w/cpp/header WAŻNIEJSZE TYLKO
 
-
-//!!!WSZYSTKO https://en.cppreference.com/w/cpp
-//gdb lub inny
-//gui
-//time
-//unicode characters
-//opengl
-//u2
-
-
-
-
+//GUI - Qt, wxWidgets, GTK+, other
+//Setup środowiska do OpenGl (jakiś rozsądny połączony z gitem) + prosta aplikacja
+//Krótki opis i test działania - gdb lub inny debugger 
+//Plik o przeliczaniu liczb na system U2
+//Zaimplementować i opisać binarne drzewo poszukiwań (set) i_drzewo_binarne.cpp
+//Zaimplementować i opisać listy https://pl.wikipedia.org/wiki/Lista
+//Zaimplementować i opisać set - prawdopodobnie jest to binarne drzewo poszukiwań
+//STL LIB -> http://en.cppreference.com/w/cpp/header TYLKO RESZTA
+//WSZYSTKO https://en.cppreference.com/w/cpp
+//CPP17, 20, 14 features https://gcc.gnu.org/projects/cxx-status.html#cxx11
