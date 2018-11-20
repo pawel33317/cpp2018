@@ -54,10 +54,10 @@ using namespace std;
             //partial template specialization
             //partial template specialization for pointers
 
-//skonczyc templates
+// skonczyc templates
 // variadic templates
 // #include "chapter14.hpp"
-// implementacja mapy, set (drzewa binarne), listy dwukierunkowe wiązane
+// implementacja, set (drzewa binarne), listy dwukierunkowe wiązane
 // wzorce
     //łańcuch zdarzeń
     //fasada
@@ -65,6 +65,7 @@ using namespace std;
     //obserwator
     //https://infotraining.bitbucket.io/cpp-dp/
     //https://pl.wikipedia.org/wiki/Wzorzec_projektowy_(informatyka)
+
 
 // #include "appendixA.hpp"
 // #include "chapter18.hpp"
@@ -81,8 +82,9 @@ using namespace std;
 int main(int argc, char* argv[])
 {
     t_main_call(argc, argv);
-    i_main_call();
     w_main_call();
+    i_main_call();
+
     std::cout << std::endl;
 }
 //threading, transaction_safe_dynamic, transaction_safe, mutex,

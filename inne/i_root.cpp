@@ -6,4 +6,5 @@ void i_main_call()
     i_iterator();
     i_keywords();
     i_allocator();
+    i_mapa();
 }
