@@ -59,9 +59,7 @@ using namespace std;
 // #include "chapter14.hpp"
 // implementacja mapy, set (drzewa binarne), listy dwukierunkowe wiązane
 // wzorce
-    //dekorator
     //łańcuch zdarzeń
-    //maszyna stanów
     //fasada
     //RAII
     //obserwator

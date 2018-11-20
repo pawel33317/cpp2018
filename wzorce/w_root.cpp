@@ -7,4 +7,5 @@ void w_main_call()
     w_singleton();
     w_kompozyt();
     w_dekorator();
+    FSM::w_maszyna_stanow();
 }

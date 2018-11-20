@@ -56,7 +56,8 @@
         "sstream": "cpp",
         "string_view": "cpp",
         "forward_list": "cpp",
-        "numeric": "cpp"
+        "numeric": "cpp",
+        "iomanip": "cpp"
     },
     "python.linting.pylintEnabled": false,
     "editor.renderWhitespace": "all"
