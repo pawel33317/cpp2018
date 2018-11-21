@@ -5,6 +5,7 @@
             "includePath": [
                 "/usr/include",
                 "/usr/local/include",
+                "${workspaceRoot}/headers",
                 "${workspaceRoot}"
             ],
             "defines": [],
@@ -13,6 +14,7 @@
                 "path": [
                     "/usr/include",
                     "/usr/local/include",
+                    "${workspaceRoot}/headers",
                     "${workspaceRoot}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
@@ -28,6 +30,7 @@
             "includePath": [
                 "/usr/include",
                 "/usr/local/include",
+                "${workspaceRoot}/headers",
                 "${workspaceRoot}"
             ],
             "defines": [],
@@ -36,6 +39,7 @@
                 "path": [
                     "/usr/include",
                     "/usr/local/include",
+                    "${workspaceRoot}/headers",
                     "${workspaceRoot}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
@@ -45,6 +49,7 @@
         {
             "name": "Win32",
             "includePath": [
+                "${workspaceRoot}/headers",
                 "${workspaceRoot}"
             ],
             "defines": [
@@ -55,6 +60,7 @@
             "intelliSenseMode": "msvc-x64",
             "browse": {
                 "path": [
+                    "${workspaceRoot}/headers",
                     "${workspaceRoot}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
@@ -68,6 +74,7 @@
             "intelliSenseMode": "clang-x64",
             "includePath": [
                 "${workspaceRoot}",
+                "${workspaceRoot}/headers",
                 "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/include/c++/5",
                 "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/include/x86_64-linux-gnu/c++/5",
                 "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/include/c++/5/backward",
@@ -83,6 +90,7 @@
             ],
             "browse": {
                 "path": [
+                    "${workspaceRoot}/headers",
                     "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/include/c++/5",
                     "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/include/x86_64-linux-gnu/c++/5",
                     "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/lib/gcc/x86_64-linux-gnu/5/include",
