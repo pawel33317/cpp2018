@@ -138,6 +138,8 @@ void i_mapa()
     cout << "----------------i_mapa-----------" << endl;
 
     //algorytm dodawania itp jest słaby
+    //jest zaimplementowany na liście jednokierunkowej
+    //a powinien być na binarnym drzewie poszukiwań
     //ale nie to było celem więc zostaje
     MyMap<int, double> map;
     map.insert(11, 11.32);
