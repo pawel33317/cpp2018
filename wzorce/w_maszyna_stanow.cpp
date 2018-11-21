@@ -112,7 +112,8 @@ void w_maszyna_stanow()
     cout << "Aktualne stan: " << (int)p.getCurrentState() << endl;
     p.moveNext(Command::Begin);
     cout << "Aktualne stan: " << (int)p.getCurrentState() << endl;
-    try {
+    try
+    {
         p.moveNext(Command::Begin);
     }
     catch (const std::string&)

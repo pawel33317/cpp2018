@@ -3,7 +3,6 @@
 #include "boost/filesystem/path.hpp"
 using namespace std;
 
-//skonczyc templates
 //variadic templates
 //#include "chapter14.hpp" exceptions
 //wzorce
@@ -23,9 +22,9 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    t_main_call(argc, argv);
     w_main_call();
     i_main_call();
+    t_main_call(argc, argv);
     std::cout << std::endl;
 }
 //threading, transaction_safe_dynamic, transaction_safe, mutex, conditional_variable

@@ -130,9 +130,7 @@ public:
         }
         cout << "Nie znaleziono elementu: " << key << endl;
 
-        //throw
-        return *current->mVal;//Ta linia jest bezwzględnie zła, jest tylko
-                              //dlatego bo kompilator wyświetla ostrzeżenia
+        throw("Nie znaleziono"s);
     }
 };
 void i_mapa()
@@ -151,6 +149,7 @@ void i_mapa()
     map.remove(4);
     map.remove(33);
     map[11] = 4321.997;
-    map[4444];
+    try{map[4444];}
+    catch(const std::string&){}
     map.listNodes();
 }

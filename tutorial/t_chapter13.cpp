@@ -5,6 +5,8 @@ void functionTemplates();
 void classTemplates();
 void functionTemplateSpecialization();
 void classTemplateSpecialization();
+void partialTemplateSpecialization();
+void partialTemplateSpecializationForPointers();
 
 void t_chapter13run()
 {
@@ -13,6 +15,8 @@ void t_chapter13run()
     classTemplates();
     functionTemplateSpecialization();
     classTemplateSpecialization();
+    partialTemplateSpecialization();
+    partialTemplateSpecializationForPointers();
 }
 
 
@@ -156,6 +160,8 @@ void classTemplates()
 }
 
 
+
+#include <cstring>
 template<class T>
 class Storage1
 {
@@ -166,13 +172,12 @@ public:
     ~Storage1(){}
     void print(){std::cout << m_value << '\n';}
 };
-#include <cstring>
+
 template<>
 void Storage1<double>::print()
 {
     std::cout << std::scientific << m_value << endl;
 }
-#include <cstring>
 template<>
 Storage1<char*>::Storage1(char* value)
 {
@@ -271,6 +276,236 @@ void classTemplateSpecialization()
     //template<> mówi kompilatorowi, że poniższe dotyczy szablonu
     //dodaliśmy <bool> do klasy aby pokazać, że dotyczy to tylko boola
     //warto utrzymywać wspólny interfejs między templatkami a ich specjalizacjami
+}
 
-    //PARTIAL TEMPLATE SPECIALIZATION NOT DONE
+
+
+
+
+
+
+
+
+#include <cstring>
+template<class T, unsigned int size>
+class StaticArrayT
+{
+    T mData[size];
+public:
+    StaticArrayT(){}
+    T& operator[](unsigned int index)
+    {
+        assert(index < size);
+        return mData[index];
+    }
+    const T& operator[](unsigned int index) const
+    {
+        assert(index < size);
+        return mData[index];
+    }
+    T* getArray() { return mData; }
+    void print();
+};
+template<class T, unsigned int size>
+void StaticArrayT<T, size>::print()
+{
+    for(unsigned int i=0; i < size; ++i)
+    {
+        cout << mData[i] << ", ";
+    }
+}
+//template<> --- TO DZIALA !!!!! ale chujnia bo size zawsze = 10
+//void StaticArrayT<char, 10>::print()
+//template<unsigned int size> --- CZESCIOWA SPECJALIZACJA FUNKCJI - NIEDOZWOLONE
+//void StaticArrayT<char, size>::print() {} --- CZESCIOWA SPECJALIZACJA FUNKCJI - NIEDOZWOLONE
+
+
+
+template<class T, unsigned int size>
+void printT(const StaticArrayT<T, size>& array)
+{
+    for(unsigned int i=0; i < size; ++i)
+    {
+        cout << array[i] << ", ";
+    }
+}
+//specialna wersja dla chara
+    //template<>
+    //void printT(const StaticArrayT<char, 14>& array) --> troche słaba
+template<unsigned int size> //nie jest to cześciowa specjalizacja funkcji
+                            //częściowa specjalizacja funkcji jest niedozwolona
+                            //jest to jedynie przeciążenie funkcji przy użyciu
+                            //częściowo specjalizowanego parametru klasy
+void printT(const StaticArrayT<char, size>& array)
+{
+    for(unsigned int i=0; i < size && array[i] != 0; ++i)
+    {
+        cout << array[i];
+    }
+}
+
+
+//rozwiązanie problemu z niemożliwością częściowej specjalizacji funkcji
+//i metod poprzez dziedziczenie
+template <class T, int size>
+class StaticArrayT2_Base
+{
+protected:
+    T mArray[size];
+public:
+    T* getArray() { return mArray; }
+    T& operator[](int index) { return mArray[index]; }
+    virtual void print() const {
+        for (int i = 0; i < size; ++i)
+            std::cout << mArray[i] << ", ";
+        std::cout << "\n";
+    }
+};
+template <class T, int size>
+class StaticArrayT2: public StaticArrayT2_Base<T, size>
+{};
+template <int size>
+class StaticArrayT2<char, size> : public StaticArrayT2_Base<char, size>
+{
+public:
+    void print() const override{
+        for (int i = 0; i < size && this->mArray[i] != 0; ++i)
+            std::cout << this->mArray[i];
+        std::cout << "\n";
+    }
+};
+void partialTemplateSpecialization()
+{
+    StaticArrayT<int, 4> sa1;
+    sa1[0] = 10;
+    sa1[1] = 20;
+    sa1[2] = 30;
+    sa1[3] = 40;
+    printT(sa1);
+    cout << endl;
+
+    StaticArrayT<char, 14> sa2;
+    strncpy(sa2.getArray(), "Hello world!", 14);
+    printT(sa2); //H, e, l, l, o,  , w, o, r, l, d, !,  ,  ,
+                 //a dla chara lepiej bez przecinkow i pustych znakow
+                 //po dodanie funkcji ze specjalizacją dla chara zadziała lepiej
+    cout << endl;
+
+    //partial template specialization plzwala na specjalizację klas
+    //!!!ale nie indywidualnych funkcji!!!
+    //gdzie któreś ale nie wszystkie parametry templatki został jawnie zdefiniowane
+
+    //od C++14, partiale template specialization może być użyte jedynie z klasami!!!
+    //funkcje muszą być w pełni specjalizowane.
+
+    //!!!nasza funkcja printT(const StaticArrayT<char, size>& array)
+    //działa ponieważ funkcja printT nie jest częściowo specjalizowana
+    //jedt jedynie przeciążoną funkcją używając parametru klasy, który
+        //jest częściowo specjalizowany ??????????????????
+
+    //Powyższy limit prowadzi do problemów z member funkcjami
+    //np jeżeli print byłaby memberem:
+        //template<class T, int size>
+        //class StaticArray_Base {
+        //void print() {...} --> member wewnątrz klasy
+
+        //template <int size>
+        //void StaticArray<double, size>::print(){...} -> nie zadziała bo to
+        //jest próba częściowej specjalizacji funkcji!!!!, czyli niedozwolone
+
+        //obejście ww problemu np zrobienie częściowej specjalizacji całej klasy
+        //ale to też chujnia bo trzeba przepisać cały kod
+            //template <class T, int size>
+            //class StaticArray {...}
+
+            //template <int size>
+            //class StaticArray<char, size> {...w większości kopia ww klasy}
+
+    sa1.print();
+    cout << endl;
+    sa2.print();//nie da się zrobić cześciowej specjalizacji dla metody ani funkcji
+    cout << endl;
+
+    StaticArrayT2<int, 4> saT21;
+    saT21[0] = 10;
+    saT21[1] = 20;
+    saT21[2] = 30;
+    saT21[3] = 40;
+    saT21.print();
+
+    StaticArrayT2<char, 14> saT22;
+    strncpy(saT22.getArray(), "Hello world!", 14);
+    saT22.print();
+}
+
+
+
+
+
+
+
+
+
+
+template<class T>
+class Storage2
+{
+private:
+    T mValue;
+public:
+    Storage2(T value){
+        mValue = value;
+        cout << "Odpalila sie wersja bezwskaźnikowa\n";
+    }
+    ~Storage2(){}
+    void print(){std::cout << mValue << '\n';}
+};
+template<class T>
+class Storage2<T*>//częściowo specjalizowana klasa bo mówimy kompilatorowi,
+                  //że jest tylko do użycia dla typów pointerowych
+{
+private:
+    T* mValue;
+public:
+    Storage2(T* value){
+        mValue = new T{*value};//umożliwia deep copy jednej wartości
+        cout << "Odpalila sie wersja wskaźnikowa\n";
+    }
+    ~Storage2(){ delete mValue; }
+    void print(){std::cout << *mValue << '\n';}
+};
+
+void partialTemplateSpecializationForPointers()
+{
+    //w poprzednich lekacjach stworzona była klasa,
+        //template<class T>
+        //class Storage1
+    //która przechowywała jakiś obiekt
+    //pojawił się problem np dla char* bo robiło płytką kopię, więc problem został
+    //naprawiony poprzez pełną specjalizację konstruktora i destruktora
+        //template<>
+        //Storage1<char*>::Storage1(char* value)
+    //ale co z innymi pointerami np int* ???
+
+    //w związku z tem, że full template specialization zmusza nas do pełnego
+    //rozwiązywania typów musielibysmy przeciążyć konstruktor i destruktor
+    //dla każdego możliwego typu pointera
+
+    //Partial template specializatjion dostarcza wygodne rozwiązenie tego problemu
+    //Możemy zdefiniować wersję klasy, która działą tylko z pointerami
+    int x = 55;
+    Storage2<int>  s2i {x};
+    Storage2<int*> s2ip{&x};
+    x=999;//s2ip zrobiło kopię więc ta linia nic nie zmieni
+    s2i.print();
+    s2ip.print();
+
+    //jakby nie było klasy ze specjalizacją dla pointerów, wykonała by się ta ogólna
+    // i zrobiła shallow copy
+
+    //klasa alokuje jedynie 1 element więc dla cstring array będzie tylko
+    //pierwszy znak skopiowany
+
+    //jeżeli zamiarem jest kopiowanie całej tablicy chara można zrobić np
+    //specjalizację konstruktora i dostruktora dla char* jak w poprzenim zadaniu
 }
