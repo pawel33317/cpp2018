@@ -15,3 +15,7 @@ namespace Fasada
 {
     void w_fasada();
 }
+namespace Obserwator
+{
+    void w_obserwator();
+}

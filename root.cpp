@@ -6,10 +6,9 @@ using namespace std;
 //variadic templates
 //#include "chapter14.hpp" exceptions
 //wzorce
-    //fasada
     //łańcuch zdarzeń
     //RAII
-    //obserwator
+    //obserwator -> mediator
     //https://infotraining.bitbucket.io/cpp-dp/
     //https://pl.wikipedia.org/wiki/Wzorzec_projektowy_(informatyka)
 //#include "appendixA.hpp" static vs dynamic libraries
