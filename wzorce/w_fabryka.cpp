@@ -46,6 +46,10 @@ void w_fabryka()
     //Metofda fabrykująca - factory method
     //Fabryka abstrakcyjna - abstract factory
 
+    //dostarcza interfejs do tworzenia różnych obiektow jednego typu
+    //bez specyfikowania ich konkretnych klas
+    //umożliwia jednemu obiektowi tworzneie innych, powiązanych ze sobą
+
     w_prostaFabryka();
     w_statycznaFabryka();
     w_metodaFabrykujaca();
@@ -193,7 +197,7 @@ class DzialkaMala : public Dzialka { public: void show() { cout << "DzialkaMala"
 class Dom { public: virtual void show() = 0; };
 class DomBlizniak : public Dom { public:void show() {cout << "DomBlizniak"; } };
 class DomWolnostojacy : public Dom { public:void show() {cout << "DomWolnostojacy"; } };
-class Developer {public:
+class Developer {public://fabryka abstrakcyjna
     virtual unique_ptr<Dom> createDom() = 0;
     virtual unique_ptr<Dzialka> createDzialka() = 0;};
 class DeveloperViralex : public Developer {public:
