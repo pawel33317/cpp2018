@@ -13,7 +13,7 @@ void explicitDelete();
 void operatorPrzypisania();
 void shallowVsDeepCopying();
 
-void t_chapter9run()
+void t_9_operator_overloading()
 {
     std::cout << "\n\n-----chapter 9 started-----\n";
     infroductionOperatorOverrloading();

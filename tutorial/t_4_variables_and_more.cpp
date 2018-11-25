@@ -18,7 +18,7 @@ void struktury();
 void rozmiaryKlas();
 void autoKeyword();
 
-void t_chapter4run()
+void t_4_variables_and_more()
 {
     std::cout << "\n\n-----chapter 4 started-----\n";
 

@@ -15,7 +15,7 @@ void assertStaticAssert();
 void commandLineArgs(int argc, char** argv);
 void ellipsisVaList();
 
-void t_chapter7run(int argc, char** argv)
+void t_7_functions(int argc, char** argv)
 {
     std::cout << "\n\n-----chapter 7 started-----\n";
     funParamsAndArgs(5);//5 to argument

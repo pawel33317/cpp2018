@@ -18,7 +18,7 @@ void typyZagniezdzone();
 void czasWykonaniaKoduChrono();
 
 
-void t_chapter8run()
+void t_8_OOP_basics()
 {
     std::cout << "\n\n-----chapter 8 started-----\n";
     klasy();

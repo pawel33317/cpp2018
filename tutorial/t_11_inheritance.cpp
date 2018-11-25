@@ -8,7 +8,7 @@ void dodanieNowejFunkcjonalnosciIwywolywanieDziedziczonychFunkcjiIoverriding();
 void ukrywaniePokazanieOdziedziczonejFunkcjonalnosci();
 void wielodziedziczenie();
 
-void t_chapter11run()
+void t_11_inheritance()
 {
     std::cout << "n\n-----chapter 11 started-----\n";
     dziedziczenie();

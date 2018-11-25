@@ -9,7 +9,7 @@ void randomNumbers();
 void wprowadzanieDanych();
 void t_nicNieRob(void*);
 
-void t_chapter5run()
+void t_5_flow_control()
 {
     std::cout << "\n\n-----chapter 5 started-----\n";
     halt();

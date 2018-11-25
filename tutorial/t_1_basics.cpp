@@ -13,7 +13,7 @@ void preprocesor();
 void headerGuards();
 
 
-void t_chapter1run()
+void t_1_basics()
 {
     std::cout << "-----chapter 1 started-----\n";
     strukturaProgramu();

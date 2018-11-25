@@ -17,7 +17,7 @@ void foreachLoops();
 void wielowymiaroweTablicePointery();
 void stdArrayIvector();
 
-void t_chapter6run()
+void t_6_arrays_and_pointers()
 {
     std::cout << "\n\n-----chapter 6 started-----\n";
     arrays();

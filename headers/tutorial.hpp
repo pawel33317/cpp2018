@@ -2,22 +2,24 @@
 
 void t_main_call(int argc, char* argv[]);
 
-void t_chapter1run();
-void t_chapter2run();
-void t_chapter3run();
-void t_chapter4run();
-void t_chapter5run();
-void t_chapter6run();
-void t_chapter7run(int argc, char** argv);
-void t_chapter8run();
-void t_chapter9run();
-void t_chapter10run();
-void t_chapter11run();
-void t_chapter12run();
-void t_chapter15run();
-void t_chapter16run();
-void t_appendixB();
-void t_chapter13run();
+void t_1_basics();
+void t_2_variables();
+void t_3_operators();
+void t_4_variables_and_more();
+void t_5_flow_control();
+void t_6_arrays_and_pointers();
+void t_7_functions(int argc, char** argv);
+void t_8_OOP_basics();
+void t_9_operator_overloading();
+void t_10_ocjects_relations();
+void t_11_inheritance();
+void t_12_polymorphism();
+void t_13_templates();
+
+void t_15_move_sem_and_smart_ptr();
+void t_16_STL_lib_containers_iterator();
+void t_ApB_CPP11_14_17();
+
 
 void t_nicNieRob(void*);
 inline int t_getNum() {return 5;}

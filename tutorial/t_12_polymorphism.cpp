@@ -13,7 +13,7 @@ void objectSlicing();
 void dynamicCast();
 void printDerivedClassUsingOperator();
 
-void t_chapter12run()
+void t_12_polymorphism()
 {
     std::cout << "\n\n-----chapter 12 started-----\n";
     pointersAndReferencesToBaseClass();

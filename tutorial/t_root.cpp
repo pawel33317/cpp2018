@@ -3,21 +3,22 @@
 
 void t_main_call(int argc, char* argv[])
 {
-    t_chapter1run();
-    t_chapter2run();
-    t_chapter3run();
-    t_chapter4run();
-    t_chapter5run();
-    t_chapter6run();
-    t_chapter7run(argc, argv);
-    t_chapter8run();
-    t_chapter9run();
-    t_chapter10run();
-    t_chapter11run();
-    t_chapter12run();
+    t_1_basics();
+    t_2_variables();
+    t_3_operators();
+    t_4_variables_and_more();
+    t_5_flow_control();
+    t_6_arrays_and_pointers();
+    t_7_functions(argc, argv);
+    t_8_OOP_basics();
+    t_9_operator_overloading();
+    t_10_ocjects_relations();
+    t_11_inheritance();
+    t_12_polymorphism();
+    t_13_templates();
 
-    t_chapter15run();
-    t_chapter16run();
-    t_appendixB();
-    t_chapter13run();
+    t_15_move_sem_and_smart_ptr();
+    t_16_STL_lib_containers_iterator();
+    t_ApB_CPP11_14_17();
+    
 }

@@ -13,7 +13,7 @@ void stlContainers();
 void stlIterators();
 void stlAlgorithms();
 
-void t_chapter16run()
+void t_16_STL_lib_containers_iterator()
 {
     cout << "\n\n-----chapter 16 started-----\n";
     stlContainers();

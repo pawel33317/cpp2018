@@ -10,7 +10,7 @@ void logicalOperators();
 void operatoryBitowe();
 
 
-void t_chapter3run()
+void t_3_operators()
 {
     printf("\n\n-----chapter 3 started-----\n");
 

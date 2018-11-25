@@ -8,7 +8,7 @@ void dependency();
 void klasyKontenerowe();
 void initializerList();
 
-void t_chapter10run()
+void t_10_ocjects_relations()
 {
     printf("\n\n-----chapter 10 started-----\n");
     kompozycja();

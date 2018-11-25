@@ -8,7 +8,7 @@ using namespace std;
 //wzorce
     //łańcuch zdarzeń
     //RAII
-    //obserwator -> mediator
+    //mediator
     //https://infotraining.bitbucket.io/cpp-dp/
     //https://pl.wikipedia.org/wiki/Wzorzec_projektowy_(informatyka)
 //#include "appendixA.hpp" static vs dynamic libraries

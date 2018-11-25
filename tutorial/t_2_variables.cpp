@@ -10,7 +10,7 @@ void literals();
 void constAndSymbolic(int param);
 void t_nicNieRob(void*){};
 
-void t_chapter2run()
+void t_2_variables()
 {
     std::cout << "\n\n-----chapter 2 started-----\n";
 

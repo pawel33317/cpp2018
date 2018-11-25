@@ -8,7 +8,7 @@ void classTemplateSpecialization();
 void partialTemplateSpecialization();
 void partialTemplateSpecializationForPointers();
 
-void t_chapter13run()
+void t_13_templates()
 {
     printf("-----chapter 13 started-----\n");
     functionTemplates();

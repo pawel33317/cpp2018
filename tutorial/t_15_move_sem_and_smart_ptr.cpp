@@ -10,7 +10,7 @@ void uniquePointer();
 void sharedPtr();
 void sharedWeakPointer();
 
-void t_chapter15run()
+void t_15_move_sem_and_smart_ptr()
 {
     cout << "\n\n-----chapter 15 started-----\n";
     smartPointersAndMoveSemanticsIntro();

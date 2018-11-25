@@ -6,7 +6,7 @@ void cpp11();
 void cpp14();
 void cpp17();
 
-void t_appendixB()
+void t_ApB_CPP11_14_17()
 {
     cout << "\n\n-----chapter appendixB started-----\n";
     cpp11();
