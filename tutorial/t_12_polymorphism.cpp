@@ -276,9 +276,9 @@ void overrideFinalAndCOVARIANT()
     cvb.returnsA6ref().showName();//!!! zwróci C6 scastowane na A6
                                   //ale i tak wypisze C6 bo działa polimorfizm
 
-    //!!!C++ nie umie dopasować typu więc zwracany typ dla 
+    //!!!C++ nie umie dopasować typu więc zwracany typ dla
         //metody returnsA6ptr/ref będzie taki jaki jest w metodzie dla
-        //obiektu na którym wykonujemy tą metodę, mimo że zwróci go 
+        //obiektu na którym wykonujemy tą metodę, mimo że zwróci go
         //metoda polimorficznie overridowana
 }
 
@@ -494,7 +494,7 @@ void earlyAndLateBinding()
         //w zależności od ifów)
 
     //LATE BINDING jest troszeczkę mniej wydajne bo wymaga pośredniogo
-        //dodatkowego poziomu. W early bindingu CPU mógł skoczyć 
+        //dodatkowego poziomu. W early bindingu CPU mógł skoczyć
         //bezpośrednio do wykonania funkcji.
     //Z Late bindingiem program musi odczytać adres funkcji trzymany we wskaźniku
         //i dopiero potem skoczyć do tego adresu czyli do funkcji
@@ -502,7 +502,6 @@ void earlyAndLateBinding()
     //LATE BINDING -> mniej wydajny bo jest dodatkowy poziom, w którym musi
         //CPU przeczytać adres funkcji z pointera, ale bardziej elastyczny
         //bo umożliwia decydowanie w runtime jaka funkcja będzie wywołana
-
 }
 
 
@@ -572,12 +571,12 @@ void virtualTable()
     //!!!wywołanie wirtualnych funkcji jest wolniejsze ponieważ:
         //musimy użyć __vptr aby uzyskać właściwe vtable
         //musimy indeksować vtable aby znaleźć właściwą funkcję
-        //!!!więc musimy zrobić 3 operacje (w indirect function cal były 
+        //!!!więc musimy zrobić 3 operacje (w indirect function cal były
         //2 operacje a w direct tylko jedna operacja)
 
     C11 c11;
     cout << sizeof(c11) << endl;
-        //c11 zajmuje 16 16 bajtów bo ma w sobie 2 vtable jedno z A11 drugie z B11
+        //c11 zajmuje 16 bajtów bo ma w sobie 2 vtable jedno z A11 drugie z B11
 }
 
 
@@ -1038,7 +1037,7 @@ void printDerivedClassUsingOperator()
     cout << a20ref;
         //!!!źle działa bo operator<< nie jest wirtualny
             //ale nie może być wirtualny bo ten operator nie jest memberem
-            //można go overloadować ale nie owerridować
+            //można go overloadować ale nie overridować
             //friend operator nie jest uznawany jako member klasy
 
     //!!!nawet jakby się dało overridować operator<< to i tak nie zadziała bo
