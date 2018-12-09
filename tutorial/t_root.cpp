@@ -20,5 +20,6 @@ void t_main_call(int argc, char* argv[])
     t_15_move_sem_and_smart_ptr();
     t_16_STL_lib_containers_iterator();
     t_ApB_CPP11_14_17();
-    
+
+    t_14_exceptions();
 }

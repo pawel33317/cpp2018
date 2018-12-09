@@ -15,10 +15,11 @@ void t_10_ocjects_relations();
 void t_11_inheritance();
 void t_12_polymorphism();
 void t_13_templates();
-
+void t_14_exceptions();
 void t_15_move_sem_and_smart_ptr();
 void t_16_STL_lib_containers_iterator();
 void t_ApB_CPP11_14_17();
+
 
 
 void t_nicNieRob(void*);
@@ -76,3 +77,9 @@ inline int t_getNum() {return 5;}
             //class template specialization
             //partial template specialization
             //partial template specialization for pointers
+//14 wyjśtki, obsługa, funkcje i zwujanie stosu
+            //niezłapane wyjącki, catch-all o specyyfikatory wyjątków
+            //wyjątki a klasy i dziedziczenie
+            //rethrowing wyjątków
+            //try bloku
+            //niebezpieczeństwa i słabe strony

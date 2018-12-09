@@ -4,7 +4,7 @@
 #@ - nazwa pliku docelowego
 #^ - składniki
 CXX=/usr/bin/gcc-8
-CXXFLAGS=-std=c++17 -Wall -O0
+CXXFLAGS=-std=c++2a -Wall -O0
 LFLAGS= #opcje linkera
 LIBS = -lboost_system -lboost_filesystem -lm -lrt -lpthread -lstdc++
 RELEASE_DIR=release

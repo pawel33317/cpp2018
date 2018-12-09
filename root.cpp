@@ -22,8 +22,8 @@ using namespace std;
 int main(int argc, char* argv[])
 {
     i_main_call();
-    t_main_call(argc, argv);
     w_main_call();
+    t_main_call(argc, argv);
     std::cout << std::endl;
 }
 //threading, transaction_safe_dynamic, transaction_safe, mutex, conditional_variable
