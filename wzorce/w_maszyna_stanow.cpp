@@ -72,7 +72,7 @@ public:
         {
             nextState = mTransitions.at(stateTransition);
         }
-        catch(std::out_of_range e)
+        catch(std::out_of_range& e)
         {
             throw("Invalid transition"s);
         }
