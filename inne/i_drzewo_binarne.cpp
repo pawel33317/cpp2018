@@ -5,7 +5,7 @@ using namespace std;
 
 void i_drzewo_binarne()
 {
-    cout << "----------------i_mapa-----------" << endl;
+    cout << "----------------i_drzewo_binarne-----------" << endl;
     cout << "BRAK IMPLEMENTACJI BINARNEGO DRZEWA POSZUKIWAN" << endl;
 
     //drzewo - graf nieskierowany - z każdego wierzchołka drzewa można dostać się do

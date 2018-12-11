@@ -7,4 +7,6 @@ void i_main_call()
     i_keywords();
     i_allocator();
     i_mapa();
+    i_drzewo_binarne();
+    i_offsetof();
 }
