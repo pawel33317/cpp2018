@@ -5,6 +5,9 @@ using namespace std;
 
 //variadic templates
 //#include "chapter14.hpp" exceptions
+//https://en.cppreference.com/w/cpp/language/noexcept_spec 
+    //https://en.cppreference.com/w/cpp/memory/new/nothrow
+    //14.callallandspecifiers
 //wzorce
     //łańcuch zdarzeń
     //RAII
@@ -18,12 +21,12 @@ using namespace std;
 //tworzenie własnej biblioteki
 //serializacja
 //trudniejsze wskaźniki na funkcje + bind
-
+//
 int main(int argc, char* argv[])
 {
     i_main_call();
-    //w_main_call();
-    //t_main_call(argc, argv);
+    w_main_call();
+    t_main_call(argc, argv);
     std::cout << std::endl;
 }
 //threading, transaction_safe_dynamic, transaction_safe, mutex, conditional_variable

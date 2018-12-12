@@ -2,11 +2,15 @@
 using namespace std;
 
 void potrzebaWyjatkowiPodstawy();
+void wyjatkiiStos();
+void catchAllAndSpecifiers();
 
 void t_14_exceptions()
 {
     cout << "-----chapter 14 exceptions-----" << endl;
     potrzebaWyjatkowiPodstawy();
+    wyjatkiiStos();
+    catchAllAndSpecifiers();
 }
 
 void potrzebaWyjatkowiPodstawy()
@@ -80,4 +84,77 @@ void potrzebaWyjatkowiPodstawy()
         //zwracają wartość lub error code do wywołujacego
         //zgłaszają inne exception do wyższego bloku try (nie będzie obsłużone
             //przez aktualny try)
+}
+
+static int count()
+{
+    throw "exception :)"s;
+}
+void wyjatkiiStos()
+{
+    //throw nie musi być bezpośrednio w bloku try
+    //wyjątki więc propagują w górę stosu podczas rzucenia
+
+    try
+    {
+        int i = count();
+        cout << i;
+    }
+    catch(const std::string& s)
+    {
+        cout << "Zlapalem wyjatek: " << s << endl;
+    }
+    //najpierw program sprawdza czy wyjątek może być obsłużony natychmiast
+        //czyli czy throw było bezpośrednio w try
+    //jeżeli nie aktualna funkcja jest kończona i program sprawdza
+    //czy caller funkcji może obsłużyć wyjątek
+        //funkcje sa dalej kończone aż zostanie napotkana funkcja obsługująca
+        //lub aż main zostanie zakończony bez obsługi wyjątku
+    //taki proces nazywa się unwinding the stack
+
+    //w skrócie funkcja count mówi: mamy problem i że nie umie go rozwiązać
+
+    //wyjątek nie jest od razu obsługiwany w count, bo count nie wie jak go
+        //rozwiązać, dla jednego callera funkcji count może to być
+        //fatal error a dla innego nie
+}
+
+
+
+
+static void func1() throw() {  } //nie rzuca wyjątków
+                                 //jeżeli rzuci program zostanie zakończony
+
+//static void func2() throw(int) {} //nie rzuca wyjątków
+    //C++17 zakazuje dynamicznych specyfikatorów wyjątków
+
+//static void func3() throw(...) {} //nie rzuca wyjątków
+    //C++17 zakazuje dynamicznych specyfikatorów wyjątków
+void catchAllAndSpecifiers()
+{
+    //jeżeli main się zwinie ze stosu (nikt nie obsłuży wyjątku), system
+    //operacyjny poinformuje o wystąpieniu wyjątku
+        //to jak poinformuje zależy od systemu zwykle error info
+
+    //catch-all handler
+        //powinien być umieszczony na końcu listy catch'u
+    try
+    {
+        throw -1;
+    }
+    catch(...)
+    {
+        cout << "Zlapalem wyjatek przez ..." << endl;
+    }
+
+    //można użyć w mainie do większości kodu a po catchu zrobić jakąś akcję awaryjną
+    //np w try runGame() a w catch ... lub po saveGameData()
+    //zapobiegnie to crashowi apki i umożliwi jakieś akcje dodatkowe
+
+    //specyfikatory
+        //rzadko używane .., czasami nawet źle wspierane przez kompilatory
+    //moechanizm pozwalający na
+    func1();
+    //func2();
+    //func3();
 }
