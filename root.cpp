@@ -5,7 +5,8 @@ using namespace std;
 
 //variadic templates
 //#include "chapter14.hpp" exceptions
-//https://en.cppreference.com/w/cpp/language/noexcept_spec 
+//typedef i fun ptr, odbieranie tablicy przez referencję
+//https://en.cppreference.com/w/cpp/language/noexcept_spec
     //https://en.cppreference.com/w/cpp/memory/new/nothrow
     //14.callallandspecifiers
 //wzorce

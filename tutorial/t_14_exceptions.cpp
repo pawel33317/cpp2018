@@ -4,6 +4,7 @@ using namespace std;
 void potrzebaWyjatkowiPodstawy();
 void wyjatkiiStos();
 void catchAllAndSpecifiers();
+void classAndInheritance();
 
 void t_14_exceptions()
 {
@@ -11,6 +12,7 @@ void t_14_exceptions()
     potrzebaWyjatkowiPodstawy();
     wyjatkiiStos();
     catchAllAndSpecifiers();
+    classAndInheritance();
 }
 
 void potrzebaWyjatkowiPodstawy()
@@ -153,8 +155,78 @@ void catchAllAndSpecifiers()
 
     //specyfikatory
         //rzadko używane .., czasami nawet źle wspierane przez kompilatory
-    //moechanizm pozwalający na
+    //mechanizm pozwalający na określenie w deklaracji funkcji czy może ona rzucać
+        //wyjątki
     func1();
     //func2();
     //func3();
+}
+
+class ArrayException
+{
+private:
+    std::string mError;
+public:
+    ArrayException(const std::string& error) : mError{error}{};
+    const char* getError() {return mError.c_str();}
+};
+class Exception1Base{};
+class Exception1Derived : public Exception1Base {};
+void classAndInheritance()
+{
+    //wyjątki dobre np w operator[] bo inaczej nie da się wskazać błędu
+        //bo return type i ilość parametrów są ściśle określone
+
+    //!!!W konstruktorach
+    //jeżeli konstruktor rzuci wyjątków, wskazuje, że nie udało się stworzyć
+        //obiektu, !!!destruktor nie zostanie nigdy wykonany, więc konstruktor
+        //musi po sobie posprzątać
+
+    //problem z wyjątkami jako typami prostymi jest taki, że są niejasne
+        //lub dwuznaczne
+    ArrayException arr{"Invalid index"};
+    cout << arr.getError() << endl;
+        //można rzucić np w operator[]
+
+    //catche powinny pobierać wyjątki przez referencje żeby nie robić kopii
+        //i nie wystąpił obiect slicing
+        //unikać też przekazywania przez pointery
+
+    //exception handlery czyli catche umieją dopasować typ pochodny
+    /*komebtarz bo kompilator ostrzega że Exception1Base przechwyci Exception1Derived
+    try
+    {
+        throw Exception1Derived{};
+    }
+    catch (const Exception1Base&)
+    {
+        cout << "Zpalalem exception Exception1Base" << endl;
+    }
+    catch (const Exception1Derived&)
+    {
+        cout << "Zpalalem exception Exception1Derived" << endl;
+    }
+    */
+   //przechwyci catch (const Exception1Base&) bo jest wyżej
+   //derived ma relację do Base is-a
+   //catch (const Exception1Derived&) nigdy sie nie wykona
+
+    //trzeba zamienić kolejność
+    //obiekty Base nie zostaną przechwycone przez derived bo nią nie są
+    //!!!handlery dla dziedziczących wyjątków klas powinny być listowane
+        //powyżej bazowych wyjątków
+    try
+    {
+        throw Exception1Derived{};
+    }
+    catch (const Exception1Derived&)
+    {
+        cout << "Zpalalem exception Exception1Derived" << endl;
+    }
+    catch (const Exception1Base&)
+    {
+        cout << "Zpalalem exception Exception1Base" << endl;
+    }
+
+//std::exception .... nie zrobione
 }
